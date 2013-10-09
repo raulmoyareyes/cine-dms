@@ -6,5 +6,8 @@
 *.ear
 
 nbproject/private/*
+nbproject/private/
 build/*
+build/
 dist/*
+dist/
