@@ -4,6 +4,8 @@
  */
 package cine.dms.view;
 
+import cine.dms.interfaceMV.CinemaSystem;
+
 /**
  *
  * @author raul
@@ -15,6 +17,7 @@ public class Main extends javax.swing.JFrame {
      */
     public Main() {
         initComponents();
+        conexion();
     }
 
     /**
@@ -28,8 +31,6 @@ public class Main extends javax.swing.JFrame {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        spnNumColas = new javax.swing.JSpinner();
         jLabel4 = new javax.swing.JLabel();
         spnNumTaquillas = new javax.swing.JSpinner();
         jLabel5 = new javax.swing.JLabel();
@@ -70,14 +71,14 @@ public class Main extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel3.setText("Número de colas");
-
         jLabel4.setText("Número de taquillas");
 
         jLabel5.setFont(new java.awt.Font("Droid Sans", 1, 14)); // NOI18N
         jLabel5.setText("Introduzca las variables de entrada");
 
         jLabel6.setText("Número de puestos de palomitas");
+
+        spnNumPuestoPalomitas.setValue(5);
 
         jLabel7.setText("Frecuencia de llegada de clientes");
 
@@ -101,10 +102,6 @@ public class Main extends javax.swing.JFrame {
                             .addComponent(jLabel5)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(spnNumColas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(jLabel4)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -147,8 +144,6 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(jLabel5)
                 .addGap(29, 29, 29)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(spnNumColas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7)
                     .addComponent(spnFrecuenciaClientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -397,7 +392,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -413,7 +407,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JSpinner spnFrecuenciaClientes;
-    private javax.swing.JSpinner spnNumColas;
     private javax.swing.JSpinner spnNumPuestoPalomitas;
     private javax.swing.JSpinner spnNumTaquillas;
     private javax.swing.JSpinner spnProbabilidadCompraEntradas;
@@ -422,4 +415,21 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JSpinner spnTiempoServicioTaquillas;
     private javax.swing.JTextField txtTamColas;
     // End of variables declaration//GEN-END:variables
+
+    private CinemaSystem cine;
+
+    public void conexion() {
+        cine = new CinemaSystem();
+        cine.initialize(
+                Integer.parseInt(spnNumPuestoPalomitas.getValue().toString()),
+                Integer.parseInt(spnNumTaquillas.getValue().toString()),
+                Float.parseFloat(spnFrecuenciaClientes.getValue().toString()),
+                Float.parseFloat(spnTiempoServicioPalomitas.getValue().toString()),
+                Float.parseFloat(spnTiempoServicioTaquillas.getValue().toString()),
+                Float.parseFloat(spnProbabilidadCompraPalomitas.getValue().toString()),
+                Float.parseFloat(spnProbabilidadCompraEntradas.getValue().toString())
+        );
+        
+        cine.run();
+    }
 }
