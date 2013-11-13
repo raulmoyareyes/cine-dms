@@ -17,7 +17,6 @@ public class Main extends javax.swing.JFrame {
      */
     public Main() {
         initComponents();
-        conexion();
     }
 
     /**
@@ -57,6 +56,8 @@ public class Main extends javax.swing.JFrame {
         jTextField3 = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
         jTextField4 = new javax.swing.JTextField();
+        jLabel24 = new javax.swing.JLabel();
+        jTextField5 = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
@@ -64,10 +65,12 @@ public class Main extends javax.swing.JFrame {
         jLabel20 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
         btnSimulacionCompleta = new javax.swing.JButton();
         btnSiguientePaso = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        btnIniciarSimulacion = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -174,11 +177,6 @@ public class Main extends javax.swing.JFrame {
         jLabel12.setText("Tamaño de las colas (uno para cada palo y taqui)");
 
         txtTamColas.setText("25");
-        txtTamColas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtTamColasActionPerformed(evt);
-            }
-        });
 
         jLabel13.setText("Número de taquillas ocupadas");
 
@@ -196,6 +194,10 @@ public class Main extends javax.swing.JFrame {
 
         jTextField4.setText("0");
 
+        jLabel24.setText("Tiempo medio en cola para n clientes");
+
+        jTextField5.setText("0");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -203,6 +205,7 @@ public class Main extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(62, 62, 62)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel24)
                     .addComponent(jLabel16)
                     .addComponent(jLabel15)
                     .addComponent(jLabel14)
@@ -214,7 +217,8 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(jTextField1)
                     .addComponent(jTextField2)
                     .addComponent(jTextField3)
-                    .addComponent(jTextField4))
+                    .addComponent(jTextField4)
+                    .addComponent(jTextField5))
                 .addContainerGap(326, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -240,7 +244,11 @@ public class Main extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel16)
                     .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(176, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel24)
+                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(143, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Estado de la simulación", jPanel2);
@@ -249,13 +257,15 @@ public class Main extends javax.swing.JFrame {
 
         jLabel18.setText("Total de personas atendidas en puestos de palomitas");
 
-        jLabel19.setText("Tamaño medio de las colas en taquillas");
+        jLabel19.setText("Número medio de clientes en taquillas");
 
-        jLabel20.setText("Tamaño medio de las colas en puestos de palomitas");
+        jLabel20.setText("Número medio de clientes en puestos de palomitas");
 
         jLabel21.setText("Grado de ocupación de las taquillas");
 
         jLabel22.setText("Grado de ocupación de los puesto de las palomitas");
+
+        jLabel23.setText("Tiempo medio en cola para n clientes");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -264,6 +274,7 @@ public class Main extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(109, 109, 109)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel23)
                     .addComponent(jLabel22)
                     .addComponent(jLabel21)
                     .addComponent(jLabel20)
@@ -287,18 +298,29 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(jLabel21)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel22)
-                .addContainerGap(180, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel23)
+                .addContainerGap(153, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Análisis de resultados", jPanel3);
 
         btnSimulacionCompleta.setText("Realizar simulación completa");
+        btnSimulacionCompleta.setEnabled(false);
 
         btnSiguientePaso.setText("Realizar paso a paso");
+        btnSiguientePaso.setEnabled(false);
 
         jLabel1.setText("Reloj:");
 
         jLabel2.setText("00 : 33");
+
+        btnIniciarSimulacion.setText("Iniciar simulación");
+        btnIniciarSimulacion.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnIniciarSimulacionClick(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -306,9 +328,11 @@ public class Main extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnSimulacionCompleta)
+                .addComponent(btnIniciarSimulacion, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSiguientePaso)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnSimulacionCompleta)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -326,7 +350,8 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(btnSimulacionCompleta)
                     .addComponent(btnSiguientePaso)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel2))
+                    .addComponent(jLabel2)
+                    .addComponent(btnIniciarSimulacion))
                 .addGap(18, 18, 18)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -336,9 +361,23 @@ public class Main extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtTamColasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTamColasActionPerformed
+    private void btnIniciarSimulacionClick(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIniciarSimulacionClick
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtTamColasActionPerformed
+        if(btnIniciarSimulacion.getText().equals("Iniciar simulación")){
+            //Desabilitar simulación
+            btnIniciarSimulacion.setText("Parar simulación");
+            btnSimulacionCompleta.setEnabled(true);
+            btnSiguientePaso.setEnabled(true);
+            
+            //Conexión con el sistema
+            this.conexion();
+        }else{
+            //Habilitar simulación
+            btnIniciarSimulacion.setText("Iniciar simulación");
+            btnSimulacionCompleta.setEnabled(false);
+            btnSiguientePaso.setEnabled(false);
+        }
+    }//GEN-LAST:event_btnIniciarSimulacionClick
 
     /**
      * @param args the command line arguments
@@ -375,6 +414,7 @@ public class Main extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnIniciarSimulacion;
     private javax.swing.JButton btnSiguientePaso;
     private javax.swing.JButton btnSimulacionCompleta;
     private javax.swing.JLabel jLabel1;
@@ -392,6 +432,8 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -406,6 +448,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField jTextField5;
     private javax.swing.JSpinner spnFrecuenciaClientes;
     private javax.swing.JSpinner spnNumPuestoPalomitas;
     private javax.swing.JSpinner spnNumTaquillas;
@@ -431,5 +474,5 @@ public class Main extends javax.swing.JFrame {
         );
         
         cine.run();
-    }
+    }    
 }
