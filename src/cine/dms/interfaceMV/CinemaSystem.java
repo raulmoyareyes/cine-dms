@@ -93,12 +93,76 @@ public class CinemaSystem {
 
     }
 
-    private void llegada() {
+    /**
+     * Suceso de llegada de un nuevo cliente
+     * @param cliente Cliente
+     * @warning No está terminado
+     */
+    private void llegada(Client cliente) {
         //Aquí se determina el tipo de cliente que llega
+        
+        TicketOffice taquilla = this.getTaquillaMenosOcupada();
+        if(taquilla.isLibre()){ //Servidor libre
+            taquilla.switchEstado();
+            //Calcular el tiempo de salida
+            //Actualizar la lista de sucesos
+        }else{ //Servidor ocupado
+            taquilla.addClienteEnCola(cliente);
+            //Almacena el tiempo de llegada
+            //Recalcular área bajo Q(t)
+        }
+        //Calcular el tiempo de la siguiente llegada y actualizar la lista de sucesos
+        
+        /* 
+         * ALGORITMO GENÉRICO (de la teoría)
+         * 
+         *  SI Servidor está libre
+         *      Incrementa en 1 el número de clientes servidor
+         *      Pone el estado del Servidor a ocupado
+         *      Calcula el tiempo de salida y actualizar lista de sucesos
+         *  SI NO
+         *      Incrementa 1 el número de clientes en cola
+         *      SI la cola está llena
+         *          Escribe mensaje de error y para la simulación
+         *      SINO
+         *          Almacena el tiempo de llegada del cliente
+         *          Recalcular área bajo Q(t)
+         *  FIN SI
+         *  Calcular tiempo siguiente llegada y actualizar lista de sucesos
+         * 
+         */
     }
 
-    private void salida() {
+    /**
+     * Evento de salida de un cliente de la taquilla
+     * @param taquilla Taquilla de la que sale el cliente
+     * @warning No está terminado
+     */
+    private void salida(TicketOffice taquilla) {
         //Aquí se actualiza el estado de las variables
+        if(taquilla.getColaSize()==0){ //La cola esta vacía
+            taquilla.switchEstado();
+            //Calcula el retardo para el siguiente cliente
+            //Recalcular los datos estadísticos
+            taquilla.addClientesServidos();
+        }else{ //La cola tiene clientes
+            
+        }
+        
+        
+        /*
+         * ALGORITMO GENÉRICO (de la teoría)
+         * 
+         *  SI La cola está vacía
+         *      Pone el estado ser servidor desocupado
+         *      Modifica lista de sucesos con infinito en el suceso de salida
+         *  SI NO
+         *      Decrementa en 1 el número de clientes en cola
+         *      Calcula el retardo para el cliente y recalcula los datos estadísticos
+         *      Incrementa en 1 el número de clientes servidos
+         *      Calcula el tiempo de salida y actualiza la lista de sucesos
+         *  FIN SI
+         */
     }
 
     private void finSimulacion() {
@@ -122,6 +186,10 @@ public class CinemaSystem {
         
     }
     
+    /**
+     * Devuelve el número de taquillas ocupadas
+     * @return Número de taquillas ocupadas
+     */
     private Integer contarTaquillasOcupadas(){
         Integer resultado = 0;
         for(TicketOffice t: this.taquillas){
@@ -129,6 +197,24 @@ public class CinemaSystem {
                 ++resultado;
         }
         return resultado;
+    }
+    
+    /**
+     * Devuelve la taquilla que menos cola tiene
+     */
+    private TicketOffice getTaquillaMenosOcupada(){
+        TicketOffice taquillaReturn = null;
+        for(TicketOffice t: this.taquillas){
+            if(taquillaReturn != null){
+                if(t.getColaSize() < taquillaReturn.getColaSize())
+                    taquillaReturn = t;
+            }else{
+                taquillaReturn = t;
+            }
+            if(taquillaReturn.isLibre())
+                return taquillaReturn;
+        }
+        return taquillaReturn;
     }
 
     /**
