@@ -57,7 +57,7 @@ public class CinemaSystem {
             float tiempoServicioTaquilla, float tiempoServicioPalomitas, float probabilidadTicketMultiple,
             float probabilidadPalomitas) {
 
-        reloj = new Clock();
+        reloj = new Clock(8*60*60); // Hora inicial 08:00:00
 
         taquillas = new ArrayList();
         for (int i = 0; i < numTicketOffice; ++i) {
