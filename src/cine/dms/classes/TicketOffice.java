@@ -1,5 +1,8 @@
 package cine.dms.classes;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author Raúl Moya Reyes <rmr00021@red.ujaen.es>
@@ -15,6 +18,9 @@ public class TicketOffice {
 
     ///Tiempo de servicio
     Double tiempoServicio;
+    
+    ///Cola de clientes
+    List<Client> cola;
 
     /**
      * Constructor por defecto
@@ -23,6 +29,7 @@ public class TicketOffice {
         this.estado = 0;
         this.clientesServidos = 0;
         this.tiempoServicio = 3.0;
+        this.cola = new ArrayList();
     }
 
     /**
@@ -34,6 +41,7 @@ public class TicketOffice {
         this.estado = 0;
         this.clientesServidos = 0;
         this.tiempoServicio = tiempoServicio;
+        this.cola = new ArrayList();
     }
 
     /**
@@ -89,5 +97,28 @@ public class TicketOffice {
      */
     public void setTiempoServicio(Double tiempoServicio) {
         this.tiempoServicio = tiempoServicio;
+    }
+    
+    /**
+     * Devuelve el siguiente cliente de la cola y lo elimina de la misma
+     * @return Siguiente cliente de la cola
+     * @warning No testeado
+     */
+    public Client getSiguienteCliente(){
+        Client clientReturn = this.cola.get(0);
+        this.cola.remove(0);
+        return clientReturn;
+    }
+    
+    /**
+     * Añade un cliente a la cola
+     * @param client 
+     */
+    public void addClienteEnCola(Client client){
+        this.cola.add(client);
+    }
+    
+    public int getColaSize(){
+        return this.cola.size();
     }
 }
