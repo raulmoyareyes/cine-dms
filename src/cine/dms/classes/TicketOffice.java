@@ -54,14 +54,17 @@ public class TicketOffice {
     }
 
     /**
-     * Cambia el estado de la taquilla
+     * Cambia el estado de la taquilla a libre
      */
-    public void switchEstado() {
-        if (this.estado == 0) {
-            this.estado = 1;
-        } else {
-            this.estado = 0;
-        }
+    public void libre() {
+        this.estado = 0;
+    }
+
+    /**
+     * Cambia el estado de la taquilla a ocupado
+     */
+    public void ocupado() {
+        this.estado = 1;
     }
 
     /**
