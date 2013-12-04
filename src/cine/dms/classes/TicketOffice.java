@@ -18,7 +18,7 @@ public class TicketOffice {
 
     ///Tiempo de servicio
     Double tiempoServicio;
-    
+
     ///Cola de clientes
     List<Client> cola;
 
@@ -98,27 +98,34 @@ public class TicketOffice {
     public void setTiempoServicio(Double tiempoServicio) {
         this.tiempoServicio = tiempoServicio;
     }
-    
+
     /**
      * Devuelve el siguiente cliente de la cola y lo elimina de la misma
+     *
      * @return Siguiente cliente de la cola
      * @warning No testeado
      */
-    public Client getSiguienteCliente(){
+    public Client getSiguienteCliente() {
         Client clientReturn = this.cola.get(0);
         this.cola.remove(0);
         return clientReturn;
     }
-    
+
     /**
      * Añade un cliente a la cola
-     * @param client 
+     *
+     * @param client
      */
-    public void addClienteEnCola(Client client){
+    public void addClienteEnCola(Client client) {
         this.cola.add(client);
     }
-    
-    public int getColaSize(){
+
+    /**
+     * Devuelve el tamaño de la cola
+     *
+     * @return Tamaño de la cola
+     */
+    public int getColaSize() {
         return this.cola.size();
     }
 }

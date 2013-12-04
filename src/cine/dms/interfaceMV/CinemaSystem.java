@@ -13,8 +13,8 @@ import java.util.List;
  *
  * Sistema simulado de un cine
  *
- * @author raul y agustin
- *
+ * @author Raúl Moya Reyes <rmr00021@red.ujaen.es>
+ * @author Agustín Ruiz Linares <arl00029@red.ujaen.es>
  */
 public class CinemaSystem {
 
@@ -57,7 +57,7 @@ public class CinemaSystem {
             float tiempoServicioTaquilla, float tiempoServicioPalomitas, float probabilidadTicketMultiple,
             float probabilidadPalomitas) {
 
-        reloj = new Clock(8*60*60); // Hora inicial 08:00:00
+        reloj = new Clock(8 * 60 * 60); // Hora inicial 08:00:00
 
         taquillas = new ArrayList();
         for (int i = 0; i < numTicketOffice; ++i) {
@@ -95,24 +95,16 @@ public class CinemaSystem {
 
     /**
      * Suceso de llegada de un nuevo cliente
+     *
      * @param cliente Cliente
      * @warning No está terminado
      */
-    private void llegada(Client cliente) {
+    private void llegada() {
         //Aquí se determina el tipo de cliente que llega
-        
-        TicketOffice taquilla = this.getTaquillaMenosOcupada();
-        if(taquilla.isLibre()){ //Servidor libre
-            taquilla.switchEstado();
-            //Calcular el tiempo de salida
-            //Actualizar la lista de sucesos
-        }else{ //Servidor ocupado
-            taquilla.addClienteEnCola(cliente);
-            //Almacena el tiempo de llegada
-            //Recalcular área bajo Q(t)
-        }
+        //return new Client(numTicket, palomitas);
+
         //Calcular el tiempo de la siguiente llegada y actualizar la lista de sucesos
-        
+
         /* 
          * ALGORITMO GENÉRICO (de la teoría)
          * 
@@ -134,22 +126,59 @@ public class CinemaSystem {
     }
 
     /**
+     * Asigna un cliente a la cola de una taquilla
+     *
+     * @param cliente
+     */
+    private void asignacionTicket(Client cliente) {
+
+        TicketOffice taquilla = this.getTaquillaMenosOcupada();
+        if (taquilla.isLibre()) { //Servidor libre
+            taquilla.switchEstado();
+            //Calcular el tiempo de salida
+            //Actualizar la lista de sucesos
+        } else { //Servidor ocupado
+            taquilla.addClienteEnCola(cliente);
+            //Almacena el tiempo de llegada
+            //Recalcular área bajo Q(t)
+        }
+
+    }
+
+    private void entradaTicket() {
+
+    }
+
+    private void salidaTicket(TicketOffice taquilla) {
+        
+        if (taquilla.getColaSize() == 0) { //La cola esta vacía
+            taquilla.switchEstado();
+            //Calcula el retardo para el siguiente cliente
+            //Recalcular los datos estadísticos
+            taquilla.addClientesServidos();
+        } else { //La cola tiene clientes
+
+        }
+    }
+
+    private void entradaPop() {
+
+    }
+
+    private void salidaPop() {
+
+    }
+
+    /**
      * Evento de salida de un cliente de la taquilla
+     *
      * @param taquilla Taquilla de la que sale el cliente
      * @warning No está terminado
      */
     private void salida(TicketOffice taquilla) {
         //Aquí se actualiza el estado de las variables
-        if(taquilla.getColaSize()==0){ //La cola esta vacía
-            taquilla.switchEstado();
-            //Calcula el retardo para el siguiente cliente
-            //Recalcular los datos estadísticos
-            taquilla.addClientesServidos();
-        }else{ //La cola tiene clientes
-            
-        }
-        
-        
+
+
         /*
          * ALGORITMO GENÉRICO (de la teoría)
          * 
@@ -169,8 +198,13 @@ public class CinemaSystem {
         //Fin ^_^
     }
 
+    private void generacionDeInforme() {
+
+    }
+
     /**
      * Generar resultados de la simulación
+     *
      * @return Lista con los valores
      */
     public List<String> generarEstado() {
@@ -179,46 +213,50 @@ public class CinemaSystem {
         resultado.add(this.taquillas.get(0).toString());
         //Número taquillas ocupadas
         resultado.add(this.contarTaquillasOcupadas().toString());
-        
+
         // FALTAAAAAA ////////////////////////////////////////////////////////////////////////////
-        
         return resultado;
-        
+
     }
-    
+
     /**
      * Devuelve el número de taquillas ocupadas
+     *
      * @return Número de taquillas ocupadas
      */
-    private Integer contarTaquillasOcupadas(){
+    private Integer contarTaquillasOcupadas() {
         Integer resultado = 0;
-        for(TicketOffice t: this.taquillas){
-            if(!t.isLibre())
+        for (TicketOffice t : this.taquillas) {
+            if (!t.isLibre()) {
                 ++resultado;
+            }
         }
         return resultado;
     }
-    
+
     /**
      * Devuelve la taquilla que menos cola tiene
      */
-    private TicketOffice getTaquillaMenosOcupada(){
+    private TicketOffice getTaquillaMenosOcupada() {
         TicketOffice taquillaReturn = null;
-        for(TicketOffice t: this.taquillas){
-            if(taquillaReturn != null){
-                if(t.getColaSize() < taquillaReturn.getColaSize())
+        for (TicketOffice t : this.taquillas) {
+            if (taquillaReturn != null) {
+                if (t.getColaSize() < taquillaReturn.getColaSize()) {
                     taquillaReturn = t;
-            }else{
+                }
+            } else {
                 taquillaReturn = t;
             }
-            if(taquillaReturn.isLibre())
+            if (taquillaReturn.isLibre()) {
                 return taquillaReturn;
+            }
         }
         return taquillaReturn;
     }
 
     /**
      * Genera resultados globales de la simulación
+     *
      * @return Lista con los valores resultado
      */
     public List<String> generarResultadosGlobales() {

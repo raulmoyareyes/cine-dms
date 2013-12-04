@@ -5,6 +5,7 @@
 package cine.dms.classes;
 
 /**
+ * Clase rejol
  *
  * @author Raúl Moya Reyes <rmr00021@red.ujaen.es>
  * @author Agustín Ruiz Linares <arl00029@red.ujaen.es>
