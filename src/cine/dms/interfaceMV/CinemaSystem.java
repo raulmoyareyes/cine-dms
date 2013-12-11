@@ -163,7 +163,7 @@ public class CinemaSystem {
     private void entradaTicket(TicketOffice taquilla) {
         //Poner la taquilla en estado ocupado
         taquilla.ocupado();
-        
+
         //Tiempo de servicio del cliente
         this.calculoSalidaSiguienteCliente();
     }
@@ -176,7 +176,6 @@ public class CinemaSystem {
             //Recalcular los datos estadísticos
             taquilla.addClientesServidos();
         } else { //La cola tiene clientes
-            
         }
         //Cálculo de la entrada del siguiente cliente
     }
@@ -323,13 +322,13 @@ public class CinemaSystem {
         int tiempoLlegada = 60;
         this.sucesos.set(LLEGADATICKET, this.reloj.getSeconds() + tiempoLlegada);
     }
-    
+
     /**
      * Cálculo del tiempo de servicio del cliente en taquilla
-     * 
+     *
      * @warning No implementado el tiempo aleatorio de servicio
      */
-    private void calculoSalidaSiguienteCliente(){
+    private void calculoSalidaSiguienteCliente() {
         int tiempoServicio = 20;
         this.sucesos.set(SALIDATICKET, this.reloj.getSeconds() + tiempoServicio);
     }

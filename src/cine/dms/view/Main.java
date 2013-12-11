@@ -4,7 +4,11 @@
  */
 package cine.dms.view;
 
+import cine.dms.classes.RandomLehmer;
 import cine.dms.interfaceMV.CinemaSystem;
+import excepciones.ExcepcionGeneradorIncorrecto;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -17,6 +21,20 @@ public class Main extends javax.swing.JFrame {
      */
     public Main() {
         initComponents();
+        
+        RandomLehmer randomLehmer = new RandomLehmer(0.84641, 0.645, 1);
+        try {
+            System.out.println(randomLehmer.getRandom());
+            System.out.println(randomLehmer.getRandom());
+            System.out.println(randomLehmer.getRandom());
+            System.out.println(randomLehmer.getRandom());
+            System.out.println(randomLehmer.getRandom());
+            System.out.println(randomLehmer.getRandom());
+            System.out.println(randomLehmer.getRandom());
+            System.out.println(randomLehmer.getRandom());
+        } catch (ExcepcionGeneradorIncorrecto ex) {
+            System.out.println("Ha cascao un error: "+ex.getMessage());
+        }
     }
 
     /**
@@ -138,7 +156,7 @@ public class Main extends javax.swing.JFrame {
                                 .addComponent(jLabel10)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(spnProbabilidadCompraEntradas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(129, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -169,7 +187,7 @@ public class Main extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
                     .addComponent(spnProbabilidadCompraPalomitas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(88, Short.MAX_VALUE))
+                .addContainerGap(79, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Variables de entrada", jPanel1);
@@ -219,7 +237,7 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(jTextField3)
                     .addComponent(jTextField4)
                     .addComponent(jTextField5))
-                .addContainerGap(326, Short.MAX_VALUE))
+                .addContainerGap(263, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -248,7 +266,7 @@ public class Main extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel24)
                     .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(143, Short.MAX_VALUE))
+                .addContainerGap(128, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Estado de la simulación", jPanel2);
@@ -281,7 +299,7 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(jLabel19)
                     .addComponent(jLabel18)
                     .addComponent(jLabel17))
-                .addContainerGap(434, Short.MAX_VALUE))
+                .addContainerGap(360, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -300,7 +318,7 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(jLabel22)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel23)
-                .addContainerGap(153, Short.MAX_VALUE))
+                .addContainerGap(123, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Análisis de resultados", jPanel3);
