@@ -12,6 +12,15 @@ public class TicketOffice {
 
     ///Estado de la taquilla (0 = libre, 1 = ocupada)
     private char estado;
+    
+    //Id
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+    //NextID
+    private static int nexId=0;
 
     ///Clientes servidos
     int clientesServidos;
@@ -26,6 +35,8 @@ public class TicketOffice {
      * Constructor por defecto
      */
     public TicketOffice() {
+        id=nexId;
+        ++nexId;
         this.estado = 0;
         this.clientesServidos = 0;
         this.tiempoServicio = 3.0;

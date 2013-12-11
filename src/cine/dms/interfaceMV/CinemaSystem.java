@@ -1,12 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cine.dms.interfaceMV;
 
 import cine.dms.classes.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -42,7 +38,7 @@ public class CinemaSystem {
     private float probabilidadTicketMultiple;
     private float probabilidadPalomitas;
     /// Lista de sucesos (0 - llegada, 1 - salida, 2 - fin)
-    private List<Integer> sucesos;
+    private List<List<Integer>> sucesos;
 
     /// Constructor
     public CinemaSystem() {
@@ -85,11 +81,10 @@ public class CinemaSystem {
 
         //Sucesos medidos en segundos
         this.sucesos = new ArrayList();
-        sucesos.add(reloj.getSeconds()); //sucesos.get(LLEGADATICKET) => Llegada ticket (primero en ocurrir)
-        sucesos.add(INFINITO); //sucesos.get(SALIDATICKET)
-        sucesos.add(INFINITO); //sucesos.get(LLEGADAPALOMITAS)
-        sucesos.add(INFINITO); //sucesos.get(SALIDAPALOMITAS)
-
+        sucesos.add(new ArrayList(Arrays.asList(reloj.getSeconds(), INFINITO, INFINITO, INFINITO)));
+        for (int i = 1; i < numTicketOffice || i < numPopcornStand; ++i) {
+            sucesos.add(new ArrayList(Arrays.asList(INFINITO, INFINITO, INFINITO, INFINITO)));
+        }
     }
 
     public void run() {
@@ -105,10 +100,12 @@ public class CinemaSystem {
         //Llegada del primer cliente
         this.llegadaCliente();
         //Condición de parada de simulación
-        while (this.reloj.getSeconds() < this.tiempoFin.getSeconds()
-                && this.sucesos.get(this.siguienteSuceso()) < this.tiempoFin.getSeconds()) {
+        Pair<Integer, Integer> sS = this.siguienteSuceso();
+        while (this.reloj.getSeconds() < this.tiempoFin.getSeconds() 
+                && this.sucesos.get(sS.posicion).get(sS.tipoSuceso) < this.tiempoFin.getSeconds()) {
+
             //Comprobamos cuál es el siguiente evento
-            switch (this.siguienteSuceso()) {
+            switch (sS.tipoSuceso) {
                 case LLEGADATICKET:
                     break;
                 case SALIDATICKET:
@@ -154,7 +151,7 @@ public class CinemaSystem {
             this.entradaTicket(taquilla);
         } else { //Servidor ocupado
             taquilla.addClienteEnCola(cliente);
-            //Almacena el tiempo de llegada
+            //Almacena el tiempo de llegada en el cliente
             //Recalcular área bajo Q(t)
         }
 
@@ -165,7 +162,7 @@ public class CinemaSystem {
         taquilla.ocupado();
 
         //Tiempo de servicio del cliente
-        this.calculoSalidaSiguienteCliente();
+        this.calculoSalidaSiguienteCliente(taquilla);
     }
 
     private void salidaTicket(TicketOffice taquilla) {
@@ -283,11 +280,14 @@ public class CinemaSystem {
      *
      * @return LLEGADATICKET ó SALIDATICKET ó LLEGADAPALOMITAS ó SALIDAPALOMITAS
      */
-    private int siguienteSuceso() {
-        int resultado = 0;
-        for (int i = 1; i < sucesos.size(); ++i) {
-            if (sucesos.get(i) < sucesos.get(resultado)) {
-                resultado = i;
+    private Pair<Integer,Integer> siguienteSuceso() {
+        Pair<Integer,Integer> resultado = new Pair(0,LLEGADATICKET);
+        for (int i = 0; i < sucesos.size(); ++i) {
+            for(int j=0; j< sucesos.get(i).size(); ++j){
+                if(sucesos.get(i).get(j) < sucesos.get(resultado.posicion).get(resultado.tipoSuceso)){
+                    resultado.posicion = i;
+                    resultado.tipoSuceso = j;
+                }
             }
         }
         return resultado;
@@ -320,7 +320,7 @@ public class CinemaSystem {
      */
     private void calculoLlegadaSiguienteCliente() {
         int tiempoLlegada = 60;
-        this.sucesos.set(LLEGADATICKET, this.reloj.getSeconds() + tiempoLlegada);
+        this.sucesos.get(0).set(LLEGADATICKET, this.reloj.getSeconds() + tiempoLlegada);
     }
 
     /**
@@ -328,8 +328,8 @@ public class CinemaSystem {
      *
      * @warning No implementado el tiempo aleatorio de servicio
      */
-    private void calculoSalidaSiguienteCliente() {
+    private void calculoSalidaSiguienteCliente(TicketOffice taquilla) {
         int tiempoServicio = 20;
-        this.sucesos.set(SALIDATICKET, this.reloj.getSeconds() + tiempoServicio);
+        this.sucesos.get(taquilla.getId()).set(SALIDATICKET, this.reloj.getSeconds() + tiempoServicio);
     }
 }
