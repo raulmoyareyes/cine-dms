@@ -481,6 +481,7 @@ public class Main extends javax.swing.JFrame {
             cine.run();
         } catch (ExcepcionGeneradorIncorrecto ex) {
             //Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            
         }
     }    
     
