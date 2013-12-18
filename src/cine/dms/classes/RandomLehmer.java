@@ -29,6 +29,7 @@ public class RandomLehmer {
      * @param a Valor de a (multiplicador)
      * @param c Valor de c (incremento)
      * @param m Valor de m (módulo)
+     * @pre m <= 0 ; a >= m ; c >= m ; a < 0 ; c < 0
      */
     public RandomLehmer(double a, double c, double m) {
         if (m <= 0 || a >= m || c >= m || a < 0 || c < 0) {
@@ -82,7 +83,7 @@ public class RandomLehmer {
     /**
      *
      * @return Valor aleatorio entre 0 y m
-     * @throws Exception Se lanza cuando el constructor no es correcto
+     * @throws ExcepcionGeneradorIncorrecto Se lanza cuando el constructor no es correcto
      */
     public double getRandom() throws ExcepcionGeneradorIncorrecto {
         if (generadorOK) {

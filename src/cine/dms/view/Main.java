@@ -21,20 +21,6 @@ public class Main extends javax.swing.JFrame {
      */
     public Main() {
         initComponents();
-        
-        RandomLehmer randomLehmer = new RandomLehmer(0.84641, 0.645, 1);
-        try {
-            System.out.println(randomLehmer.getRandom());
-            System.out.println(randomLehmer.getRandom());
-            System.out.println(randomLehmer.getRandom());
-            System.out.println(randomLehmer.getRandom());
-            System.out.println(randomLehmer.getRandom());
-            System.out.println(randomLehmer.getRandom());
-            System.out.println(randomLehmer.getRandom());
-            System.out.println(randomLehmer.getRandom());
-        } catch (ExcepcionGeneradorIncorrecto ex) {
-            System.out.println("Ha cascao un error: "+ex.getMessage());
-        }
     }
 
     /**
@@ -491,7 +477,11 @@ public class Main extends javax.swing.JFrame {
                 Float.parseFloat(spnProbabilidadCompraEntradas.getValue().toString())
         );
         
-        cine.run();
+        try {
+            cine.run();
+        } catch (ExcepcionGeneradorIncorrecto ex) {
+            //Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }    
     
 }

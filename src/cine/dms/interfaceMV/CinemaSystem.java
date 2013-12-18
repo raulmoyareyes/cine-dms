@@ -1,6 +1,7 @@
 package cine.dms.interfaceMV;
 
 import cine.dms.classes.*;
+import excepciones.ExcepcionGeneradorIncorrecto;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,6 +25,12 @@ public class CinemaSystem {
     public static final int SALIDAPALOMITAS = 3;
     ///Constante INFINITO
     public static final int INFINITO = Integer.MAX_VALUE;
+    ///Cantidad máxima de entradas que puede comprar un cliente
+    public static final int MAX_ENTRADAS = 5;
+    ///Cantidad máxima de palomitas que puede comprar un cliente
+    public static final int MAX_PALOMITAS = 5;
+    ///Tiempo máximo entre llegada de clientes
+    public static final int MAX_TIEMPO_LLEGADA = 14 * 60 * 60;
     /// Reloj
     private Clock reloj;
     /// Fin de simulación
@@ -39,6 +46,8 @@ public class CinemaSystem {
     private float probabilidadPalomitas;
     /// Lista de sucesos (0 - llegada, 1 - salida, 2 - fin)
     private List<List<Integer>> sucesos;
+    ///Generador de número aleatorios [0,1] (parámetros provisionales)
+    RandomLehmer randomLehmer = new RandomLehmer(0.84641, 0.645, 1);
 
     /// Constructor
     public CinemaSystem() {
@@ -87,7 +96,7 @@ public class CinemaSystem {
         }
     }
 
-    public void run() {
+    public void run() throws ExcepcionGeneradorIncorrecto {
         //Aquí se llamará a la primera temporización (primera llegada)
         this.temporizacion();
 
@@ -96,17 +105,17 @@ public class CinemaSystem {
     /**
      * Siguiente sucesso y avanza el reloj
      */
-    private void temporizacion() {
+    private void temporizacion() throws ExcepcionGeneradorIncorrecto {
         //Llegada del primer cliente
         this.llegadaCliente();
         //Condición de parada de simulación
         Pair<Integer, Integer> sS = this.siguienteSuceso();
-        while (this.reloj.getSeconds() < this.tiempoFin.getSeconds() 
+        while (this.reloj.getSeconds() < this.tiempoFin.getSeconds()
                 && this.sucesos.get(sS.posicion).get(sS.tipoSuceso) < this.tiempoFin.getSeconds()) {
 
             //Comprobamos cuál es el siguiente evento
             switch (sS.tipoSuceso) {
-                case LLEGADATICKET:
+                case LLEGADATICKET: /* REVISADO. DEBE FUNCIONAR */
                     entradaTicket(taquillas.get(sS.posicion));
                     break;
                 case SALIDATICKET:
@@ -130,7 +139,7 @@ public class CinemaSystem {
      * @param cliente Cliente
      * @warning No está terminado
      */
-    private void llegadaCliente() {
+    private void llegadaCliente() throws ExcepcionGeneradorIncorrecto {
         //Aquí se determina el tipo de cliente que llega
         Client cliente = new Client(this.numTickets(), this.comprarPalomitas());
 
@@ -149,42 +158,60 @@ public class CinemaSystem {
     private void asignacionTicket(Client cliente) {
 
         TicketOffice taquilla = this.getTaquillaMenosOcupada();
+
         if (taquilla.isLibre()) { //Servidor libre
+            taquilla.setClienteSirviendose(cliente);
             this.entradaTicket(taquilla);
         } else { //Servidor ocupado
             taquilla.addClienteEnCola(cliente);
-            //Almacena el tiempo de llegada en el cliente
-            //Recalcular área bajo Q(t)
         }
-
     }
 
     private void entradaTicket(TicketOffice taquilla) {
         //Poner la taquilla en estado ocupado
         taquilla.ocupado();
-
         //Tiempo de servicio del cliente
         this.calculoSalidaSiguienteCliente(taquilla);
     }
 
     private void salidaTicket(TicketOffice taquilla) {
 
+        Client clienteServido = taquilla.getClienteSirviendose();
         taquilla.libre();
         taquilla.addClientesServidos();
-        if (taquilla.getColaSize() == 0) { //La cola esta vacía
-            //Recalcular los datos estadísticos
-        } else { //La cola tiene clientes
-            taquilla.getSiguienteCliente();
+
+        if (taquilla.getColaSize() != 0) { //La cola tiene clientes
+            Client cliente = taquilla.getSiguienteCliente();
+            taquilla.setClienteSirviendose(cliente);
             this.entradaTicket(taquilla);
         }
-        //Cálculo de la entrada del siguiente cliente
+        //Calcular datos estadísticos
+
+        //Determinar si compra palomitas o sale del sistema
+        if (clienteServido.getPalomitas() != 0) {
+            //Compra palomitas
+            
+        }
+    }
+    
+    private void asignacionPop(Client cliente) {
+
+        PopcornStand palomitas = this.getPalomitasMenosOcupada();
+
+        if (palomitas.isLibre()) { //Servidor libre
+            palomitas.setClienteSirviendose(cliente);
+            this.entradaPop(palomitas);
+        } else { //Servidor ocupado
+            palomitas.addClienteEnCola(cliente);
+        }
     }
 
-    private void entradaPop() {
+
+    private void entradaPop(PopcornStand palomitas) {
         //Similar a entradaTicket()
     }
 
-    private void salidaPop() {
+    private void salidaPop(PopcornStand palomitas) {
         //Sacar al cliente del salida()
     }
 
@@ -269,9 +296,30 @@ public class CinemaSystem {
     }
 
     /**
+     * Devuelve el puesto de palomitas que menos cola tiene
+     */
+    private PopcornStand getPalomitasMenosOcupada() {
+        PopcornStand palomitasReturn = null;
+        for (PopcornStand p : this.puestosPalomitas) {
+            if (palomitasReturn != null) {
+                if (p.getColaSize() < palomitasReturn.getColaSize()) {
+                    palomitasReturn = p;
+                }
+            } else {
+                palomitasReturn = p;
+            }
+            if (palomitasReturn.isLibre()) {
+                return palomitasReturn;
+            }
+        }
+        return palomitasReturn;
+    }
+
+    /**
      * Genera resultados globales de la simulación
      *
      * @return Lista con los valores resultado
+     * @warning No está relleno
      */
     public List<String> generarResultadosGlobales() {
         List<String> resultado = new ArrayList();
@@ -283,11 +331,11 @@ public class CinemaSystem {
      *
      * @return LLEGADATICKET ó SALIDATICKET ó LLEGADAPALOMITAS ó SALIDAPALOMITAS
      */
-    private Pair<Integer,Integer> siguienteSuceso() {
-        Pair<Integer,Integer> resultado = new Pair(0,LLEGADATICKET);
+    private Pair<Integer, Integer> siguienteSuceso() {
+        Pair<Integer, Integer> resultado = new Pair(0, LLEGADATICKET);
         for (int i = 0; i < sucesos.size(); ++i) {
-            for(int j=0; j< sucesos.get(i).size(); ++j){
-                if(sucesos.get(i).get(j) < sucesos.get(resultado.posicion).get(resultado.tipoSuceso)){
+            for (int j = 0; j < sucesos.get(i).size(); ++j) {
+                if (sucesos.get(i).get(j) < sucesos.get(resultado.posicion).get(resultado.tipoSuceso)) {
                     resultado.posicion = i;
                     resultado.tipoSuceso = j;
                 }
@@ -297,42 +345,58 @@ public class CinemaSystem {
     }
 
     /**
-     * Función aleatoria para calcular el número de tickets a comprar
+     * Función aleatoria para calcular el número de tickets a comprar (lineal)
      *
      * @return Número de tickets a comprar
-     * @warning No implementado, siempre compra 1 ticket
      */
-    private int numTickets() {
-        return 1;
+    private int numTickets() throws ExcepcionGeneradorIncorrecto {
+        /*
+         * Multiplicamos el aleatorio generado por el MAX_ENTRADAS * 27 para
+         * tener un número grande al que poder hacerle el módulo por
+         * MAX_ENTRADAS. Así nos aseguramos que el número por el que multiplica
+         * el aleatorio es siempre mayor que MAX_ENTRADAS
+         */
+        return (int) (((27 * MAX_ENTRADAS * this.randomLehmer.getRandom()) % MAX_ENTRADAS) + 1);
     }
 
     /**
-     * Función aleatoria para calcular si compra palomitas o no
+     * Función aleatoria para calcular cuántas palomitas compra (lineal)
      *
-     * @return 1 si compra palomitas o 0 si no compra palomitas
-     * @warning No implementado, nunca compra palomitas
+     * @return Número de palomitas que compra [0, MAX_PALOMITAS]
      */
-    private int comprarPalomitas() {
-        return 0;
+    private int comprarPalomitas() throws ExcepcionGeneradorIncorrecto {
+        /*
+         * Multiplicamos el aleatorio generado por el MAX_PALOMITAS * 27 para
+         * tener un número grande al que poder hacerle el módulo por
+         * MAX_PALOMITAS. Así nos aseguramos que el número por el que multiplica
+         * el aleatorio es siempre mayor que MAX_PALOMITAS
+         */
+        if (this.randomLehmer.getRandom() >= 0.5) {
+            return 0;
+        } else {
+            return (int) (((27 * MAX_PALOMITAS * this.randomLehmer.getRandom()) % MAX_PALOMITAS) + 1);
+        }
     }
 
     /**
      * Cálculo del siguiente cliente en llegar
      *
-     * @warning No implementado el tiempo aleatorio de llegada
      */
-    private void calculoLlegadaSiguienteCliente() {
-        int tiempoLlegada = 60;
+    private void calculoLlegadaSiguienteCliente() throws ExcepcionGeneradorIncorrecto {
+        /*
+         * Multiplicamos el aleatorio generado por el MAX_TIEMPO_LLEGADA * 27
+         * para tener un número grande al que poder hacerle el módulo por
+         * MAX_TIEMPO_LLEGADA. Así nos aseguramos que el número por el que
+         * multiplica el aleatorio es siempre mayor que MAX_TIEMPO_LLEGADA
+         */
+        int tiempoLlegada = (int) (((27 * MAX_TIEMPO_LLEGADA * this.randomLehmer.getRandom()) % MAX_TIEMPO_LLEGADA) + 1);
         this.sucesos.get(0).set(LLEGADATICKET, this.reloj.getSeconds() + tiempoLlegada);
     }
 
     /**
      * Cálculo del tiempo de servicio del cliente en taquilla
-     *
-     * @warning No implementado el tiempo aleatorio de servicio
      */
     private void calculoSalidaSiguienteCliente(TicketOffice taquilla) {
-        int tiempoServicio = 20;
-        this.sucesos.get(taquilla.getId()).set(SALIDATICKET, this.reloj.getSeconds() + tiempoServicio);
+        this.sucesos.get(taquilla.getId()).set(SALIDATICKET, this.reloj.getSeconds() + taquilla.getTiempoServicio());
     }
 }

@@ -1,5 +1,7 @@
 package cine.dms.classes;
 
+import java.util.List;
+
 /**
  *
  * @author Raúl Moya Reyes <rmr00021@red.ujaen.es>
@@ -14,7 +16,13 @@ public class PopcornStand {
     int clientesServidos;
 
     ///Tiempo de servicio
-    Double tiempoServicio;
+    int tiempoServicio;
+
+    ///Cola de clientes
+    List<Client> cola;
+    
+    ///Cliente sirviéndose
+    Client clienteSirviendose;
 
     /**
      * Constructor por defecto
@@ -22,7 +30,7 @@ public class PopcornStand {
     public PopcornStand() {
         this.estado = 0;
         this.clientesServidos = 0;
-        this.tiempoServicio = 3.0;
+        this.tiempoServicio = 30;
     }
 
     /**
@@ -30,7 +38,7 @@ public class PopcornStand {
      *
      * @param tiempoServicio Tiempo de servicio
      */
-    public PopcornStand(Double tiempoServicio) {
+    public PopcornStand(int tiempoServicio) {
         this.estado = 0;
         this.clientesServidos = 0;
         this.tiempoServicio = tiempoServicio;
@@ -45,7 +53,6 @@ public class PopcornStand {
     public boolean isLibre() {
         return (this.estado == 0);
     }
-
     
     /**
      * Cambia el estado de la puesto de palomitas a libre
@@ -83,7 +90,7 @@ public class PopcornStand {
      *
      * @return Tiempo de servicio
      */
-    public Double getTiempoServicio() {
+    public int getTiempoServicio() {
         return tiempoServicio;
     }
 
@@ -93,7 +100,41 @@ public class PopcornStand {
      * @param tiempoServicio
      * @warning Cuidado al cambiar el tiempo para hacer cálculos
      */
-    public void setTiempoServicio(Double tiempoServicio) {
+    public void setTiempoServicio(int tiempoServicio) {
         this.tiempoServicio = tiempoServicio;
+    }
+
+    /**
+     * Devuelve el tamaño de la cola
+     *
+     * @return Tamaño de la cola
+     */
+    public int getColaSize() {
+        return this.cola.size();
+    }
+    
+    /**
+     * Devuelve el cliente que se está sirviendo
+     * @return Cliente que se está sirviendo (o null si no existe)
+     */
+    public Client getClienteSirviendose() {
+        return clienteSirviendose;
+    }
+
+    /**
+     * Guarda el cliente que se está sirviendo
+     * @param clienteSirviendose Cliente que se está sirviendo
+     */
+    public void setClienteSirviendose(Client clienteSirviendose) {
+        this.clienteSirviendose = clienteSirviendose;
+    }
+
+    /**
+     * Añade un cliente a la cola
+     *
+     * @param client
+     */
+    public void addClienteEnCola(Client client) {
+        this.cola.add(client);
     }
 }
