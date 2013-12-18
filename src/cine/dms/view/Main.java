@@ -7,13 +7,13 @@ package cine.dms.view;
 import cine.dms.classes.RandomLehmer;
 import cine.dms.interfaceMV.CinemaSystem;
 import excepciones.ExcepcionGeneradorIncorrecto;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.SwingUtilities;
 
 /**
  *
  * @author raul
  */
+
 public class Main extends javax.swing.JFrame {
 
     /**
@@ -493,4 +493,5 @@ public class Main extends javax.swing.JFrame {
         
         cine.run();
     }    
+    
 }

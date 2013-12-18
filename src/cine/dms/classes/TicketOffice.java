@@ -120,9 +120,7 @@ public class TicketOffice {
      * @warning No testeado
      */
     public Client getSiguienteCliente() {
-        Client clientReturn = this.cola.get(0);
-        this.cola.remove(0);
-        return clientReturn;
+        return this.cola.remove(0);
     }
 
     /**

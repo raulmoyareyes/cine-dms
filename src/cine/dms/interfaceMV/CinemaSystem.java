@@ -107,8 +107,10 @@ public class CinemaSystem {
             //Comprobamos cuál es el siguiente evento
             switch (sS.tipoSuceso) {
                 case LLEGADATICKET:
+                    entradaTicket(taquillas.get(sS.posicion));
                     break;
                 case SALIDATICKET:
+                    salidaTicket(taquillas.get(sS.posicion));
                     break;
                 case LLEGADAPALOMITAS:
                     break;
@@ -167,12 +169,13 @@ public class CinemaSystem {
 
     private void salidaTicket(TicketOffice taquilla) {
 
+        taquilla.libre();
+        taquilla.addClientesServidos();
         if (taquilla.getColaSize() == 0) { //La cola esta vacía
-            taquilla.libre();
-            //Calcula el retardo para el siguiente cliente
             //Recalcular los datos estadísticos
-            taquilla.addClientesServidos();
         } else { //La cola tiene clientes
+            taquilla.getSiguienteCliente();
+            this.entradaTicket(taquilla);
         }
         //Cálculo de la entrada del siguiente cliente
     }

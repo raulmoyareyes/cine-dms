@@ -7,8 +7,10 @@
 package cine.dms.interfaceMV;
 
 /**
+ * Par posicion-tipo suceso
  *
- * @author raul
+ * @author Raúl Moya Reyes <rmr00021@red.ujaen.es>
+ * @author Agustín Ruiz Linares <arl00029@red.ujaen.es>
  */
 public class Pair<T0, T1> {
     public T0 posicion;
