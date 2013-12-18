@@ -46,16 +46,21 @@ public class PopcornStand {
         return (this.estado == 0);
     }
 
+    
     /**
-     * Cambia el estado del puesto de palomitas
+     * Cambia el estado de la puesto de palomitas a libre
      */
-    public void switchEstado() {
-        if (this.estado == 0) {
-            this.estado = 1;
-        } else {
-            this.estado = 0;
-        }
+    public void libre() {
+        this.estado = 0;
     }
+
+    /**
+     * Cambia el estado de la puesto de palomitas a ocupado
+     */
+    public void ocupado() {
+        this.estado = 1;
+    }
+
 
     /**
      * Devuelve los clientes servidor
