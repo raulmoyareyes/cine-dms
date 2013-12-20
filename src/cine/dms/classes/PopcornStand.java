@@ -12,6 +12,15 @@ public class PopcornStand {
     ///Estado del puesto de palomitas (0 = libre, 1 = ocupada)
     private char estado;
 
+    //Id
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+    //NextID
+    private static int nexId=0;
+    
     ///Clientes servidos
     int clientesServidos;
 
@@ -28,6 +37,8 @@ public class PopcornStand {
      * Constructor por defecto
      */
     public PopcornStand() {
+        id=nexId;
+        ++nexId;
         this.estado = 0;
         this.clientesServidos = 0;
         this.tiempoServicio = 30;
@@ -39,6 +50,8 @@ public class PopcornStand {
      * @param tiempoServicio Tiempo de servicio
      */
     public PopcornStand(int tiempoServicio) {
+        id=nexId;
+        ++nexId;
         this.estado = 0;
         this.clientesServidos = 0;
         this.tiempoServicio = tiempoServicio;
@@ -136,5 +149,15 @@ public class PopcornStand {
      */
     public void addClienteEnCola(Client client) {
         this.cola.add(client);
+    }
+    
+    /**
+     * Devuelve el siguiente cliente de la cola y lo elimina de la misma
+     *
+     * @return Siguiente cliente de la cola
+     * @warning No testeado
+     */
+    public Client getSiguienteCliente() {
+        return this.cola.remove(0);
     }
 }

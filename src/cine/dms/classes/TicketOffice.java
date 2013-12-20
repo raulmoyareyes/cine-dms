@@ -53,6 +53,8 @@ public class TicketOffice {
      * @param tiempoServicio Tiempo de servicio
      */
     public TicketOffice(int tiempoServicio) {
+        id=nexId;
+        ++nexId;
         this.estado = 0;
         this.clientesServidos = 0;
         this.tiempoServicio = tiempoServicio;

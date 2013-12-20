@@ -97,8 +97,16 @@ public class CinemaSystem {
     }
 
     public void run() throws ExcepcionGeneradorIncorrecto {
-        //Aquí se llamará a la primera temporización (primera llegada)
+        
+        //Llegada del primer cliente
+        this.llegadaCliente();
+        //Aquí se llamará a temporización
         this.temporizacion();
+
+    }
+    
+    public void next() throws ExcepcionGeneradorIncorrecto{
+        // paso a paso, parecido a temporizacion pero sin bucle.
 
     }
 
@@ -106,8 +114,6 @@ public class CinemaSystem {
      * Siguiente sucesso y avanza el reloj
      */
     private void temporizacion() throws ExcepcionGeneradorIncorrecto {
-        //Llegada del primer cliente
-        this.llegadaCliente();
         //Condición de parada de simulación
         Pair<Integer, Integer> sS = this.siguienteSuceso();
         while (this.reloj.getSeconds() < this.tiempoFin.getSeconds()
@@ -116,14 +122,17 @@ public class CinemaSystem {
             //Comprobamos cuál es el siguiente evento
             switch (sS.tipoSuceso) {
                 case LLEGADATICKET: /* REVISADO. DEBE FUNCIONAR */
+
                     entradaTicket(taquillas.get(sS.posicion));
                     break;
                 case SALIDATICKET:
                     salidaTicket(taquillas.get(sS.posicion));
                     break;
                 case LLEGADAPALOMITAS:
+                    entradaPop(puestosPalomitas.get(sS.posicion));
                     break;
                 case SALIDAPALOMITAS:
+                    salidaPop(puestosPalomitas.get(sS.posicion));
                     break;
                 default:
                     break;
@@ -190,10 +199,10 @@ public class CinemaSystem {
         //Determinar si compra palomitas o sale del sistema
         if (clienteServido.getPalomitas() != 0) {
             //Compra palomitas
-            
+            asignacionPop(clienteServido);
         }
     }
-    
+
     private void asignacionPop(Client cliente) {
 
         PopcornStand palomitas = this.getPalomitasMenosOcupada();
@@ -206,38 +215,56 @@ public class CinemaSystem {
         }
     }
 
-
     private void entradaPop(PopcornStand palomitas) {
-        //Similar a entradaTicket()
+        //Poner la taquilla en estado ocupado
+        palomitas.ocupado();
+        //Tiempo de servicio del cliente
+        this.calculoSalidaSiguienteCliente(palomitas);
     }
 
     private void salidaPop(PopcornStand palomitas) {
-        //Sacar al cliente del salida()
+
+        Client clienteServido = palomitas.getClienteSirviendose();
+        palomitas.libre();
+        palomitas.addClientesServidos();
+
+        if (palomitas.getColaSize() != 0) { //La cola tiene clientes
+            Client cliente = palomitas.getSiguienteCliente();
+            palomitas.setClienteSirviendose(cliente);
+            this.entradaPop(palomitas);
+        }
+        //Calcular datos estadísticos
+
+        //Determinar si compra palomitas o sale del sistema
+        if (clienteServido.getPalomitas() != 0) {
+            //Compra palomitas
+
+        }
     }
 
-    /**
-     * Evento de salida de un cliente del sistema
-     *
-     * @param taquilla Taquilla de la que sale el cliente
-     * @warning No está terminado
-     */
-    private void salida(Client cliente) {
-        //Aquí se actualiza el estado de las variables
-        /*
-         * ALGORITMO GENÉRICO (de la teoría)
-         * 
-         *  SI La cola está vacía
-         *      Pone el estado ser servidor desocupado
-         *      Modifica lista de sucesos con infinito en el suceso de salida
-         *  SI NO
-         *      Decrementa en 1 el número de clientes en cola
-         *      Calcula el retardo para el cliente y recalcula los datos estadísticos
-         *      Incrementa en 1 el número de clientes servidos
-         *      Calcula el tiempo de salida y actualiza la lista de sucesos
-         *  FIN SI
-         */
-    }
-
+//  ESTO ES POSIBLE QUE NO HAYA QUE HACERLO
+//    /**
+//     * Evento de salida de un cliente del sistema
+//     *
+//     * @param taquilla Taquilla de la que sale el cliente
+//     * @warning No está terminado
+//     */
+//    private void salida(Client cliente) {
+//        //Aquí se actualiza el estado de las variables
+//        /*
+//         * ALGORITMO GENÉRICO (de la teoría)
+//         * 
+//         *  SI La cola está vacía
+//         *      Pone el estado ser servidor desocupado
+//         *      Modifica lista de sucesos con infinito en el suceso de salida
+//         *  SI NO
+//         *      Decrementa en 1 el número de clientes en cola
+//         *      Calcula el retardo para el cliente y recalcula los datos estadísticos
+//         *      Incrementa en 1 el número de clientes servidos
+//         *      Calcula el tiempo de salida y actualiza la lista de sucesos
+//         *  FIN SI
+//         */
+//    }
     private void finSimulacion() {
         //Fin ^_^
     }
@@ -398,5 +425,14 @@ public class CinemaSystem {
      */
     private void calculoSalidaSiguienteCliente(TicketOffice taquilla) {
         this.sucesos.get(taquilla.getId()).set(SALIDATICKET, this.reloj.getSeconds() + taquilla.getTiempoServicio());
+    }
+
+    /**
+     * Cálculo del tiempo de servicio del cliente en puesto de palomitas
+     *
+     * @warning No testeado
+     */
+    private void calculoSalidaSiguienteCliente(PopcornStand palomitas) {
+        this.sucesos.get(palomitas.getId()).set(SALIDAPALOMITAS, this.reloj.getSeconds() + palomitas.getTiempoServicio());
     }
 }

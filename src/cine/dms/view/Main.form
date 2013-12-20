@@ -473,12 +473,18 @@
         <Property name="text" type="java.lang.String" value="Realizar simulaci&#xf3;n completa"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnSimulacionCompletaClick"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnSiguientePaso">
       <Properties>
         <Property name="text" type="java.lang.String" value="Realizar paso a paso"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnSiguentePasoClick"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
