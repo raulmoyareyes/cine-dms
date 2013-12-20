@@ -4,16 +4,13 @@
  */
 package cine.dms.view;
 
-import cine.dms.classes.RandomLehmer;
 import cine.dms.interfaceMV.CinemaSystem;
 import excepciones.ExcepcionGeneradorIncorrecto;
-import javax.swing.SwingUtilities;
 
 /**
  *
  * @author raul
  */
-
 public class Main extends javax.swing.JFrame {
 
     /**
@@ -21,6 +18,7 @@ public class Main extends javax.swing.JFrame {
      */
     public Main() {
         initComponents();
+        cine = new CinemaSystem();
     }
 
     /**
@@ -311,9 +309,19 @@ public class Main extends javax.swing.JFrame {
 
         btnSimulacionCompleta.setText("Realizar simulación completa");
         btnSimulacionCompleta.setEnabled(false);
+        btnSimulacionCompleta.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnSimulacionCompletaClick(evt);
+            }
+        });
 
         btnSiguientePaso.setText("Realizar paso a paso");
         btnSiguientePaso.setEnabled(false);
+        btnSiguientePaso.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnSiguentePasoClick(evt);
+            }
+        });
 
         jLabel1.setText("Reloj:");
 
@@ -367,21 +375,49 @@ public class Main extends javax.swing.JFrame {
 
     private void btnIniciarSimulacionClick(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIniciarSimulacionClick
         // TODO add your handling code here:
-        if(btnIniciarSimulacion.getText().equals("Iniciar simulación")){
+        if (btnIniciarSimulacion.getText().equals("Iniciar simulación")) {
             //Desabilitar simulación
             btnIniciarSimulacion.setText("Parar simulación");
             btnSimulacionCompleta.setEnabled(true);
             btnSiguientePaso.setEnabled(true);
-            
+
             //Conexión con el sistema
             this.conexion();
-        }else{
+        } else {
             //Habilitar simulación
             btnIniciarSimulacion.setText("Iniciar simulación");
             btnSimulacionCompleta.setEnabled(false);
             btnSiguientePaso.setEnabled(false);
         }
     }//GEN-LAST:event_btnIniciarSimulacionClick
+
+    private void btnSiguentePasoClick(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSiguentePasoClick
+        try {
+            cine.next();
+        } catch (ExcepcionGeneradorIncorrecto ex) {
+            //
+        }
+    }//GEN-LAST:event_btnSiguentePasoClick
+
+    private void btnSimulacionCompletaClick(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSimulacionCompletaClick
+        try {
+            cine.run();
+        } catch (ExcepcionGeneradorIncorrecto ex) {
+            //
+        }
+    }//GEN-LAST:event_btnSimulacionCompletaClick
+
+    public void conexion() {
+        cine.initialize(
+                Integer.parseInt(spnNumPuestoPalomitas.getValue().toString()),
+                Integer.parseInt(spnNumTaquillas.getValue().toString()),
+                Float.parseFloat(spnFrecuenciaClientes.getValue().toString()),
+                Float.parseFloat(spnTiempoServicioPalomitas.getValue().toString()),
+                Float.parseFloat(spnTiempoServicioTaquillas.getValue().toString()),
+                Float.parseFloat(spnProbabilidadCompraPalomitas.getValue().toString()),
+                Float.parseFloat(spnProbabilidadCompraEntradas.getValue().toString())
+        );
+    }
 
     /**
      * @param args the command line arguments
@@ -412,11 +448,13 @@ public class Main extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new Main().setVisible(true);
             }
         });
     }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnIniciarSimulacion;
     private javax.swing.JButton btnSiguientePaso;
@@ -463,25 +501,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextField txtTamColas;
     // End of variables declaration//GEN-END:variables
 
-    private CinemaSystem cine;
+    private final CinemaSystem cine;
 
-    public void conexion() {
-        cine = new CinemaSystem();
-        cine.initialize(
-                Integer.parseInt(spnNumPuestoPalomitas.getValue().toString()),
-                Integer.parseInt(spnNumTaquillas.getValue().toString()),
-                Float.parseFloat(spnFrecuenciaClientes.getValue().toString()),
-                Float.parseFloat(spnTiempoServicioPalomitas.getValue().toString()),
-                Float.parseFloat(spnTiempoServicioTaquillas.getValue().toString()),
-                Float.parseFloat(spnProbabilidadCompraPalomitas.getValue().toString()),
-                Float.parseFloat(spnProbabilidadCompraEntradas.getValue().toString())
-        );
-        
-        try {
-            cine.run();
-        } catch (ExcepcionGeneradorIncorrecto ex) {
-            //Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }    
-    
 }
