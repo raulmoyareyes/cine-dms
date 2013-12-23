@@ -36,7 +36,6 @@ public class Main extends javax.swing.JFrame {
         spnNumTaquillas = new javax.swing.JSpinner();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        spnNumPuestoPalomitas = new javax.swing.JSpinner();
         jLabel7 = new javax.swing.JLabel();
         spnFrecuenciaClientes = new javax.swing.JSpinner();
         jLabel8 = new javax.swing.JLabel();
@@ -47,6 +46,7 @@ public class Main extends javax.swing.JFrame {
         spnProbabilidadCompraEntradas = new javax.swing.JSpinner();
         jLabel11 = new javax.swing.JLabel();
         spnProbabilidadCompraPalomitas = new javax.swing.JSpinner();
+        spnNumPuestoPalomitas = new javax.swing.JSpinner();
         jPanel2 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         txtTamColas = new javax.swing.JTextField();
@@ -78,22 +78,34 @@ public class Main extends javax.swing.JFrame {
 
         jLabel4.setText("Número de taquillas");
 
+        spnNumTaquillas.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(5), Integer.valueOf(0), null, Integer.valueOf(1)));
+
         jLabel5.setFont(new java.awt.Font("Droid Sans", 1, 14)); // NOI18N
         jLabel5.setText("Introduzca las variables de entrada");
 
         jLabel6.setText("Número de puestos de palomitas");
 
-        spnNumPuestoPalomitas.setValue(5);
-
         jLabel7.setText("Frecuencia de llegada de clientes");
+
+        spnFrecuenciaClientes.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(30), Integer.valueOf(1), null, Integer.valueOf(1)));
 
         jLabel8.setText("Tiempo de servicio de taquillas");
 
         jLabel9.setText("Tiempo de servicio de puestos de palomitas");
 
+        spnTiempoServicioTaquillas.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(10), Integer.valueOf(1), null, Integer.valueOf(1)));
+
+        spnTiempoServicioPalomitas.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(20), Integer.valueOf(1), null, Integer.valueOf(1)));
+
         jLabel10.setText("Probabilidad de compra múltiple de entradas");
 
+        spnProbabilidadCompraEntradas.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(0.05f), Float.valueOf(0.05f), Float.valueOf(1.0f), Float.valueOf(0.05f)));
+
         jLabel11.setText("Probabilidad de compra de palomitas");
+
+        spnProbabilidadCompraPalomitas.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(0.05f), Float.valueOf(0.05f), Float.valueOf(1.0f), Float.valueOf(0.05f)));
+
+        spnNumPuestoPalomitas.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(3), Integer.valueOf(0), null, Integer.valueOf(1)));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -106,41 +118,40 @@ public class Main extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(jLabel4)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(spnNumTaquillas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel6)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(spnNumPuestoPalomitas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(156, 156, 156)
+                                        .addComponent(spnNumTaquillas))
+                                    .addComponent(jLabel6))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(spnNumPuestoPalomitas, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(131, 131, 131)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(jLabel9)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(spnTiempoServicioPalomitas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(spnTiempoServicioPalomitas, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(jLabel8)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(spnTiempoServicioTaquillas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(spnTiempoServicioTaquillas, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(jLabel7)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(spnFrecuenciaClientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                        .addComponent(spnFrecuenciaClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(266, 266, 266)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel11)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(spnProbabilidadCompraPalomitas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(spnProbabilidadCompraPalomitas, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel10)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(spnProbabilidadCompraEntradas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(spnProbabilidadCompraEntradas, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(98, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -160,9 +171,9 @@ public class Main extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(spnNumPuestoPalomitas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9)
-                    .addComponent(spnTiempoServicioPalomitas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(spnTiempoServicioPalomitas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(spnNumPuestoPalomitas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(54, 54, 54)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
@@ -171,7 +182,7 @@ public class Main extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
                     .addComponent(spnProbabilidadCompraPalomitas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(79, Short.MAX_VALUE))
+                .addContainerGap(88, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Variables de entrada", jPanel1);
@@ -409,13 +420,13 @@ public class Main extends javax.swing.JFrame {
 
     public void conexion() {
         cine.initialize(
-                Integer.parseInt(spnNumPuestoPalomitas.getValue().toString()),
                 Integer.parseInt(spnNumTaquillas.getValue().toString()),
+                Integer.parseInt(spnNumPuestoPalomitas.getValue().toString()),
                 Float.parseFloat(spnFrecuenciaClientes.getValue().toString()),
-                Float.parseFloat(spnTiempoServicioPalomitas.getValue().toString()),
                 Float.parseFloat(spnTiempoServicioTaquillas.getValue().toString()),
-                Float.parseFloat(spnProbabilidadCompraPalomitas.getValue().toString()),
-                Float.parseFloat(spnProbabilidadCompraEntradas.getValue().toString())
+                Float.parseFloat(spnTiempoServicioPalomitas.getValue().toString()),
+                Float.parseFloat(spnProbabilidadCompraEntradas.getValue().toString()),
+                Float.parseFloat(spnProbabilidadCompraPalomitas.getValue().toString())
         );
     }
 

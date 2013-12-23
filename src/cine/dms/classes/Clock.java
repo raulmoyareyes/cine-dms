@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cine.dms.classes;
 
 /**
@@ -18,10 +14,10 @@ public class Clock {
     /**
      * Constructor para iniciar el reloj a una hora.
      *
-     * @param segundos Hora de inicio del reloj en seconds.
+     * @param seconds Hora de inicio del reloj en seconds.
      */
-    public Clock(int segundos) {
-        this.seconds = segundos;
+    public Clock(int seconds) {
+        this.seconds = seconds;
     }
 
     /**
@@ -43,6 +39,10 @@ public class Clock {
 
         return h + ":" + m + ":" + s;
 
+    }
+    
+    public void advance(int seconds){
+        this.seconds = seconds;
     }
 
 }

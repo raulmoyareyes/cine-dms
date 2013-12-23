@@ -113,12 +113,16 @@ public class CinemaSystem {
     /**
      * Siguiente sucesso y avanza el reloj
      */
-    private void temporizacion() throws ExcepcionGeneradorIncorrecto {
+    private void temporizacion(){
         //Condición de parada de simulación
         Pair<Integer, Integer> sS = this.siguienteSuceso();
         while (this.reloj.getSeconds() < this.tiempoFin.getSeconds()
                 && this.sucesos.get(sS.posicion).get(sS.tipoSuceso) < this.tiempoFin.getSeconds()) {
 
+            //Avanza el reloj con el valor de this.siguienteSuceso()
+            /* REVISAR LA ACTUALIZACION DEL RELOJ */
+            this.reloj.advance(this.sucesos.get(sS.posicion).get(sS.tipoSuceso));
+            
             //Comprobamos cuál es el siguiente evento
             switch (sS.tipoSuceso) {
                 case LLEGADATICKET: /* REVISADO. DEBE FUNCIONAR */
@@ -137,7 +141,7 @@ public class CinemaSystem {
                 default:
                     break;
             }
-            //Avanza el reloj con el valor de this.siguienteSuceso()
+            sS = this.siguienteSuceso();
         }
         this.finSimulacion();
     }
@@ -362,7 +366,8 @@ public class CinemaSystem {
         Pair<Integer, Integer> resultado = new Pair(0, LLEGADATICKET);
         for (int i = 0; i < sucesos.size(); ++i) {
             for (int j = 0; j < sucesos.get(i).size(); ++j) {
-                if (sucesos.get(i).get(j) < sucesos.get(resultado.posicion).get(resultado.tipoSuceso)) {
+                if (sucesos.get(i).get(j) < sucesos.get(resultado.posicion).get(resultado.tipoSuceso)
+                        && sucesos.get(i).get(j) > reloj.getSeconds()) {
                     resultado.posicion = i;
                     resultado.tipoSuceso = j;
                 }
