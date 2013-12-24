@@ -5,8 +5,6 @@
 package cine.dms.view;
 
 import cine.dms.interfaceMV.CinemaSystem;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
