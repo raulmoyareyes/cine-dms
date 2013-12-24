@@ -48,9 +48,25 @@ public class CinemaSystem {
     private List<List<Integer>> sucesos;
     ///Generador de número aleatorios [0,1] (parámetros provisionales)
     RandomLehmer randomLehmer = new RandomLehmer(0.84641, 0.645, 1);
+    /// Log
+    private List<String> log;
+    /// Fin de simulacion
+    private boolean fin = false;
 
     /// Constructor
     public CinemaSystem() {
+    }
+
+    public Clock getReloj() {
+        return reloj;
+    }
+
+    public List<String> getLog() {
+        return log;
+    }
+
+    public boolean fin() {
+        return fin;
     }
 
     /// Métodos
@@ -66,20 +82,22 @@ public class CinemaSystem {
      * @param probabilidadPalomitas
      */
     public void initialize(int numTicketOffice, int numPopcornStand, float frecuenciaClientes,
-            float tiempoServicioTaquilla, float tiempoServicioPalomitas, float probabilidadTicketMultiple,
+            int tiempoServicioTaquilla, int tiempoServicioPalomitas, float probabilidadTicketMultiple,
             float probabilidadPalomitas) {
 
         reloj = new Clock(8 * 60 * 60); // Hora inicial 08:00:00
         tiempoFin = new Clock(22 * 60 * 60); // Hora inicial 22:00:00
-
+        
+        TicketOffice.resetId();
         taquillas = new ArrayList();
         for (int i = 0; i < numTicketOffice; ++i) {
-            taquillas.add(new TicketOffice());
+            taquillas.add(new TicketOffice(tiempoServicioTaquilla));
         }
 
+        PopcornStand.resetId();
         puestosPalomitas = new ArrayList();
         for (int i = 0; i < numPopcornStand; ++i) {
-            puestosPalomitas.add(new PopcornStand());
+            puestosPalomitas.add(new PopcornStand(tiempoServicioPalomitas));
         }
 
         this.frecuenciaClientes = frecuenciaClientes;
@@ -94,40 +112,36 @@ public class CinemaSystem {
         for (int i = 1; i < numTicketOffice || i < numPopcornStand; ++i) {
             sucesos.add(new ArrayList(Arrays.asList(INFINITO, INFINITO, INFINITO, INFINITO)));
         }
-    }
 
-    public void run() throws ExcepcionGeneradorIncorrecto {
-        
         //Llegada del primer cliente
+        log = new ArrayList();
+        log.add("Tiempo del relog: " + this.reloj.getTime());
         this.llegadaCliente();
-        //Aquí se llamará a temporización
-        this.temporizacion();
-
-    }
-    
-    public void next() throws ExcepcionGeneradorIncorrecto{
-        // paso a paso, parecido a temporizacion pero sin bucle.
-
     }
 
-    /**
-     * Siguiente sucesso y avanza el reloj
-     */
-    private void temporizacion(){
-        //Condición de parada de simulación
+    public void run() {
+
+        while (!fin) {
+            this.temporizacion();
+        }
+
+    }
+
+    public void temporizacion() {
+
         Pair<Integer, Integer> sS = this.siguienteSuceso();
-        while (this.reloj.getSeconds() < this.tiempoFin.getSeconds()
+        if (this.reloj.getSeconds() < this.tiempoFin.getSeconds()
                 && this.sucesos.get(sS.posicion).get(sS.tipoSuceso) < this.tiempoFin.getSeconds()) {
 
             //Avanza el reloj con el valor de this.siguienteSuceso()
             /* REVISAR LA ACTUALIZACION DEL RELOJ */
             this.reloj.advance(this.sucesos.get(sS.posicion).get(sS.tipoSuceso));
-            
+            log.add("Tiempo del relog: " + this.reloj.getTime());
+
             //Comprobamos cuál es el siguiente evento
             switch (sS.tipoSuceso) {
-                case LLEGADATICKET: /* REVISADO. DEBE FUNCIONAR */
-
-                    entradaTicket(taquillas.get(sS.posicion));
+                case LLEGADATICKET:
+                    llegadaCliente();
                     break;
                 case SALIDATICKET:
                     salidaTicket(taquillas.get(sS.posicion));
@@ -141,9 +155,11 @@ public class CinemaSystem {
                 default:
                     break;
             }
-            sS = this.siguienteSuceso();
+        } else {
+            this.finSimulacion();
+
         }
-        this.finSimulacion();
+
     }
 
     /**
@@ -152,12 +168,17 @@ public class CinemaSystem {
      * @param cliente Cliente
      * @warning No está terminado
      */
-    private void llegadaCliente() throws ExcepcionGeneradorIncorrecto {
+    private void llegadaCliente() {
         //Aquí se determina el tipo de cliente que llega
-        Client cliente = new Client(this.numTickets(), this.comprarPalomitas());
+        Client cliente = null;
+        try {
+            cliente = new Client(this.numTickets(), this.comprarPalomitas());
 
-        //Calcular el tiempo de la siguiente llegada y actualizar la lista de sucesos
-        this.calculoLlegadaSiguienteCliente();
+            //Calcular el tiempo de la siguiente llegada y actualizar la lista de sucesos
+            this.calculoLlegadaSiguienteCliente();
+        } catch (ExcepcionGeneradorIncorrecto ex) {
+            //
+        }
 
         //Asignarle una cola
         this.asignacionTicket(cliente);
@@ -181,6 +202,8 @@ public class CinemaSystem {
     }
 
     private void entradaTicket(TicketOffice taquilla) {
+        log.add("Tipo de suceso: LLEGADATICKET (" + taquilla.getId() + ")\n");
+
         //Poner la taquilla en estado ocupado
         taquilla.ocupado();
         //Tiempo de servicio del cliente
@@ -188,6 +211,7 @@ public class CinemaSystem {
     }
 
     private void salidaTicket(TicketOffice taquilla) {
+        log.add("Tipo de suceso: SALIDATICKET (" + taquilla.getId() + ")\n");
 
         Client clienteServido = taquilla.getClienteSirviendose();
         taquilla.libre();
@@ -220,6 +244,8 @@ public class CinemaSystem {
     }
 
     private void entradaPop(PopcornStand palomitas) {
+        log.add("Tipo de suceso: LLEGADAPALOMITAS (" + palomitas.getId() + ")\n");
+
         //Poner la taquilla en estado ocupado
         palomitas.ocupado();
         //Tiempo de servicio del cliente
@@ -227,6 +253,7 @@ public class CinemaSystem {
     }
 
     private void salidaPop(PopcornStand palomitas) {
+        log.add("Tipo de suceso: SALIDAPALOMITAS (" + palomitas.getId() + ")\n");
 
         Client clienteServido = palomitas.getClienteSirviendose();
         palomitas.libre();
@@ -239,58 +266,13 @@ public class CinemaSystem {
         }
         //Calcular datos estadísticos
 
-        //Determinar si compra palomitas o sale del sistema
-        if (clienteServido.getPalomitas() != 0) {
-            //Compra palomitas
-
-        }
     }
 
-//  ESTO ES POSIBLE QUE NO HAYA QUE HACERLO
-//    /**
-//     * Evento de salida de un cliente del sistema
-//     *
-//     * @param taquilla Taquilla de la que sale el cliente
-//     * @warning No está terminado
-//     */
-//    private void salida(Client cliente) {
-//        //Aquí se actualiza el estado de las variables
-//        /*
-//         * ALGORITMO GENÉRICO (de la teoría)
-//         * 
-//         *  SI La cola está vacía
-//         *      Pone el estado ser servidor desocupado
-//         *      Modifica lista de sucesos con infinito en el suceso de salida
-//         *  SI NO
-//         *      Decrementa en 1 el número de clientes en cola
-//         *      Calcula el retardo para el cliente y recalcula los datos estadísticos
-//         *      Incrementa en 1 el número de clientes servidos
-//         *      Calcula el tiempo de salida y actualiza la lista de sucesos
-//         *  FIN SI
-//         */
-//    }
     private void finSimulacion() {
-        //Fin ^_^
+        fin = true;
     }
 
     /* *********************** MÉTODOS AUXILIARES *********************** */
-    /**
-     * Generar resultados de la simulación
-     *
-     * @return Lista con los valores
-     */
-    public List<String> generarEstado() {
-        List<String> resultado = new ArrayList();
-        //Tamaño cola taquilla
-        resultado.add(this.taquillas.get(0).toString());
-        //Número taquillas ocupadas
-        resultado.add(this.contarTaquillasOcupadas().toString());
-
-        // FALTAAAAAA //////////////////////////////////////////////////////////
-        return resultado;
-
-    }
-
     /**
      * Devuelve el número de taquillas ocupadas
      *
@@ -347,17 +329,6 @@ public class CinemaSystem {
     }
 
     /**
-     * Genera resultados globales de la simulación
-     *
-     * @return Lista con los valores resultado
-     * @warning No está relleno
-     */
-    public List<String> generarResultadosGlobales() {
-        List<String> resultado = new ArrayList();
-        return resultado;
-    }
-
-    /**
      * Obtener el tipo del siguiente suceso
      *
      * @return LLEGADATICKET ó SALIDATICKET ó LLEGADAPALOMITAS ó SALIDAPALOMITAS
@@ -411,7 +382,7 @@ public class CinemaSystem {
     }
 
     /**
-     * Cálculo del siguiente cliente en llegar
+     * Cálculo del siguiente cliente en llegar al sistema
      *
      */
     private void calculoLlegadaSiguienteCliente() throws ExcepcionGeneradorIncorrecto {

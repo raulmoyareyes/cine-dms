@@ -1,5 +1,6 @@
 package cine.dms.classes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,8 +20,8 @@ public class PopcornStand {
         return id;
     }
     //NextID
-    private static int nexId=0;
-    
+    private static int nexId = 0;
+
     ///Clientes servidos
     int clientesServidos;
 
@@ -29,7 +30,7 @@ public class PopcornStand {
 
     ///Cola de clientes
     List<Client> cola;
-    
+
     ///Cliente sirviéndose
     Client clienteSirviendose;
 
@@ -37,11 +38,13 @@ public class PopcornStand {
      * Constructor por defecto
      */
     public PopcornStand() {
-        id=nexId;
+        id = nexId;
         ++nexId;
         this.estado = 0;
         this.clientesServidos = 0;
         this.tiempoServicio = 30;
+        this.cola = new ArrayList();
+        this.clienteSirviendose = null;
     }
 
     /**
@@ -50,11 +53,13 @@ public class PopcornStand {
      * @param tiempoServicio Tiempo de servicio
      */
     public PopcornStand(int tiempoServicio) {
-        id=nexId;
+        id = nexId;
         ++nexId;
         this.estado = 0;
         this.clientesServidos = 0;
         this.tiempoServicio = tiempoServicio;
+        this.cola = new ArrayList();
+        this.clienteSirviendose = null;
     }
 
     /**
@@ -66,7 +71,7 @@ public class PopcornStand {
     public boolean isLibre() {
         return (this.estado == 0);
     }
-    
+
     /**
      * Cambia el estado de la puesto de palomitas a libre
      */
@@ -80,7 +85,6 @@ public class PopcornStand {
     public void ocupado() {
         this.estado = 1;
     }
-
 
     /**
      * Devuelve los clientes servidor
@@ -125,9 +129,10 @@ public class PopcornStand {
     public int getColaSize() {
         return this.cola.size();
     }
-    
+
     /**
      * Devuelve el cliente que se está sirviendo
+     *
      * @return Cliente que se está sirviendo (o null si no existe)
      */
     public Client getClienteSirviendose() {
@@ -136,6 +141,7 @@ public class PopcornStand {
 
     /**
      * Guarda el cliente que se está sirviendo
+     *
      * @param clienteSirviendose Cliente que se está sirviendo
      */
     public void setClienteSirviendose(Client clienteSirviendose) {
@@ -150,7 +156,7 @@ public class PopcornStand {
     public void addClienteEnCola(Client client) {
         this.cola.add(client);
     }
-    
+
     /**
      * Devuelve el siguiente cliente de la cola y lo elimina de la misma
      *
@@ -159,5 +165,9 @@ public class PopcornStand {
      */
     public Client getSiguienteCliente() {
         return this.cola.remove(0);
+    }
+    
+    public static void resetId() {
+        nexId = 0;
     }
 }

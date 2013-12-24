@@ -32,16 +32,16 @@ public class Clock {
      */
     public String getTime() {
 
-        String s = String.valueOf(seconds % 60);
+        String s = (seconds % 60 < 10) ? "0" + String.valueOf(seconds % 60) : String.valueOf(seconds % 60);
         int min = seconds / 60;
-        String m = String.valueOf(min % 60);
-        String h = String.valueOf(min / 60);
+        String m = (min % 60 < 10) ? "0" + String.valueOf(min % 60) : String.valueOf(min % 60);
+        String h = (min / 60 < 10) ? "0" + String.valueOf(min / 60) : String.valueOf(min / 60);
 
         return h + ":" + m + ":" + s;
 
     }
-    
-    public void advance(int seconds){
+
+    public void advance(int seconds) {
         this.seconds = seconds;
     }
 

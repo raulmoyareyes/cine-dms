@@ -12,7 +12,7 @@ public class TicketOffice {
 
     ///Estado de la taquilla (0 = libre, 1 = ocupada)
     private char estado;
-    
+
     //Id
     private int id;
 
@@ -20,7 +20,7 @@ public class TicketOffice {
         return id;
     }
     //NextID
-    private static int nexId=0;
+    private static int nexId = 0;
 
     ///Clientes servidos
     int clientesServidos;
@@ -30,7 +30,7 @@ public class TicketOffice {
 
     ///Cola de clientes
     List<Client> cola;
-    
+
     ///Cliente sirviéndose
     Client clienteSirviendose;
 
@@ -38,7 +38,7 @@ public class TicketOffice {
      * Constructor por defecto
      */
     public TicketOffice() {
-        id=nexId;
+        id = nexId;
         ++nexId;
         this.estado = 0;
         this.clientesServidos = 0;
@@ -53,12 +53,13 @@ public class TicketOffice {
      * @param tiempoServicio Tiempo de servicio
      */
     public TicketOffice(int tiempoServicio) {
-        id=nexId;
+        id = nexId;
         ++nexId;
         this.estado = 0;
         this.clientesServidos = 0;
         this.tiempoServicio = tiempoServicio;
         this.cola = new ArrayList();
+        this.clienteSirviendose = null;
     }
 
     /**
@@ -146,9 +147,10 @@ public class TicketOffice {
     public int getColaSize() {
         return this.cola.size();
     }
-    
+
     /**
      * Devuelve el cliente que se está sirviendo
+     *
      * @return Cliente que se está sirviendo (o null si no existe)
      */
     public Client getClienteSirviendose() {
@@ -157,9 +159,14 @@ public class TicketOffice {
 
     /**
      * Guarda el cliente que se está sirviendo
+     *
      * @param clienteSirviendose Cliente que se está sirviendo
      */
     public void setClienteSirviendose(Client clienteSirviendose) {
         this.clienteSirviendose = clienteSirviendose;
+    }
+
+    public static void resetId() {
+        nexId = 0;
     }
 }

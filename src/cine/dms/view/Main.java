@@ -5,7 +5,8 @@
 package cine.dms.view;
 
 import cine.dms.interfaceMV.CinemaSystem;
-import excepciones.ExcepcionGeneradorIncorrecto;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -18,7 +19,6 @@ public class Main extends javax.swing.JFrame {
      */
     public Main() {
         initComponents();
-        cine = new CinemaSystem();
     }
 
     /**
@@ -68,10 +68,13 @@ public class Main extends javax.swing.JFrame {
         jLabel21 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtaLog = new javax.swing.JTextArea();
         btnSimulacionCompleta = new javax.swing.JButton();
         btnSiguientePaso = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        lblReloj = new javax.swing.JLabel();
         btnIniciarSimulacion = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -232,7 +235,7 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(jTextField3)
                     .addComponent(jTextField4)
                     .addComponent(jTextField5))
-                .addContainerGap(263, Short.MAX_VALUE))
+                .addContainerGap(326, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -261,7 +264,7 @@ public class Main extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel24)
                     .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(128, Short.MAX_VALUE))
+                .addContainerGap(143, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Estado de la simulación", jPanel2);
@@ -318,6 +321,29 @@ public class Main extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Análisis de resultados", jPanel3);
 
+        txtaLog.setColumns(20);
+        txtaLog.setRows(5);
+        jScrollPane1.setViewportView(txtaLog);
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 815, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Log", jPanel4);
+
         btnSimulacionCompleta.setText("Realizar simulación completa");
         btnSimulacionCompleta.setEnabled(false);
         btnSimulacionCompleta.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -336,7 +362,7 @@ public class Main extends javax.swing.JFrame {
 
         jLabel1.setText("Reloj:");
 
-        jLabel2.setText("00 : 33");
+        lblReloj.setText("00:00:00");
 
         btnIniciarSimulacion.setText("Iniciar simulación");
         btnIniciarSimulacion.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -359,7 +385,7 @@ public class Main extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
+                .addComponent(lblReloj)
                 .addGap(45, 45, 45))
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 843, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -373,7 +399,7 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(btnSimulacionCompleta)
                     .addComponent(btnSiguientePaso)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel2)
+                    .addComponent(lblReloj)
                     .addComponent(btnIniciarSimulacion))
                 .addGap(18, 18, 18)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -392,6 +418,8 @@ public class Main extends javax.swing.JFrame {
             btnSimulacionCompleta.setEnabled(true);
             btnSiguientePaso.setEnabled(true);
 
+            
+            cine = new CinemaSystem();
             //Conexión con el sistema
             this.conexion();
         } else {
@@ -403,18 +431,24 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_btnIniciarSimulacionClick
 
     private void btnSiguentePasoClick(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSiguentePasoClick
-        try {
-            cine.next();
-        } catch (ExcepcionGeneradorIncorrecto ex) {
-            //
+        cine.temporizacion();
+
+        lblReloj.setText(cine.getReloj().getTime());
+        txtaLog.setText(cine.getLog().toString());
+
+        if (cine.fin()) {
+            btnIniciarSimulacionClick(evt);
         }
     }//GEN-LAST:event_btnSiguentePasoClick
 
     private void btnSimulacionCompletaClick(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSimulacionCompletaClick
-        try {
-            cine.run();
-        } catch (ExcepcionGeneradorIncorrecto ex) {
-            //
+        cine.run();
+        
+        lblReloj.setText(cine.getReloj().getTime());
+        txtaLog.setText(cine.getLog().toString());
+
+        if (cine.fin()) {
+            btnIniciarSimulacionClick(evt);
         }
     }//GEN-LAST:event_btnSimulacionCompletaClick
 
@@ -423,11 +457,12 @@ public class Main extends javax.swing.JFrame {
                 Integer.parseInt(spnNumTaquillas.getValue().toString()),
                 Integer.parseInt(spnNumPuestoPalomitas.getValue().toString()),
                 Float.parseFloat(spnFrecuenciaClientes.getValue().toString()),
-                Float.parseFloat(spnTiempoServicioTaquillas.getValue().toString()),
-                Float.parseFloat(spnTiempoServicioPalomitas.getValue().toString()),
+                Integer.parseInt(spnTiempoServicioTaquillas.getValue().toString()),
+                Integer.parseInt(spnTiempoServicioPalomitas.getValue().toString()),
                 Float.parseFloat(spnProbabilidadCompraEntradas.getValue().toString()),
                 Float.parseFloat(spnProbabilidadCompraPalomitas.getValue().toString())
         );
+        lblReloj.setText(cine.getReloj().getTime());
     }
 
     /**
@@ -481,7 +516,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
@@ -496,12 +530,15 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
+    private javax.swing.JLabel lblReloj;
     private javax.swing.JSpinner spnFrecuenciaClientes;
     private javax.swing.JSpinner spnNumPuestoPalomitas;
     private javax.swing.JSpinner spnNumTaquillas;
@@ -510,8 +547,9 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JSpinner spnTiempoServicioPalomitas;
     private javax.swing.JSpinner spnTiempoServicioTaquillas;
     private javax.swing.JTextField txtTamColas;
+    private javax.swing.JTextArea txtaLog;
     // End of variables declaration//GEN-END:variables
 
-    private final CinemaSystem cine;
+    private CinemaSystem cine;
 
 }
