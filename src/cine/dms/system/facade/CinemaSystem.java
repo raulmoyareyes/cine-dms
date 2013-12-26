@@ -120,7 +120,8 @@ public class CinemaSystem {
 
         //Llegada del primer cliente
         log = new ArrayList();
-        log.add("Tiempo del relog: " + this.reloj.getTime());
+        log.add("INICIO DE LA SIMULACIÓN\n");
+        log.add("Tiempo del reloj: " + this.reloj.getTime());
         this.llegadaCliente();
     }
 
@@ -141,7 +142,7 @@ public class CinemaSystem {
             //Avanza el reloj con el valor de this.siguienteSuceso()
             /* REVISAR LA ACTUALIZACION DEL RELOJ */
             this.reloj.advance(this.sucesos.get(sS.posicion).get(sS.tipoSuceso));
-            log.add("Tiempo del relog: " + this.reloj.getTime());
+            log.add("Tiempo del reloj: " + this.reloj.getTime());
 
             //Comprobamos cuál es el siguiente evento
             switch (sS.tipoSuceso) {
@@ -275,6 +276,7 @@ public class CinemaSystem {
 
     private void finSimulacion() {
         fin = true;
+        log.add("FIN DE LA SIMULACIÓN\n");
     }
 
     /* ********************* OBTENCION DE RESULTADOS ********************* */

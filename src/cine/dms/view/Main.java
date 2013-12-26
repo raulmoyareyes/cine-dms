@@ -110,6 +110,11 @@ public class Main extends javax.swing.JFrame {
                 btnIniciarSimulacionClick(evt);
             }
         });
+        btnIniciarSimulacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIniciarSimulacionActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelBotonesSuperiorLayout = new javax.swing.GroupLayout(jPanelBotonesSuperior);
         jPanelBotonesSuperior.setLayout(jPanelBotonesSuperiorLayout);
@@ -395,6 +400,7 @@ public class Main extends javax.swing.JFrame {
 
         txtaLog.setColumns(20);
         txtaLog.setRows(5);
+        txtaLog.setEnabled(false);
         jScrollPane1.setViewportView(txtaLog);
 
         javax.swing.GroupLayout jPanelLogLayout = new javax.swing.GroupLayout(jPanelLog);
@@ -487,6 +493,15 @@ public class Main extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnSimulacionCompletaClick
 
+    private void refrescarLog(){
+        Iterator<String> iterador = cine.getLog().iterator();
+        String texto = "";
+        while(iterador.hasNext()){
+            texto=texto+iterador.next();
+        }
+        txtaLog.setText(texto);
+    }
+    
     private void btnSiguentePasoClick(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSiguentePasoClick
         if (btnSiguientePaso.isEnabled()) {
             cine.temporizacion();
