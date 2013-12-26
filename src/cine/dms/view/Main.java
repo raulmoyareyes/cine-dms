@@ -12,10 +12,14 @@ import cine.dms.system.facade.CinemaSystem;
  */
 public class Main extends javax.swing.JFrame {
 
+    private List<String> log;
+    private javax.swing.table.TableModel modeloTablaSucesos;
+    
     /**
      * Creates new form Main
      */
     public Main() {
+        log = new ArrayList();
         initComponents();
     }
 
@@ -78,6 +82,15 @@ public class Main extends javax.swing.JFrame {
         jPanelLog = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtaLog = new javax.swing.JTextArea();
+        btnLimpiarLog = new javax.swing.JButton();
+        jScrollPaneListaEventos = new javax.swing.JScrollPane();
+        try {
+            jTable1 =(javax.swing.JTable)java.beans.Beans.instantiate(getClass().getClassLoader(), "cine/dms/view.Main_jTable1");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+        }
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Simulación Cine - DMS");
@@ -108,11 +121,6 @@ public class Main extends javax.swing.JFrame {
         btnIniciarSimulacion.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnIniciarSimulacionClick(evt);
-            }
-        });
-        btnIniciarSimulacion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnIniciarSimulacionActionPerformed(evt);
             }
         });
 
@@ -398,10 +406,17 @@ public class Main extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Análisis de resultados", jPanelResultados);
 
+        txtaLog.setEditable(false);
         txtaLog.setColumns(20);
         txtaLog.setRows(5);
-        txtaLog.setEnabled(false);
         jScrollPane1.setViewportView(txtaLog);
+
+        btnLimpiarLog.setText("Limpiar log");
+        btnLimpiarLog.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarLogActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelLogLayout = new javax.swing.GroupLayout(jPanelLog);
         jPanelLog.setLayout(jPanelLogLayout);
@@ -409,19 +424,31 @@ public class Main extends javax.swing.JFrame {
             jPanelLogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelLogLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE)
+                .addGroup(jPanelLogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelLogLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnLimpiarLog)))
                 .addContainerGap())
         );
         jPanelLogLayout.setVerticalGroup(
             jPanelLogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelLogLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnLimpiarLog)
                 .addContainerGap())
         );
 
+        btnLimpiarLog.getAccessibleContext().setAccessibleName("btnLimpiarLog");
+
         jTabbedPane1.addTab("Log", jPanelLog);
         jPanelLog.getAccessibleContext().setAccessibleName("");
+
+        jScrollPaneListaEventos.setViewportView(jTable1);
+
+        jTabbedPane1.addTab("Lista de eventos", jScrollPaneListaEventos);
 
         javax.swing.GroupLayout jPanelContenedorPestanasLayout = new javax.swing.GroupLayout(jPanelContenedorPestanas);
         jPanelContenedorPestanas.setLayout(jPanelContenedorPestanasLayout);
@@ -465,6 +492,8 @@ public class Main extends javax.swing.JFrame {
             btnIniciarSimulacion.setText("Parar simulación");
             btnSimulacionCompleta.setEnabled(true);
             btnSiguientePaso.setEnabled(true);
+            log.add("= INICIO DE LA SIMULACIÓN =\n");
+            this.refrescarLog();
 
             jTabbedPane1.setSelectedIndex(1);  
             
@@ -494,12 +523,14 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSimulacionCompletaClick
 
     private void refrescarLog(){
-        Iterator<String> iterador = cine.getLog().iterator();
+        Iterator<String> iterador = log.iterator();
         String texto = "";
         while(iterador.hasNext()){
             texto=texto+iterador.next();
         }
         txtaLog.setText(texto);
+        
+        //cine.refrescarListaEventos();
     }
     
     private void btnSiguentePasoClick(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSiguentePasoClick
@@ -572,6 +603,7 @@ public class Main extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnIniciarSimulacion;
+    private javax.swing.JButton btnLimpiarLog;
     private javax.swing.JButton btnSiguientePaso;
     private javax.swing.JButton btnSimulacionCompleta;
     private javax.swing.JLabel jLabel1;
@@ -604,7 +636,14 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelResultados;
     private javax.swing.JPanel jPanelVariablesEntrada;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPaneListaEventos;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField jTextField5;
     private javax.swing.JLabel lblReloj;
     private javax.swing.JSpinner spnFrecuenciaClientes;
     private javax.swing.JSpinner spnNumPuestoPalomitas;

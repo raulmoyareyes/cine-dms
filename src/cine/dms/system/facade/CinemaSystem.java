@@ -10,6 +10,8 @@ import cine.dms.system.exceptions.ExcepcionGeneradorIncorrecto;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Vector;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -55,6 +57,8 @@ public class CinemaSystem {
     RandomLehmer randomLehmer = new RandomLehmer(0.84641, 0.645, 1);
     /// Log
     private List<String> log;
+    /// Tabla Lista de Eventos
+    DefaultTableModel tablaListaEventos;
     /// Fin de simulacion
     private boolean fin = false;
 
@@ -65,10 +69,20 @@ public class CinemaSystem {
     public Clock getReloj() {
         return reloj;
     }
+    
+    public void refrescarListaEventos(){
+        //Limpiar la tabla
+        this.tablaListaEventos.setRowCount(0);
+        this.tablaListaEventos.addColumn("Entrada Taquilla", (Vector) this.sucesos.get(0));
+        this.tablaListaEventos.addColumn("Salida Taquilla", (Vector) this.sucesos.get(1));
+        this.tablaListaEventos.addColumn("Entrada Palomitas", (Vector) this.sucesos.get(2));
+        this.tablaListaEventos.addColumn("Salida Palomitas", (Vector) this.sucesos.get(3));
+    }
 
+    /*/
     public List<String> getLog() {
         return log;
-    }
+    }//*/
 
     public boolean fin() {
         return fin;
@@ -85,10 +99,12 @@ public class CinemaSystem {
      * @param tiempoServicioPalomitas
      * @param probabilidadTicketMultiple
      * @param probabilidadPalomitas
+     * @param log
+     * @param tablaListaEventos
      */
     public void initialize(int numTicketOffice, int numPopcornStand, float frecuenciaClientes,
             int tiempoServicioTaquilla, int tiempoServicioPalomitas, float probabilidadTicketMultiple,
-            float probabilidadPalomitas) {
+            float probabilidadPalomitas, List<String> log, javax.swing.table.TableModel tablaListaEventos) {
 
         reloj = new Clock(8 * 60 * 60); // Hora inicial 08:00:00
         tiempoFin = new Clock(22 * 60 * 60); // Hora inicial 22:00:00
@@ -117,11 +133,12 @@ public class CinemaSystem {
         for (int i = 1; i < numTicketOffice || i < numPopcornStand; ++i) {
             sucesos.add(new ArrayList(Arrays.asList(INFINITO, INFINITO, INFINITO, INFINITO)));
         }
-
+        
+        this.tablaListaEventos = (DefaultTableModel) tablaListaEventos;
+        
         //Llegada del primer cliente
-        log = new ArrayList();
-        log.add("INICIO DE LA SIMULACIÓN\n");
-        log.add("Tiempo del reloj: " + this.reloj.getTime());
+        this.log = log; //log = new ArrayList();
+        log.add("[" + this.reloj.getTime()+"] ");
         this.llegadaCliente();
     }
 
@@ -142,7 +159,7 @@ public class CinemaSystem {
             //Avanza el reloj con el valor de this.siguienteSuceso()
             /* REVISAR LA ACTUALIZACION DEL RELOJ */
             this.reloj.advance(this.sucesos.get(sS.posicion).get(sS.tipoSuceso));
-            log.add("Tiempo del reloj: " + this.reloj.getTime());
+            log.add("[" + this.reloj.getTime()+"] ");
 
             //Comprobamos cuál es el siguiente evento
             switch (sS.tipoSuceso) {
@@ -163,7 +180,6 @@ public class CinemaSystem {
             }
         } else {
             this.finSimulacion();
-
         }
 
     }
@@ -276,7 +292,6 @@ public class CinemaSystem {
 
     private void finSimulacion() {
         fin = true;
-        log.add("FIN DE LA SIMULACIÓN\n");
     }
 
     /* ********************* OBTENCION DE RESULTADOS ********************* */
