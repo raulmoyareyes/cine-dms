@@ -1,4 +1,4 @@
-package cine.dms.classes;
+package cine.dms.system.classes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,11 +14,8 @@ public class TicketOffice {
     private char estado;
 
     //Id
-    private int id;
+    private final int id;
 
-    public int getId() {
-        return id;
-    }
     //NextID
     private static int nexId = 0;
 
@@ -166,7 +163,19 @@ public class TicketOffice {
         this.clienteSirviendose = clienteSirviendose;
     }
 
+    /**
+     * Reinicia el valor para calcular los identificadores
+     */
     public static void resetId() {
         nexId = 0;
+    }
+
+    /**
+     * Obtiene el id del puesto de palomitas
+     *
+     * @return Id del puesto de palomitas
+     */
+    public int getId() {
+        return id;
     }
 }

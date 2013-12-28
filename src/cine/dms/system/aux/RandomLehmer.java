@@ -1,10 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package cine.dms.classes;
+package cine.dms.system.aux;
 
-import excepciones.ExcepcionGeneradorIncorrecto;
+import cine.dms.system.exceptions.ExcepcionGeneradorIncorrecto;
 import java.util.Random;
 
 /**
@@ -21,7 +17,7 @@ public class RandomLehmer {
     private double a;
     private double c;
     private double m;
-    private boolean generadorOK;
+    private final boolean generadorOK;
 
     /**
      * Constructor
@@ -74,6 +70,7 @@ public class RandomLehmer {
 
     /**
      * Indica si el generador es correcto o no según sus parámetros
+     *
      * @return true si el generador es correcto o false en caso contrario
      */
     public boolean isGeneradorOK() {
@@ -83,7 +80,8 @@ public class RandomLehmer {
     /**
      *
      * @return Valor aleatorio entre 0 y m
-     * @throws ExcepcionGeneradorIncorrecto Se lanza cuando el constructor no es correcto
+     * @throws ExcepcionGeneradorIncorrecto Se lanza cuando el constructor no es
+     * correcto
      */
     public double getRandom() throws ExcepcionGeneradorIncorrecto {
         if (generadorOK) {

@@ -1,8 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package cine.dms.classes;
+package cine.dms.system.classes;
 
 /**
  * Clase cliente para controlar los parametros de este.

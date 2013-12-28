@@ -1,7 +1,12 @@
-package cine.dms.interfaceMV;
+package cine.dms.system.facade;
 
-import cine.dms.classes.*;
-import excepciones.ExcepcionGeneradorIncorrecto;
+import cine.dms.system.classes.PopcornStand;
+import cine.dms.system.classes.Client;
+import cine.dms.system.classes.TicketOffice;
+import cine.dms.system.classes.Clock;
+import cine.dms.system.aux.Pair;
+import cine.dms.system.aux.RandomLehmer;
+import cine.dms.system.exceptions.ExcepcionGeneradorIncorrecto;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -324,9 +329,41 @@ public class CinemaSystem {
         return resultado;
     }
 
+    /**
+     * Devuelve el número medio de clientes atendidos por taquilla
+     *
+     * @return Número medio de atendidos por taquilla
+     * @warning no implementado
+     */
+    public Integer numMedioAtendidosTaquilla() {
+        return 0;
+    }
+
+    /**
+     * Devuelve el número medio de clientes atendidos por puesto de palomitas
+     *
+     * @return Número medio de atendidos por puesto de palomitas
+     * @warning no implementado
+     */
+    public Integer numMedioAtendidosPuestoPalomitas() {
+        return 0;
+    }
+
+    /**
+     * Devuelve el tiempo medio que los clientes están en una cola.
+     *
+     * @return Tiempo medio de clientes en cola
+     * @warning no implementado
+     */
+    public Integer tiempoMedioCola() {
+        return 0;
+    }
+
     /* *********************** MÉTODOS AUXILIARES *********************** */
     /**
      * Devuelve la taquilla que menos cola tiene
+     *
+     * @return Taquilla con menos cola
      */
     private TicketOffice getTaquillaMenosOcupada() {
         TicketOffice taquillaReturn = null;
@@ -347,6 +384,8 @@ public class CinemaSystem {
 
     /**
      * Devuelve el puesto de palomitas que menos cola tiene
+     *
+     * @return Puesto de palomitas con menos cola
      */
     private PopcornStand getPalomitasMenosOcupada() {
         PopcornStand palomitasReturn = null;

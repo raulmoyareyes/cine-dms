@@ -4,7 +4,7 @@
  */
 package cine.dms.view;
 
-import cine.dms.interfaceMV.CinemaSystem;
+import cine.dms.system.facade.CinemaSystem;
 
 /**
  *
@@ -142,7 +142,7 @@ public class Main extends javax.swing.JFrame {
         jLabel4.setText("Número de taquillas");
         jLabel4.setPreferredSize(null);
 
-        spnNumTaquillas.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(5), Integer.valueOf(0), null, Integer.valueOf(1)));
+        spnNumTaquillas.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(5), Integer.valueOf(1), null, Integer.valueOf(1)));
 
         jLabel5.setFont(new java.awt.Font("Droid Sans", 1, 14)); // NOI18N
         jLabel5.setText("Introduzca las variables de entrada");
@@ -181,7 +181,7 @@ public class Main extends javax.swing.JFrame {
 
         spnProbabilidadCompraPalomitas.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(0.05f), Float.valueOf(0.05f), Float.valueOf(1.0f), Float.valueOf(0.05f)));
 
-        spnNumPuestoPalomitas.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(3), Integer.valueOf(0), null, Integer.valueOf(1)));
+        spnNumPuestoPalomitas.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(3), Integer.valueOf(1), null, Integer.valueOf(1)));
 
         javax.swing.GroupLayout jPanelVariablesEntradaLayout = new javax.swing.GroupLayout(jPanelVariablesEntrada);
         jPanelVariablesEntrada.setLayout(jPanelVariablesEntradaLayout);
@@ -471,7 +471,7 @@ public class Main extends javax.swing.JFrame {
             btnSimulacionCompleta.setEnabled(false);
             btnSiguientePaso.setEnabled(false);
             
-            jTabbedPane1.setSelectedIndex(0);            
+            jTabbedPane1.setSelectedIndex(2);            
         }
     }//GEN-LAST:event_btnIniciarSimulacionClick
 
@@ -479,7 +479,7 @@ public class Main extends javax.swing.JFrame {
         if (btnSimulacionCompleta.isEnabled()) {
             cine.run();
 
-            datosPasoaPaso();
+            obtenerDatos();
             
             if (cine.fin()) {
                 btnIniciarSimulacionClick(evt);
@@ -491,7 +491,7 @@ public class Main extends javax.swing.JFrame {
         if (btnSiguientePaso.isEnabled()) {
             cine.temporizacion();
 
-            datosPasoaPaso();
+            obtenerDatos();
 
             if (cine.fin()) {
                 btnIniciarSimulacionClick(evt);
@@ -499,7 +499,7 @@ public class Main extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnSiguentePasoClick
 
-    private void datosPasoaPaso(){
+    private void obtenerDatos(){
         lblReloj.setText(cine.getReloj().getTime());
         txtaLog.setText(cine.getLog().toString());
             
@@ -507,9 +507,9 @@ public class Main extends javax.swing.JFrame {
         txtNumTaquillasOcupadas.setText(cine.numTaquillasOcupadas().toString());
         txtTamMedioColasPuestosPalomitas.setText(cine.tamMedioColasPuestosPalomitas().toString());
         txtNumPuestosPalomitasOcupados.setText(cine.numPuestosPalomitasOcupados().toString());
-        txtNumMedioAtendidosTaquilla.setText(null);
-        txtNumMedioAtendidosPuestoPalomitas.setText(null);
-        txtTiempoMedioEnCola.setText(null);
+        txtNumMedioAtendidosTaquilla.setText(cine.numMedioAtendidosTaquilla().toString());
+        txtNumMedioAtendidosPuestoPalomitas.setText(cine.numMedioAtendidosPuestoPalomitas().toString());
+        txtTiempoMedioEnCola.setText(cine.tiempoMedioCola().toString());
     }
     
     private void conexion() {
@@ -522,7 +522,7 @@ public class Main extends javax.swing.JFrame {
                 Float.parseFloat(spnProbabilidadCompraEntradas.getValue().toString()),
                 Float.parseFloat(spnProbabilidadCompraPalomitas.getValue().toString())
         );
-        datosPasoaPaso();
+        obtenerDatos();
     }
 
     /**
@@ -541,13 +541,7 @@ public class Main extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>

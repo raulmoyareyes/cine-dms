@@ -1,4 +1,4 @@
-package cine.dms.classes;
+package cine.dms.system.classes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,11 +14,8 @@ public class PopcornStand {
     private char estado;
 
     //Id
-    private int id;
+    private final int id;
 
-    public int getId() {
-        return id;
-    }
     //NextID
     private static int nexId = 0;
 
@@ -166,8 +163,20 @@ public class PopcornStand {
     public Client getSiguienteCliente() {
         return this.cola.remove(0);
     }
-    
+
+    /**
+     * Reinicia el valor para calcular los identificadores
+     */
     public static void resetId() {
         nexId = 0;
+    }
+
+    /**
+     * Obtiene el id del puesto de palomitas
+     *
+     * @return Id del puesto de palomitas
+     */
+    public int getId() {
+        return id;
     }
 }

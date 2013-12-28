@@ -1,4 +1,4 @@
-package cine.dms.classes;
+package cine.dms.system.classes;
 
 /**
  * Clase rejol
@@ -41,6 +41,11 @@ public class Clock {
 
     }
 
+    /**
+     * Avanza el rejol hasta la hora indicada
+     *
+     * @param seconds hora a la que avanzar el reloj
+     */
     public void advance(int seconds) {
         this.seconds = seconds;
     }
