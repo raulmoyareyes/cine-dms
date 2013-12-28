@@ -87,7 +87,7 @@ public class CinemaSystem {
 
         reloj = new Clock(8 * 60 * 60); // Hora inicial 08:00:00
         tiempoFin = new Clock(22 * 60 * 60); // Hora inicial 22:00:00
-        
+
         TicketOffice.resetId();
         taquillas = new ArrayList();
         for (int i = 0; i < numTicketOffice; ++i) {
@@ -272,13 +272,24 @@ public class CinemaSystem {
         fin = true;
     }
 
-    /* *********************** MÉTODOS AUXILIARES *********************** */
+    /* ********************* OBTENCION DE RESULTADOS ********************* */
+    /**
+     * Devuelve el tamaño medio de las colas de las taquillas
+     *
+     * @return Tamaño medio de colas de las Taquillas
+     * @warning no implementado
+     */
+    public Integer tamMedioColasTaquillas() {
+
+        return 0;
+    }
+
     /**
      * Devuelve el número de taquillas ocupadas
      *
      * @return Número de taquillas ocupadas
      */
-    private Integer contarTaquillasOcupadas() {
+    public Integer numTaquillasOcupadas() {
         Integer resultado = 0;
         for (TicketOffice t : this.taquillas) {
             if (!t.isLibre()) {
@@ -288,6 +299,32 @@ public class CinemaSystem {
         return resultado;
     }
 
+    /**
+     * Devuelve el tamaño medio de las colas de los puesto de palomitas
+     *
+     * @return Tamaño medio de colas de puestos palomitas.
+     * @warning no implementado
+     */
+    public Integer tamMedioColasPuestosPalomitas() {
+        return 0;
+    }
+
+    /**
+     * Devuelve el número de puestos de palomitas ocupados
+     *
+     * @return Número de puestos de palomitas ocupados
+     */
+    public Integer numPuestosPalomitasOcupados() {
+        Integer resultado = 0;
+        for (PopcornStand p : this.puestosPalomitas) {
+            if (!p.isLibre()) {
+                ++resultado;
+            }
+        }
+        return resultado;
+    }
+
+    /* *********************** MÉTODOS AUXILIARES *********************** */
     /**
      * Devuelve la taquilla que menos cola tiene
      */
@@ -347,10 +384,13 @@ public class CinemaSystem {
         return resultado;
     }
 
+    /* ********************** MÉTODOS EXTADÍSTICOS ********************** */
     /**
      * Función aleatoria para calcular el número de tickets a comprar (lineal)
      *
      * @return Número de tickets a comprar
+     * @throws ExcepcionGeneradorIncorrecto
+     * @warnig Deberia usar el parametro de probabilidad de la interfaz
      */
     private int numTickets() throws ExcepcionGeneradorIncorrecto {
         /*
@@ -366,6 +406,8 @@ public class CinemaSystem {
      * Función aleatoria para calcular cuántas palomitas compra (lineal)
      *
      * @return Número de palomitas que compra [0, MAX_PALOMITAS]
+     * @throws ExcepcionGeneradorIncorrecto
+     * @warnig Deberia usar el parametro de probabilidad de la interfaz
      */
     private int comprarPalomitas() throws ExcepcionGeneradorIncorrecto {
         /*
@@ -382,8 +424,11 @@ public class CinemaSystem {
     }
 
     /**
-     * Cálculo del siguiente cliente en llegar al sistema
+     * Función aleatoria para calcular el tiempo de llegada del siguiente
+     * cliente (lineal)
      *
+     * @throws ExcepcionGeneradorIncorrecto
+     * @warnig Deberia usar el parametro de probabilidad de la interfaz
      */
     private void calculoLlegadaSiguienteCliente() throws ExcepcionGeneradorIncorrecto {
         /*
@@ -397,16 +442,23 @@ public class CinemaSystem {
     }
 
     /**
-     * Cálculo del tiempo de servicio del cliente en taquilla
+     * Función aleatoria para calcular el tiempo de servicio en taquilla del
+     * cliente (lineal)
+     *
+     * @param taquilla
+     * @warnig Deberia usar el parametro de probabilidad de la interfaz
      */
     private void calculoSalidaSiguienteCliente(TicketOffice taquilla) {
         this.sucesos.get(taquilla.getId()).set(SALIDATICKET, this.reloj.getSeconds() + taquilla.getTiempoServicio());
     }
 
     /**
-     * Cálculo del tiempo de servicio del cliente en puesto de palomitas
+     * Función aleatoria para calcular el tiempo de servicio en puesto de
+     * palomitas del cliente (lineal)
      *
-     * @warning No testeado
+     * @param palomitas
+     * @warnig Deberia usar el parametro de probabilidad de la interfaz
+     * @warnig no testeada
      */
     private void calculoSalidaSiguienteCliente(PopcornStand palomitas) {
         this.sucesos.get(palomitas.getId()).set(SALIDAPALOMITAS, this.reloj.getSeconds() + palomitas.getTiempoServicio());

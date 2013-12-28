@@ -371,8 +371,8 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
-                          <EmptySpace min="-2" pref="62" max="-2" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" attributes="0">
                               <Component id="jLabel24" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel16" min="-2" max="-2" attributes="0"/>
@@ -380,17 +380,19 @@
                               <Component id="jLabel14" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel13" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel25" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="txtTamColas" pref="169" max="32767" attributes="0"/>
-                              <Component id="jTextField1" max="32767" attributes="0"/>
-                              <Component id="jTextField2" max="32767" attributes="0"/>
-                              <Component id="jTextField3" max="32767" attributes="0"/>
-                              <Component id="jTextField4" max="32767" attributes="0"/>
-                              <Component id="jTextField5" alignment="0" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="txtTamMedioColasPuestosPalomitas" max="32767" attributes="0"/>
+                              <Component id="txtTamMedioColasTaquilla" alignment="0" pref="169" max="32767" attributes="0"/>
+                              <Component id="txtNumTaquillasOcupadas" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtNumPuestosPalomitasOcupados" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtNumMedioAtendidosTaquilla" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtNumMedioAtendidosPuestoPalomitas" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtTiempoMedioEnCola" alignment="0" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="83" max="32767" attributes="0"/>
+                          <EmptySpace pref="40" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -400,34 +402,39 @@
                           <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel12" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtTamColas" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtTamMedioColasTaquilla" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel13" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jTextField1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtNumTaquillasOcupadas" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jLabel25" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtTamMedioColasPuestosPalomitas" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel14" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jTextField2" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtNumPuestosPalomitasOcupados" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel15" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jTextField3" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtNumMedioAtendidosTaquilla" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel16" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jTextField4" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtNumMedioAtendidosPuestoPalomitas" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel24" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jTextField5" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtTiempoMedioEnCola" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace pref="129" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -435,12 +442,12 @@
               <SubComponents>
                 <Component class="javax.swing.JLabel" name="jLabel12">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Tama&#xf1;o de las colas (uno para cada palo y taqui)"/>
+                    <Property name="text" type="java.lang.String" value="Tama&#xf1;o medio de las colas de las Taquillas"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="txtTamColas">
+                <Component class="javax.swing.JTextField" name="txtTamMedioColasTaquilla">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="25"/>
+                    <Property name="text" type="java.lang.String" value="0"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel13">
@@ -448,7 +455,7 @@
                     <Property name="text" type="java.lang.String" value="N&#xfa;mero de taquillas ocupadas"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="jTextField1">
+                <Component class="javax.swing.JTextField" name="txtNumTaquillasOcupadas">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="0"/>
                   </Properties>
@@ -458,27 +465,27 @@
                     <Property name="text" type="java.lang.String" value="N&#xfa;mero de puestos de palomitas ocupados"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="jTextField2">
+                <Component class="javax.swing.JTextField" name="txtNumPuestosPalomitasOcupados">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="0"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel15">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="N&#xfa;mero de personas atendidas (por taquilla)"/>
+                    <Property name="text" type="java.lang.String" value="N&#xfa;mero medio de personas atendidas por taquilla"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="jTextField3">
+                <Component class="javax.swing.JTextField" name="txtNumMedioAtendidosTaquilla">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="0"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel16">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="N&#xfa;mero de personas atendidas (palomita)"/>
+                    <Property name="text" type="java.lang.String" value="N&#xfa;mero medio de personas atendidas por puesto de palomitas"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="jTextField4">
+                <Component class="javax.swing.JTextField" name="txtNumMedioAtendidosPuestoPalomitas">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="0"/>
                   </Properties>
@@ -488,9 +495,20 @@
                     <Property name="text" type="java.lang.String" value="Tiempo medio en cola para n clientes"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="jTextField5">
+                <Component class="javax.swing.JTextField" name="txtTiempoMedioEnCola">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="0"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtTamMedioColasPuestosPalomitas">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="0"/>
+                    <Property name="toolTipText" type="java.lang.String" value=""/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jLabel25">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Tama&#xf1;o medio de las colas de los puestos de palomitas"/>
                   </Properties>
                 </Component>
               </SubComponents>
