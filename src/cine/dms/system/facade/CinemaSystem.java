@@ -10,8 +10,6 @@ import cine.dms.system.exceptions.ExcepcionGeneradorIncorrecto;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Vector;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -57,8 +55,6 @@ public class CinemaSystem {
     RandomLehmer randomLehmer = new RandomLehmer(0.84641, 0.645, 1);
     /// Log
     private List<String> log;
-    /// Tabla Lista de Eventos
-    DefaultTableModel tablaListaEventos;
     /// Fin de simulacion
     private boolean fin = false;
 
@@ -68,15 +64,6 @@ public class CinemaSystem {
 
     public Clock getReloj() {
         return reloj;
-    }
-    
-    public void refrescarListaEventos(){
-        //Limpiar la tabla
-        this.tablaListaEventos.setRowCount(0);
-        this.tablaListaEventos.addColumn("Entrada Taquilla", (Vector) this.sucesos.get(0));
-        this.tablaListaEventos.addColumn("Salida Taquilla", (Vector) this.sucesos.get(1));
-        this.tablaListaEventos.addColumn("Entrada Palomitas", (Vector) this.sucesos.get(2));
-        this.tablaListaEventos.addColumn("Salida Palomitas", (Vector) this.sucesos.get(3));
     }
 
     /*/
@@ -100,11 +87,10 @@ public class CinemaSystem {
      * @param probabilidadTicketMultiple
      * @param probabilidadPalomitas
      * @param log
-     * @param tablaListaEventos
      */
     public void initialize(int numTicketOffice, int numPopcornStand, float frecuenciaClientes,
             int tiempoServicioTaquilla, int tiempoServicioPalomitas, float probabilidadTicketMultiple,
-            float probabilidadPalomitas, List<String> log, javax.swing.table.TableModel tablaListaEventos) {
+            float probabilidadPalomitas, List<String> log) {
 
         reloj = new Clock(8 * 60 * 60); // Hora inicial 08:00:00
         tiempoFin = new Clock(22 * 60 * 60); // Hora inicial 22:00:00
@@ -133,8 +119,6 @@ public class CinemaSystem {
         for (int i = 1; i < numTicketOffice || i < numPopcornStand; ++i) {
             sucesos.add(new ArrayList(Arrays.asList(INFINITO, INFINITO, INFINITO, INFINITO)));
         }
-        
-        this.tablaListaEventos = (DefaultTableModel) tablaListaEventos;
         
         //Llegada del primer cliente
         this.log = log; //log = new ArrayList();
@@ -518,5 +502,9 @@ public class CinemaSystem {
      */
     private void calculoSalidaSiguienteCliente(PopcornStand palomitas) {
         this.sucesos.get(palomitas.getId()).set(SALIDAPALOMITAS, this.reloj.getSeconds() + palomitas.getTiempoServicio());
+    }
+    
+    public List<List<Integer>> getListaSucesos(){
+        return this.sucesos;
     }
 }
