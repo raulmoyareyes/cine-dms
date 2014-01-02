@@ -76,31 +76,40 @@ public class CinemaSystem {
         //Limpiar la tabla
         this.tablaListaEventos.setColumnCount(0);
 
-        /*/Recoger los eventos y pasarlos a un array
-         Object[][] arraySucesos = new Object[4][];
-        
-         for (int j = 0; j < arraySucesos.length; ++j) {
-         arraySucesos[j] = this.sucesos.get(j).toArray();
-         for (int i = 0; i < arraySucesos[j].length; ++i) {
-         if (arraySucesos[j][i].equals(INFINITO)) {
-         arraySucesos[j][i] = "INFINITO";
-         } else {
-         arraySucesos[j][i] = getTime((Integer) arraySucesos[j][i]);
-         }
-         }
-         }//*/
-        
         Object[][] arraySucesos = new Object[4][this.sucesos.size()];
-        for(int i=0; i<this.sucesos.size() ;  ++i){
-            for(int j=0; j<4 ; ++j){
-                if(this.sucesos.get(i).get(j).equals(INFINITO))
-                    arraySucesos[j][i]="INFINITO";
-                else
-                    arraySucesos[j][i]=getTime(this.sucesos.get(i).get(j));
+        for (int i = 0; i < this.sucesos.size(); ++i) {
+            for (int j = 0; j < 4; ++j) {
+                if (this.sucesos.get(i).get(j).equals(INFINITO)) {
+                    arraySucesos[j][i] = "INFINITO";
+                } else {
+                    arraySucesos[j][i] = getTime(this.sucesos.get(i).get(j));
+                }
             }
         }
 
-        this.tablaListaEventos.addColumn("Entrada Taquilla", arraySucesos[0]);
+        //Sólo hay una entrada al sistema
+        for (int i = 1; i < this.sucesos.size(); ++i) {
+            arraySucesos[0][i] = "";
+        }
+
+        //Eliminar los campos que no procedan de taquillas o puestos de palomitas
+        int numTaquillas = this.taquillas.size();
+        int numPalomitas = this.puestosPalomitas.size();
+        if (numTaquillas != numPalomitas) {
+            if (numTaquillas < numPalomitas) {
+                //Hay menos taquillas que puestos de palomitas
+                for (int i = numTaquillas; i < numPalomitas; ++i) {
+                    arraySucesos[0][i]=arraySucesos[1][i]="";
+                }
+            } else {
+                //Hay más taquillas que puestos de palomitas
+                for (int i = numPalomitas; i < numTaquillas; ++i) {
+                    arraySucesos[2][i]=arraySucesos[3][i]="";
+                }
+            }
+        }
+
+        this.tablaListaEventos.addColumn("Entrada Sistema", arraySucesos[0]);
         this.tablaListaEventos.addColumn("Salida Taquilla", arraySucesos[1]);
         this.tablaListaEventos.addColumn("Entrada Palomitas", arraySucesos[2]);
         this.tablaListaEventos.addColumn("Salida Palomitas", arraySucesos[3]);
