@@ -7,10 +7,10 @@ import cine.dms.system.classes.Clock;
 import cine.dms.system.aux.Pair;
 import cine.dms.system.aux.RandomLehmer;
 import cine.dms.system.exceptions.ExcepcionGeneradorIncorrecto;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -309,11 +309,16 @@ public class CinemaSystem {
      * Devuelve el tamaño medio de las colas de las taquillas
      *
      * @return Tamaño medio de colas de las Taquillas
-     * @warning no implementado
      */
-    public Integer tamMedioColasTaquillas() {
-
-        return 0;
+    public Float tamMedioColasTaquillas() {
+        Float tam = 0.0f;
+        for (TicketOffice t : taquillas) {
+            tam += t.getColaSize();
+        }
+        tam = tam / taquillas.size();
+        BigDecimal bd = new BigDecimal(Float.toString(tam));
+        bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
     }
 
     /**
@@ -335,10 +340,16 @@ public class CinemaSystem {
      * Devuelve el tamaño medio de las colas de los puesto de palomitas
      *
      * @return Tamaño medio de colas de puestos palomitas.
-     * @warning no implementado
      */
-    public Integer tamMedioColasPuestosPalomitas() {
-        return 0;
+    public Float tamMedioColasPuestosPalomitas() {
+        Float tam = 0.0f;
+        for (PopcornStand t : puestosPalomitas) {
+            tam += t.getColaSize();
+        }
+        tam = tam / puestosPalomitas.size();
+        BigDecimal bd = new BigDecimal(Float.toString(tam));
+        bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
     }
 
     /**
@@ -360,20 +371,32 @@ public class CinemaSystem {
      * Devuelve el número medio de clientes atendidos por taquilla
      *
      * @return Número medio de atendidos por taquilla
-     * @warning no implementado
      */
-    public Integer numMedioAtendidosTaquilla() {
-        return 0;
+    public Float numMedioAtendidosTaquilla() {
+        float tam = 0;
+        for (TicketOffice t : taquillas) {
+            tam += t.getClientesServidos();
+        }
+        tam = tam / taquillas.size();
+        BigDecimal bd = new BigDecimal(Float.toString(tam));
+        bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
     }
 
     /**
      * Devuelve el número medio de clientes atendidos por puesto de palomitas
      *
      * @return Número medio de atendidos por puesto de palomitas
-     * @warning no implementado
      */
-    public Integer numMedioAtendidosPuestoPalomitas() {
-        return 0;
+    public Float numMedioAtendidosPuestoPalomitas() {
+        Float tam = 0.0f;
+        for (PopcornStand t : puestosPalomitas) {
+            tam += t.getClientesServidos();
+        }
+        tam = tam / puestosPalomitas.size();
+        BigDecimal bd = new BigDecimal(Float.toString(tam));
+        bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
     }
 
     /**
@@ -544,12 +567,4 @@ public class CinemaSystem {
         return h + ":" + m + ":" + s;
 
     }
-//
-//    public Object getLog() {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//    }
-//
-//    public void initialize(int parseInt, int parseInt0, float parseFloat, int parseInt1, int parseInt2, float parseFloat0, float parseFloat1) {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//    }
 }
