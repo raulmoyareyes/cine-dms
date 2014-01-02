@@ -5,7 +5,6 @@
 package cine.dms.view;
 
 import cine.dms.system.facade.CinemaSystem;
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -17,8 +16,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Main extends javax.swing.JFrame {
 
-    private List<String> log;
-    private javax.swing.table.TableModel modeloTablaSucesos;
+    private final List<String> log;
+    private final javax.swing.table.TableModel modeloTablaSucesos;
 
     /**
      * Creates new form Main
