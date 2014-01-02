@@ -41,10 +41,17 @@ public class RandomLehmer {
     }
 
     /**
-     * @return Valor anterior
+     * @return Valor anterior (entre 0 y m)
      */
     public double getAnterior() {
         return anterior;
+    }
+
+    /**
+     * @return Valor anterior (entre 0 y 1)
+     */
+    public double getAnteriorUnidad() {
+        return anterior / this.m;
     }
 
     /**
@@ -91,5 +98,15 @@ public class RandomLehmer {
             throw new ExcepcionGeneradorIncorrecto();
 //            return 0;
         }
+    }
+    
+    /**
+     *
+     * @return Valor aleatorio entre 0 y 1
+     * @throws ExcepcionGeneradorIncorrecto Se lanza cuando el constructor no es
+     * correcto
+     */
+    public double getRandomUnidad() throws ExcepcionGeneradorIncorrecto{
+        return this.getRandom() / this.m;
     }
 }

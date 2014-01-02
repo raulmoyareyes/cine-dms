@@ -55,7 +55,7 @@ public class CinemaSystem {
     /// Lista de sucesos (0 - llegada, 1 - salida, 2 - fin)
     private List<List<Integer>> sucesos;
     ///Generador de número aleatorios [0,1] (parámetros provisionales)
-    RandomLehmer randomLehmer = new RandomLehmer(0.84641, 0.645, 1);
+    RandomLehmer randomLehmer = new RandomLehmer(16807, 0, 2147483647);
     RandomCuadratico randomCuadratico = new RandomCuadratico(0.6, 0.84641, 20); //Este 20 está a pelo
     /// Log
     private List<String> log;
@@ -76,16 +76,27 @@ public class CinemaSystem {
         //Limpiar la tabla
         this.tablaListaEventos.setColumnCount(0);
 
-        //Recoger los eventos y pasarlos a un array
-        Object[][] arraySucesos = new Object[4][];
-        for (int j = 0; j < arraySucesos.length; ++j) {
-            arraySucesos[j] = this.sucesos.get(j).toArray();
-            for (int i = 0; i < arraySucesos[j].length; ++i) {
-                if (arraySucesos[j][i].equals(INFINITO)) {
-                    arraySucesos[j][i] = "INFINITO";
-                } else {
-                    arraySucesos[j][i] = getTime((Integer) arraySucesos[j][i]);
-                }
+        /*/Recoger los eventos y pasarlos a un array
+         Object[][] arraySucesos = new Object[4][];
+        
+         for (int j = 0; j < arraySucesos.length; ++j) {
+         arraySucesos[j] = this.sucesos.get(j).toArray();
+         for (int i = 0; i < arraySucesos[j].length; ++i) {
+         if (arraySucesos[j][i].equals(INFINITO)) {
+         arraySucesos[j][i] = "INFINITO";
+         } else {
+         arraySucesos[j][i] = getTime((Integer) arraySucesos[j][i]);
+         }
+         }
+         }//*/
+        
+        Object[][] arraySucesos = new Object[4][this.sucesos.size()];
+        for(int i=0; i<this.sucesos.size() ;  ++i){
+            for(int j=0; j<4 ; ++j){
+                if(this.sucesos.get(i).get(j).equals(INFINITO))
+                    arraySucesos[j][i]="INFINITO";
+                else
+                    arraySucesos[j][i]=getTime(this.sucesos.get(i).get(j));
             }
         }
 
@@ -484,14 +495,7 @@ public class CinemaSystem {
      * @warnig Deberia usar el parametro de probabilidad de la interfaz
      */
     private int numTickets() throws ExcepcionGeneradorIncorrecto {
-        /*
-         * Multiplicamos el aleatorio generado por el MAX_ENTRADAS * 27 para
-         * tener un número grande al que poder hacerle el módulo por
-         * MAX_ENTRADAS. Así nos aseguramos que el número por el que multiplica
-         * el aleatorio es siempre mayor que MAX_ENTRADAS. Se le suma 1 para que
-         * compre, al menos, 1 entrada
-         */
-        return (int) (((27 * MAX_ENTRADAS * this.randomLehmer.getRandom()) % MAX_ENTRADAS) + 1);
+        return (int) (((MAX_ENTRADAS * this.randomLehmer.getRandomUnidad()) % MAX_ENTRADAS) + 1);
     }
 
     /**
@@ -502,49 +506,36 @@ public class CinemaSystem {
      * @warnig Deberia usar el parametro de probabilidad de la interfaz
      */
     private int comprarPalomitas() throws ExcepcionGeneradorIncorrecto {
-        /*
-         * Multiplicamos el aleatorio generado por el MAX_PALOMITAS * 27 para
-         * tener un número grande al que poder hacerle el módulo por
-         * MAX_PALOMITAS. Así nos aseguramos que el número por el que multiplica
-         * el aleatorio es siempre mayor que MAX_PALOMITAS
-         */
-        if (this.randomLehmer.getRandom() >= 0.5) {
+        if (this.randomLehmer.getRandomUnidad() >= 0.5) {
             return 0;
         } else {
-            return (int) (((27 * MAX_PALOMITAS * this.randomLehmer.getRandom()) % MAX_PALOMITAS) + 1);
+            return (int) (((MAX_PALOMITAS * this.randomLehmer.getRandom()) % MAX_PALOMITAS) + 1);
         }
     }
 
     /**
      * Función aleatoria para calcular el tiempo de llegada del siguiente
-     * cliente (lineal)
+     * cliente (cuadrática)
      *
      * @throws ExcepcionGeneradorIncorrecto
      * @warnig Deberia usar el parametro de probabilidad de la interfaz
      */
     private void calculoLlegadaSiguienteCliente() throws ExcepcionGeneradorIncorrecto {
-        /*
-         * Multiplicamos el aleatorio generado por el MAX_TIEMPO_LLEGADA * 27
-         * para tener un número grande al que poder hacerle el módulo por
-         * MAX_TIEMPO_LLEGADA. Así nos aseguramos que el número por el que
-         * multiplica el aleatorio es siempre mayor que MAX_TIEMPO_LLEGADA
-         */
-        
         Double aleatorio = this.randomCuadratico.getRandom();
         Integer tiempoLlegada = this.frecuenciaClientes.intValue();
-        if(randomLehmer.getRandom()<0.5){
-            tiempoLlegada+=aleatorio.intValue();
-        }else{
-            tiempoLlegada-=aleatorio.intValue();
+        if (randomLehmer.getRandomUnidad() < 0.5) {
+            tiempoLlegada += aleatorio.intValue();
+        } else {
+            tiempoLlegada -= aleatorio.intValue();
         }
-        
+
         //Si es negativo que se quede a cero
-        if(tiempoLlegada<0){
-            tiempoLlegada=0;
+        if (tiempoLlegada < 0) {
+            tiempoLlegada = 0;
         }
-        
+
         this.sucesos.get(0).set(LLEGADATICKET, this.reloj.getSeconds() + tiempoLlegada);
-        this.log.add("(Siguiente llegada en "+tiempoLlegada.toString()+" segundos) ");
+        this.log.add("(Siguiente llegada en " + tiempoLlegada.toString() + " segundos) ");
     }
 
     /**

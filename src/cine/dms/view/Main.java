@@ -515,13 +515,14 @@ public class Main extends javax.swing.JFrame {
 
             jTabbedPane1.setSelectedIndex(1);
 
+            log.add("= INICIO DE LA SIMULACIÓN =\n");
+            
             cine = new CinemaSystem();
             //Conexión con el sistema
             this.conexion();
             
             
             cine.refrescarListaEventos();
-            log.add("= INICIO DE LA SIMULACIÓN =\n");
             this.refrescarLog();
         } else {
             // Deshabilitar simulación
@@ -537,12 +538,12 @@ public class Main extends javax.swing.JFrame {
         if (btnSimulacionCompleta.isEnabled()) {
             cine.run();
 
-            obtenerDatos();
-
             if (cine.fin()) {
                 btnIniciarSimulacionClick(evt);
                 log.add("= FIN DE LA SIMULACIÓN =\n");
             }
+
+            obtenerDatos();
         }
     }//GEN-LAST:event_btnSimulacionCompletaClick
 
@@ -561,12 +562,12 @@ public class Main extends javax.swing.JFrame {
         if (btnSiguientePaso.isEnabled()) {
             cine.temporizacion();
 
-            obtenerDatos();
-
             if (cine.fin()) {
                 btnIniciarSimulacionClick(evt);
                 log.add("= FIN DE LA SIMULACIÓN =\n");
             }
+
+            obtenerDatos();
         }
     }//GEN-LAST:event_btnSiguentePasoClick
 
