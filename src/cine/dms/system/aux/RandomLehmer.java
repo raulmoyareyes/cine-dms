@@ -6,7 +6,7 @@ import java.util.Random;
 /**
  * Generador congruencial lineal multiplicativo de Lehmer
  *
- * x_(n+1) = ( a · * x_n ) mod m
+ * x_(n+1) = ( a · x_n + c) mod m
  *
  * @author Raúl Moya Reyes <rmr00021@red.ujaen.es>
  * @author Agustín Ruiz Linares <arl00029@red.ujaen.es>

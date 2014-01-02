@@ -5,12 +5,12 @@ import cine.dms.system.classes.Client;
 import cine.dms.system.classes.TicketOffice;
 import cine.dms.system.classes.Clock;
 import cine.dms.system.aux.Pair;
+import cine.dms.system.aux.RandomCuadratico;
 import cine.dms.system.aux.RandomLehmer;
 import cine.dms.system.exceptions.ExcepcionGeneradorIncorrecto;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -46,15 +46,16 @@ public class CinemaSystem {
     private List<TicketOffice> taquillas;
     /// Puestos de palomitas
     private List<PopcornStand> puestosPalomitas;
-    private float frecuenciaClientes;
-    private float tiempoServicioTaquilla;
-    private float tiempoServicioPalomitas;
-    private float probabilidadTicketMultiple;
-    private float probabilidadPalomitas;
+    private Float frecuenciaClientes;
+    private Integer tiempoServicioTaquilla;
+    private Integer tiempoServicioPalomitas;
+    private Float probabilidadTicketMultiple;
+    private Float probabilidadPalomitas;
     /// Lista de sucesos (0 - llegada, 1 - salida, 2 - fin)
     private List<List<Integer>> sucesos;
     ///Generador de número aleatorios [0,1] (parámetros provisionales)
     RandomLehmer randomLehmer = new RandomLehmer(0.84641, 0.645, 1);
+    RandomCuadratico randomCuadratico = new RandomCuadratico(0.6, 0.84641, 20); //Este 20 está a pelo
     /// Log
     private List<String> log;
     /// Tabla Lista de Eventos
@@ -111,9 +112,9 @@ public class CinemaSystem {
      * @param log
      * @param tablaListaEventos
      */
-    public void initialize(int numTicketOffice, int numPopcornStand, float frecuenciaClientes,
-            int tiempoServicioTaquilla, int tiempoServicioPalomitas, float probabilidadTicketMultiple,
-            float probabilidadPalomitas, List<String> log, javax.swing.table.TableModel tablaListaEventos) {
+    public void initialize(int numTicketOffice, int numPopcornStand, Float frecuenciaClientes,
+            Integer tiempoServicioTaquilla, Integer tiempoServicioPalomitas, Float probabilidadTicketMultiple,
+            Float probabilidadPalomitas, List<String> log, javax.swing.table.TableModel tablaListaEventos) {
 
         reloj = new Clock(8 * 60 * 60); // Hora inicial 08:00:00
         tiempoFin = new Clock(22 * 60 * 60); // Hora inicial 22:00:00
@@ -463,7 +464,8 @@ public class CinemaSystem {
          * Multiplicamos el aleatorio generado por el MAX_ENTRADAS * 27 para
          * tener un número grande al que poder hacerle el módulo por
          * MAX_ENTRADAS. Así nos aseguramos que el número por el que multiplica
-         * el aleatorio es siempre mayor que MAX_ENTRADAS
+         * el aleatorio es siempre mayor que MAX_ENTRADAS. Se le suma 1 para que
+         * compre, al menos, 1 entrada
          */
         return (int) (((27 * MAX_ENTRADAS * this.randomLehmer.getRandom()) % MAX_ENTRADAS) + 1);
     }
@@ -503,8 +505,22 @@ public class CinemaSystem {
          * MAX_TIEMPO_LLEGADA. Así nos aseguramos que el número por el que
          * multiplica el aleatorio es siempre mayor que MAX_TIEMPO_LLEGADA
          */
-        int tiempoLlegada = (int) (((27 * MAX_TIEMPO_LLEGADA * this.randomLehmer.getRandom()) % MAX_TIEMPO_LLEGADA) + 1);
+        
+        Double aleatorio = this.randomCuadratico.getRandom();
+        Integer tiempoLlegada = this.frecuenciaClientes.intValue();
+        if(randomLehmer.getRandom()<0.5){
+            tiempoLlegada+=aleatorio.intValue();
+        }else{
+            tiempoLlegada-=aleatorio.intValue();
+        }
+        
+        //Si es negativo que se quede a cero
+        if(tiempoLlegada<0){
+            tiempoLlegada=0;
+        }
+        
         this.sucesos.get(0).set(LLEGADATICKET, this.reloj.getSeconds() + tiempoLlegada);
+        this.log.add("(Siguiente llegada en "+tiempoLlegada.toString()+" segundos) ");
     }
 
     /**
