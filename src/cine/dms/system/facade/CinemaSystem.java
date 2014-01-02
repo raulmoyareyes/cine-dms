@@ -409,6 +409,34 @@ public class CinemaSystem {
         return 0;
     }
 
+    public Integer totalPersonasAtendidasTicket() {
+        return 0;
+    }
+
+    public Integer totalPersonasAtendidasPalomitas() {
+        return 0;
+    }
+
+    public Float numeroMedioClienteTicket() {
+        return 0.0f;
+    }
+
+    public Float numeroMedioClientePalomitas() {
+        return 0.0f;
+    }
+
+    public Float gradoOcupacionTicket() {
+        return 0.0f;
+    }
+
+    public Float gradoOcupacionPalomitas() {
+        return 0.0f;
+    }
+
+    public Integer tiempoMedioColaClientes() {
+        return 0;
+    }
+
     /* *********************** MÉTODOS AUXILIARES *********************** */
     /**
      * Devuelve la taquilla que menos cola tiene
