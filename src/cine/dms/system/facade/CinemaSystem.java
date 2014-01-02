@@ -10,6 +10,8 @@ import cine.dms.system.exceptions.ExcepcionGeneradorIncorrecto;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Vector;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -55,6 +57,8 @@ public class CinemaSystem {
     RandomLehmer randomLehmer = new RandomLehmer(0.84641, 0.645, 1);
     /// Log
     private List<String> log;
+    /// Tabla Lista de Eventos
+    DefaultTableModel tablaListaEventos;
     /// Fin de simulacion
     private boolean fin = false;
 
@@ -66,10 +70,28 @@ public class CinemaSystem {
         return reloj;
     }
 
-    /*/
-    public List<String> getLog() {
-        return log;
-    }//*/
+    public void refrescarListaEventos() {
+        //Limpiar la tabla
+        this.tablaListaEventos.setColumnCount(0);
+
+        //Recoger los eventos y pasarlos a un array
+        Object[][] arraySucesos = new Object[4][];
+        for (int j = 0; j < arraySucesos.length; ++j) {
+            arraySucesos[j] = this.sucesos.get(j).toArray();
+            for (int i = 0; i < arraySucesos[j].length; ++i) {
+                if (arraySucesos[j][i].equals(INFINITO)) {
+                    arraySucesos[j][i] = "INFINITO";
+                } else {
+                    arraySucesos[j][i] = getTime((Integer) arraySucesos[j][i]);
+                }
+            }
+        }
+
+        this.tablaListaEventos.addColumn("Entrada Taquilla", arraySucesos[0]);
+        this.tablaListaEventos.addColumn("Salida Taquilla", arraySucesos[1]);
+        this.tablaListaEventos.addColumn("Entrada Palomitas", arraySucesos[2]);
+        this.tablaListaEventos.addColumn("Salida Palomitas", arraySucesos[3]);
+    }
 
     public boolean fin() {
         return fin;
@@ -87,10 +109,11 @@ public class CinemaSystem {
      * @param probabilidadTicketMultiple
      * @param probabilidadPalomitas
      * @param log
+     * @param tablaListaEventos
      */
     public void initialize(int numTicketOffice, int numPopcornStand, float frecuenciaClientes,
             int tiempoServicioTaquilla, int tiempoServicioPalomitas, float probabilidadTicketMultiple,
-            float probabilidadPalomitas, List<String> log) {
+            float probabilidadPalomitas, List<String> log, javax.swing.table.TableModel tablaListaEventos) {
 
         reloj = new Clock(8 * 60 * 60); // Hora inicial 08:00:00
         tiempoFin = new Clock(22 * 60 * 60); // Hora inicial 22:00:00
@@ -119,11 +142,13 @@ public class CinemaSystem {
         for (int i = 1; i < numTicketOffice || i < numPopcornStand; ++i) {
             sucesos.add(new ArrayList(Arrays.asList(INFINITO, INFINITO, INFINITO, INFINITO)));
         }
-        
+
         //Llegada del primer cliente
         this.log = log; //log = new ArrayList();
-        log.add("[" + this.reloj.getTime()+"] ");
+        log.add("[" + this.reloj.getTime() + "] ");
         this.llegadaCliente();
+
+        this.tablaListaEventos = (DefaultTableModel) tablaListaEventos;
     }
 
     public void run() {
@@ -143,7 +168,7 @@ public class CinemaSystem {
             //Avanza el reloj con el valor de this.siguienteSuceso()
             /* REVISAR LA ACTUALIZACION DEL RELOJ */
             this.reloj.advance(this.sucesos.get(sS.posicion).get(sS.tipoSuceso));
-            log.add("[" + this.reloj.getTime()+"] ");
+            log.add("[" + this.reloj.getTime() + "] ");
 
             //Comprobamos cuál es el siguiente evento
             switch (sS.tipoSuceso) {
@@ -250,6 +275,7 @@ public class CinemaSystem {
     }
 
     private void entradaPop(PopcornStand palomitas) {
+        log.add("[" + this.reloj.getTime() + "] ");
         log.add("Tipo de suceso: LLEGADAPALOMITAS (" + palomitas.getId() + ")\n");
 
         //Poner la taquilla en estado ocupado
@@ -503,8 +529,27 @@ public class CinemaSystem {
     private void calculoSalidaSiguienteCliente(PopcornStand palomitas) {
         this.sucesos.get(palomitas.getId()).set(SALIDAPALOMITAS, this.reloj.getSeconds() + palomitas.getTiempoServicio());
     }
-    
-    public List<List<Integer>> getListaSucesos(){
+
+    public List<List<Integer>> getListaSucesos() {
         return this.sucesos;
     }
+
+    public String getTime(int seconds) {
+
+        String s = (seconds % 60 < 10) ? "0" + String.valueOf(seconds % 60) : String.valueOf(seconds % 60);
+        int min = seconds / 60;
+        String m = (min % 60 < 10) ? "0" + String.valueOf(min % 60) : String.valueOf(min % 60);
+        String h = (min / 60 < 10) ? "0" + String.valueOf(min / 60) : String.valueOf(min / 60);
+
+        return h + ":" + m + ":" + s;
+
+    }
+//
+//    public Object getLog() {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//    }
+//
+//    public void initialize(int parseInt, int parseInt0, float parseFloat, int parseInt1, int parseInt2, float parseFloat0, float parseFloat1) {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//    }
 }

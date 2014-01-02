@@ -5,6 +5,11 @@
 package cine.dms.view;
 
 import cine.dms.system.facade.CinemaSystem;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -14,12 +19,13 @@ public class Main extends javax.swing.JFrame {
 
     private List<String> log;
     private javax.swing.table.TableModel modeloTablaSucesos;
-    
+
     /**
      * Creates new form Main
      */
     public Main() {
         log = new ArrayList();
+        modeloTablaSucesos = new DefaultTableModel();
         initComponents();
     }
 
@@ -83,14 +89,9 @@ public class Main extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         txtaLog = new javax.swing.JTextArea();
         btnLimpiarLog = new javax.swing.JButton();
-        jScrollPaneListaEventos = new javax.swing.JScrollPane();
-        try {
-            jTable1 =(javax.swing.JTable)java.beans.Beans.instantiate(getClass().getClassLoader(), "cine/dms/view.Main_jTable1");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (java.io.IOException e) {
-            e.printStackTrace();
-        }
+        jPanelTest = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTableListaSucesos = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Simulación Cine - DMS");
@@ -259,7 +260,7 @@ public class Main extends javax.swing.JFrame {
                 .addGroup(jPanelVariablesEntradaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(spnProbabilidadCompraPalomitas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(77, Short.MAX_VALUE))
+                .addContainerGap(127, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Variables de entrada", jPanelVariablesEntrada);
@@ -435,7 +436,7 @@ public class Main extends javax.swing.JFrame {
             jPanelLogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelLogLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnLimpiarLog)
                 .addContainerGap())
@@ -446,9 +447,28 @@ public class Main extends javax.swing.JFrame {
         jTabbedPane1.addTab("Log", jPanelLog);
         jPanelLog.getAccessibleContext().setAccessibleName("");
 
-        jScrollPaneListaEventos.setViewportView(jTable1);
+        jTableListaSucesos.setModel(modeloTablaSucesos);
+        jTableListaSucesos.setEnabled(false);
+        jScrollPane2.setViewportView(jTableListaSucesos);
 
-        jTabbedPane1.addTab("Lista de eventos", jScrollPaneListaEventos);
+        javax.swing.GroupLayout jPanelTestLayout = new javax.swing.GroupLayout(jPanelTest);
+        jPanelTest.setLayout(jPanelTestLayout);
+        jPanelTestLayout.setHorizontalGroup(
+            jPanelTestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelTestLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanelTestLayout.setVerticalGroup(
+            jPanelTestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelTestLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 411, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Test", jPanelTest);
 
         javax.swing.GroupLayout jPanelContenedorPestanasLayout = new javax.swing.GroupLayout(jPanelContenedorPestanas);
         jPanelContenedorPestanas.setLayout(jPanelContenedorPestanasLayout);
@@ -458,7 +478,7 @@ public class Main extends javax.swing.JFrame {
         );
         jPanelContenedorPestanasLayout.setVerticalGroup(
             jPanelContenedorPestanasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         jTabbedPane1.getAccessibleContext().setAccessibleName("entradas");
@@ -492,21 +512,24 @@ public class Main extends javax.swing.JFrame {
             btnIniciarSimulacion.setText("Parar simulación");
             btnSimulacionCompleta.setEnabled(true);
             btnSiguientePaso.setEnabled(true);
-            log.add("= INICIO DE LA SIMULACIÓN =\n");
-            this.refrescarLog();
 
-            jTabbedPane1.setSelectedIndex(1);  
-            
+            jTabbedPane1.setSelectedIndex(1);
+
             cine = new CinemaSystem();
             //Conexión con el sistema
             this.conexion();
+            
+            
+            cine.refrescarListaEventos();
+            log.add("= INICIO DE LA SIMULACIÓN =\n");
+            this.refrescarLog();
         } else {
             // Deshabilitar simulación
             btnIniciarSimulacion.setText("Iniciar simulación");
             btnSimulacionCompleta.setEnabled(false);
             btnSiguientePaso.setEnabled(false);
-            
-            jTabbedPane1.setSelectedIndex(2);            
+
+            jTabbedPane1.setSelectedIndex(2);
         }
     }//GEN-LAST:event_btnIniciarSimulacionClick
 
@@ -515,24 +538,25 @@ public class Main extends javax.swing.JFrame {
             cine.run();
 
             obtenerDatos();
-            
+
             if (cine.fin()) {
                 btnIniciarSimulacionClick(evt);
+                log.add("= FIN DE LA SIMULACIÓN =\n");
             }
         }
     }//GEN-LAST:event_btnSimulacionCompletaClick
 
-    private void refrescarLog(){
+    private void refrescarLog() {
         Iterator<String> iterador = log.iterator();
         String texto = "";
-        while(iterador.hasNext()){
-            texto=texto+iterador.next();
+        while (iterador.hasNext()) {
+            texto = texto + iterador.next();
         }
         txtaLog.setText(texto);
-        
+
         //cine.refrescarListaEventos();
     }
-    
+
     private void btnSiguentePasoClick(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSiguentePasoClick
         if (btnSiguientePaso.isEnabled()) {
             cine.temporizacion();
@@ -541,14 +565,22 @@ public class Main extends javax.swing.JFrame {
 
             if (cine.fin()) {
                 btnIniciarSimulacionClick(evt);
+                log.add("= FIN DE LA SIMULACIÓN =\n");
             }
         }
     }//GEN-LAST:event_btnSiguentePasoClick
 
-    private void obtenerDatos(){
+    private void btnLimpiarLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarLogActionPerformed
+        // TODO add your handling code here:
+        this.log.clear();
+    }//GEN-LAST:event_btnLimpiarLogActionPerformed
+
+    private void obtenerDatos() {
         lblReloj.setText(cine.getReloj().getTime());
-        txtaLog.setText(cine.getLog().toString());
-            
+        this.refrescarLog();
+        cine.refrescarListaEventos();
+//        txtaLog.setText(cine.getLog().toString());
+
         txtTamMedioColasTaquilla.setText(cine.tamMedioColasTaquillas().toString());
         txtNumTaquillasOcupadas.setText(cine.numTaquillasOcupadas().toString());
         txtTamMedioColasPuestosPalomitas.setText(cine.tamMedioColasPuestosPalomitas().toString());
@@ -557,7 +589,7 @@ public class Main extends javax.swing.JFrame {
         txtNumMedioAtendidosPuestoPalomitas.setText(cine.numMedioAtendidosPuestoPalomitas().toString());
         txtTiempoMedioEnCola.setText(cine.tiempoMedioCola().toString());
     }
-    
+
     private void conexion() {
         cine.initialize(
                 Integer.parseInt(spnNumTaquillas.getValue().toString()),
@@ -566,8 +598,9 @@ public class Main extends javax.swing.JFrame {
                 Integer.parseInt(spnTiempoServicioTaquillas.getValue().toString()),
                 Integer.parseInt(spnTiempoServicioPalomitas.getValue().toString()),
                 Float.parseFloat(spnProbabilidadCompraEntradas.getValue().toString()),
-                Float.parseFloat(spnProbabilidadCompraPalomitas.getValue().toString())
-        );
+                Float.parseFloat(spnProbabilidadCompraPalomitas.getValue().toString()),
+                this.log,
+                this.modeloTablaSucesos);
         obtenerDatos();
     }
 
@@ -634,16 +667,12 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelEstado;
     private javax.swing.JPanel jPanelLog;
     private javax.swing.JPanel jPanelResultados;
+    private javax.swing.JPanel jPanelTest;
     private javax.swing.JPanel jPanelVariablesEntrada;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPaneListaEventos;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
+    private javax.swing.JTable jTableListaSucesos;
     private javax.swing.JLabel lblReloj;
     private javax.swing.JSpinner spnFrecuenciaClientes;
     private javax.swing.JSpinner spnNumPuestoPalomitas;
