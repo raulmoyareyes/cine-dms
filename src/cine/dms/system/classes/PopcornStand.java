@@ -30,6 +30,9 @@ public class PopcornStand {
 
     ///Cliente sirviéndose
     Client clienteSirviendose;
+    
+    ///Tiempo de clientes en cola
+    private int tiempoClientesCola;
 
     /**
      * Constructor por defecto
@@ -178,5 +181,9 @@ public class PopcornStand {
      */
     public int getId() {
         return id;
+    }
+
+    public void addTiempoClientesCola(int tiempoCola) {
+        this.tiempoClientesCola = tiempoCola;
     }
 }
