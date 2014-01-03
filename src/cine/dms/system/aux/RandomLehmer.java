@@ -87,10 +87,8 @@ public class RandomLehmer {
     /**
      *
      * @return Valor aleatorio entre 0 y m
-     * @throws ExcepcionGeneradorIncorrecto Se lanza cuando el constructor no es
-     * correcto
      */
-    public double getRandom() throws ExcepcionGeneradorIncorrecto {
+    public double getRandom() {
         if (generadorOK) {
             this.anterior = (this.a * this.anterior + this.c) % this.m;
             return this.anterior;
@@ -103,10 +101,8 @@ public class RandomLehmer {
     /**
      *
      * @return Valor aleatorio entre 0 y 1
-     * @throws ExcepcionGeneradorIncorrecto Se lanza cuando el constructor no es
-     * correcto
      */
-    public double getRandomUnidad() throws ExcepcionGeneradorIncorrecto{
+    public double getRandomUnidad() {
         return this.getRandom() / this.m;
     }
 }

@@ -22,6 +22,10 @@ public class TicketOffice {
     ///Clientes servidos
     int clientesServidos;
 
+    ///Tiempo acumulado de espera de los clientes en cola
+    int tiempoClientesCola;
+
+    
     ///Tiempo de servicio
     int tiempoServicio;
 
@@ -49,7 +53,7 @@ public class TicketOffice {
      *
      * @param tiempoServicio Tiempo de servicio
      */
-    public TicketOffice(int tiempoServicio) {
+    public TicketOffice(int tiempoServicioReferenc) {
         id = nexId;
         ++nexId;
         this.estado = 0;
@@ -177,5 +181,21 @@ public class TicketOffice {
      */
     public int getId() {
         return id;
+    }
+    
+    /**
+     * Obtiene el tiempo acumulado de los clientes servidos en cola
+     * @return tiempo de clientes en cola
+     */
+    public int getTiempoClientesCola() {
+        return tiempoClientesCola;
+    }
+
+    /**
+     * Añade el tiempo a la acumulación del resto de tiempos de clientes en cola
+     * @param tiempoClientesCola tiempo para acumular
+     */
+    public void addTiempoClientesCola(int tiempoClientesCola) {
+        this.tiempoClientesCola += tiempoClientesCola;
     }
 }

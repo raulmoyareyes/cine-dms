@@ -8,7 +8,7 @@ package cine.dms.system.exceptions;
  *
  * @author alumno
  */
-public class ExcepcionGeneradorIncorrecto extends Exception {
+public class ExcepcionGeneradorIncorrecto extends RuntimeException {
 
     public ExcepcionGeneradorIncorrecto() {
     }

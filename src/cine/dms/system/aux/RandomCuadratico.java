@@ -18,7 +18,7 @@ public class RandomCuadratico {
     private double m;
     private double reductor;
     private RandomLehmer randomLehmer;
-    
+
     /**
      * Constructor
      *
@@ -30,7 +30,7 @@ public class RandomCuadratico {
         this.a = a;
         this.b = b;
         this.m = m;
-        this.reductor = this.a+this.b;
+        this.reductor = this.a + this.b;
         randomLehmer = new RandomLehmer(0.84641, 0.645, 1);
     }
 
@@ -57,10 +57,8 @@ public class RandomCuadratico {
 
     /**
      * @return Valor aleatorio cuadrático entre 0 y m
-     * @throws ExcepcionGeneradorIncorrecto Se lanza cuando el constructor no es
-     * correcto
      */
-    public double getRandom() throws ExcepcionGeneradorIncorrecto {
+    public double getRandom() {
         Double random = this.randomLehmer.getRandom();
         return ((this.a * random * random) + (this.b * random)) / this.reductor * this.m;
     }

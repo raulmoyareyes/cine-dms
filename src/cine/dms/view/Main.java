@@ -572,7 +572,7 @@ public class Main extends javax.swing.JFrame {
 
             jTabbedPane1.setSelectedIndex(1);
 
-            log.add("= INICIO DE LA SIMULACIÓN =\n");
+            log.add("[08:00:00]\t= INICIO DE LA SIMULACIÓN =\n");
             
             cine = new CinemaSystem();
             //Conexión con el sistema
@@ -597,7 +597,7 @@ public class Main extends javax.swing.JFrame {
 
             if (cine.fin()) {
                 btnIniciarSimulacionClick(evt);
-                log.add("= FIN DE LA SIMULACIÓN =\n");
+                log.add("["+cine.getReloj().getTime()+"]\t= FIN DE LA SIMULACIÓN =\n");
             }
 
             obtenerDatos();
@@ -631,6 +631,7 @@ public class Main extends javax.swing.JFrame {
     private void btnLimpiarLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarLogActionPerformed
         // TODO add your handling code here:
         this.log.clear();
+        this.refrescarLog();
     }//GEN-LAST:event_btnLimpiarLogActionPerformed
 
     private void obtenerDatos() {

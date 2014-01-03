@@ -99,12 +99,12 @@ public class CinemaSystem {
             if (numTaquillas < numPalomitas) {
                 //Hay menos taquillas que puestos de palomitas
                 for (int i = numTaquillas; i < numPalomitas; ++i) {
-                    arraySucesos[0][i]=arraySucesos[1][i]="";
+                    arraySucesos[0][i] = arraySucesos[1][i] = "";
                 }
             } else {
                 //Hay más taquillas que puestos de palomitas
                 for (int i = numPalomitas; i < numTaquillas; ++i) {
-                    arraySucesos[2][i]=arraySucesos[3][i]="";
+                    arraySucesos[2][i] = arraySucesos[3][i] = "";
                 }
             }
         }
@@ -255,7 +255,7 @@ public class CinemaSystem {
     }
 
     private void entradaTicket(TicketOffice taquilla) {
-        log.add("Tipo de suceso: LLEGADATICKET (" + taquilla.getId() + ")\n");
+        log.add("\tTipo de suceso: LLEGADATICKET (" + taquilla.getId() + ")\n");
 
         //Poner la taquilla en estado ocupado
         taquilla.ocupado();
@@ -264,7 +264,7 @@ public class CinemaSystem {
     }
 
     private void salidaTicket(TicketOffice taquilla) {
-        log.add("Tipo de suceso: SALIDATICKET (" + taquilla.getId() + ")\n");
+        log.add("\tTipo de suceso: SALIDATICKET (" + taquilla.getId() + ")\n");
 
         Client clienteServido = taquilla.getClienteSirviendose();
         taquilla.libre();
@@ -275,12 +275,13 @@ public class CinemaSystem {
             taquilla.setClienteSirviendose(cliente);
             this.entradaTicket(taquilla);
         }
-        //Calcular datos estadísticos
 
         //Determinar si compra palomitas o sale del sistema
         if (clienteServido.getPalomitas() != 0) {
             //Compra palomitas
             asignacionPop(clienteServido);
+        } else {
+            taquilla.addTiempoClientesCola(clienteServido.getTiempoCola());
         }
     }
 
@@ -298,7 +299,7 @@ public class CinemaSystem {
 
     private void entradaPop(PopcornStand palomitas) {
         log.add("[" + this.reloj.getTime() + "] ");
-        log.add("Tipo de suceso: LLEGADAPALOMITAS (" + palomitas.getId() + ")\n");
+        log.add("\tTipo de suceso: LLEGADAPALOMITAS (" + palomitas.getId() + ")\n");
 
         //Poner la taquilla en estado ocupado
         palomitas.ocupado();
@@ -307,7 +308,7 @@ public class CinemaSystem {
     }
 
     private void salidaPop(PopcornStand palomitas) {
-        log.add("Tipo de suceso: SALIDAPALOMITAS (" + palomitas.getId() + ")\n");
+        log.add("\tTipo de suceso: SALIDAPALOMITAS (" + palomitas.getId() + ")\n");
 
         Client clienteServido = palomitas.getClienteSirviendose();
         palomitas.libre();
@@ -319,7 +320,7 @@ public class CinemaSystem {
             this.entradaPop(palomitas);
         }
         //Calcular datos estadísticos
-
+        palomitas.addTiempoClientesCola(clienteServido.getTiempoCola());
     }
 
     private void finSimulacion() {
@@ -528,10 +529,9 @@ public class CinemaSystem {
      * Función aleatoria para calcular el número de tickets a comprar (lineal)
      *
      * @return Número de tickets a comprar
-     * @throws ExcepcionGeneradorIncorrecto
      * @warnig Deberia usar el parametro de probabilidad de la interfaz
      */
-    private int numTickets() throws ExcepcionGeneradorIncorrecto {
+    private int numTickets() {
         return (int) (((MAX_ENTRADAS * this.randomLehmer.getRandomUnidad()) % MAX_ENTRADAS) + 1);
     }
 
@@ -539,10 +539,9 @@ public class CinemaSystem {
      * Función aleatoria para calcular cuántas palomitas compra (lineal)
      *
      * @return Número de palomitas que compra [0, MAX_PALOMITAS]
-     * @throws ExcepcionGeneradorIncorrecto
      * @warnig Deberia usar el parametro de probabilidad de la interfaz
      */
-    private int comprarPalomitas() throws ExcepcionGeneradorIncorrecto {
+    private int comprarPalomitas() {
         if (this.randomLehmer.getRandomUnidad() >= 0.5) {
             return 0;
         } else {
@@ -554,10 +553,9 @@ public class CinemaSystem {
      * Función aleatoria para calcular el tiempo de llegada del siguiente
      * cliente (cuadrática)
      *
-     * @throws ExcepcionGeneradorIncorrecto
      * @warnig Deberia usar el parametro de probabilidad de la interfaz
      */
-    private void calculoLlegadaSiguienteCliente() throws ExcepcionGeneradorIncorrecto {
+    private void calculoLlegadaSiguienteCliente() {
         Double aleatorio = this.randomCuadratico.getRandom();
         Integer tiempoLlegada = this.frecuenciaClientes.intValue();
         if (randomLehmer.getRandomUnidad() < 0.5) {
@@ -572,7 +570,7 @@ public class CinemaSystem {
         }
 
         this.sucesos.get(0).set(LLEGADATICKET, this.reloj.getSeconds() + tiempoLlegada);
-        this.log.add("(Siguiente llegada en " + tiempoLlegada.toString() + " segundos) ");
+        this.log.add("\tSiguiente llegada en " + tiempoLlegada.toString() + " segundos (" + this.getTime(this.reloj.getSeconds() + tiempoLlegada) + ")\n");
     }
 
     /**
@@ -583,7 +581,19 @@ public class CinemaSystem {
      * @warnig Deberia usar el parametro de probabilidad de la interfaz
      */
     private void calculoSalidaSiguienteCliente(TicketOffice taquilla) {
-        this.sucesos.get(taquilla.getId()).set(SALIDATICKET, this.reloj.getSeconds() + taquilla.getTiempoServicio());
+        Integer tiempoServicioActual;
+        if (this.randomLehmer.getAnteriorUnidad() < 0.5) {
+            tiempoServicioActual = (int) (taquilla.getTiempoServicio() + this.randomCuadratico.getRandom());
+        } else {
+            tiempoServicioActual = (int) (taquilla.getTiempoServicio() - this.randomCuadratico.getRandom());
+            if (tiempoServicioActual < 1) {
+                tiempoServicioActual = 1;
+            }
+        }
+        this.sucesos.get(taquilla.getId()).set(SALIDATICKET, this.reloj.getSeconds() + tiempoServicioActual);
+
+        //Sacar el log
+        log.add("\tTiempo de servicio en la taquilla " + taquilla.getId() + ": " + tiempoServicioActual + ". Salida prevista: " + this.getTime(this.reloj.getSeconds() + tiempoServicioActual) + "\n");
     }
 
     /**
