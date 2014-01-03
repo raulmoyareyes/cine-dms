@@ -467,11 +467,11 @@ public class CinemaSystem {
         return suma;
     }
 
-    public Float numeroMedioClienteTicket() {
+    public Float totalTamMedioColasTaquillas() {
         return 0.0f;
     }
 
-    public Float numeroMedioClientePalomitas() {
+    public Float totalTamMedioColasPalomitas() {
         return 0.0f;
     }
 
