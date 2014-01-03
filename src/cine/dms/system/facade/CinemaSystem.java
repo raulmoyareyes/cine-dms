@@ -441,7 +441,7 @@ public class CinemaSystem {
     public Float tiempoMedioColasTaquillas() {
         Float tiempoMedio = 0.0f;
         for(TicketOffice taquilla:this.taquillas){
-            tiempoMedio = taquilla.getTiempoClientesCola().floatValue() / taquilla.getClientesServidos().floatValue();
+            tiempoMedio += taquilla.getTiempoClientesCola().floatValue() / taquilla.getClientesServidos().floatValue();
         }
         tiempoMedio = tiempoMedio / this.taquillas.size();
         return tiempoMedio;
@@ -453,9 +453,10 @@ public class CinemaSystem {
     public Float tiempoMedioColasPalomitas() {
         Float tiempoMedio = 0.0f;
         for(PopcornStand palomitas:this.puestosPalomitas){
-            tiempoMedio = palomitas.getTiempoClientesCola().floatValue() / palomitas.getClientesServidos().floatValue();
+            tiempoMedio += palomitas.getTiempoClientesCola().floatValue() / palomitas.getClientesServidos().floatValue();
         }
         tiempoMedio = tiempoMedio / this.puestosPalomitas.size();
+        System.out.println(tiempoMedio);
         return tiempoMedio;
     }
 

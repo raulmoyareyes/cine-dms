@@ -92,7 +92,9 @@ public class Main extends javax.swing.JFrame {
         txtTamMedioColasPalomitas = new javax.swing.JTextField();
         txtOcupacionTaquillas = new javax.swing.JTextField();
         txtOcupacionPalomitas = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
+        txtTiempoMedioColaTaquillaTotal = new javax.swing.JTextField();
+        txtTiempoMedioColaPalomitasTotal = new javax.swing.JTextField();
+        jLabel27 = new javax.swing.JLabel();
         jPanelLog = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtaLog = new javax.swing.JTextArea();
@@ -303,7 +305,7 @@ public class Main extends javax.swing.JFrame {
 
         txtTiempoMedioColaPalomitas.setText("0");
 
-        jLabel26.setText("Tiempo medio en cola para n clientes en palomitas");
+        jLabel26.setText("Tiempo medio en cola para n clientes en puestos de palomitas");
 
         javax.swing.GroupLayout jPanelEstadoLayout = new javax.swing.GroupLayout(jPanelEstado);
         jPanelEstado.setLayout(jPanelEstadoLayout);
@@ -384,7 +386,7 @@ public class Main extends javax.swing.JFrame {
 
         jLabel22.setText("Grado de ocupación de los puesto de las palomitas");
 
-        jLabel23.setText("Tiempo medio en cola para n clientes");
+        jLabel23.setText("Tiempo medio en cola para n clientes en taquillas");
 
         txtAtendidosTaquilla.setText("0");
 
@@ -398,15 +400,23 @@ public class Main extends javax.swing.JFrame {
 
         txtOcupacionPalomitas.setText("0");
 
-        jTextField7.setText("0");
+        txtTiempoMedioColaTaquillaTotal.setText("0");
+
+        txtTiempoMedioColaPalomitasTotal.setText("0");
+
+        jLabel27.setText("Tiempo medio en cola para n clientes en puestos de palomitas");
 
         javax.swing.GroupLayout jPanelResultadosLayout = new javax.swing.GroupLayout(jPanelResultados);
         jPanelResultados.setLayout(jPanelResultadosLayout);
         jPanelResultadosLayout.setHorizontalGroup(
             jPanelResultadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelResultadosLayout.createSequentialGroup()
-                .addContainerGap(83, Short.MAX_VALUE)
+                .addContainerGap(66, Short.MAX_VALUE)
                 .addGroup(jPanelResultadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanelResultadosLayout.createSequentialGroup()
+                        .addComponent(jLabel27)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtTiempoMedioColaPalomitasTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanelResultadosLayout.createSequentialGroup()
                         .addComponent(jLabel18)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -427,7 +437,7 @@ public class Main extends javax.swing.JFrame {
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelResultadosLayout.createSequentialGroup()
                             .addComponent(jLabel23)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtTiempoMedioColaTaquillaTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanelResultadosLayout.createSequentialGroup()
                             .addGap(60, 60, 60)
                             .addComponent(jLabel17)
@@ -437,7 +447,7 @@ public class Main extends javax.swing.JFrame {
                         .addComponent(jLabel21)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtOcupacionTaquillas, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(133, Short.MAX_VALUE))
+                .addContainerGap(115, Short.MAX_VALUE))
         );
         jPanelResultadosLayout.setVerticalGroup(
             jPanelResultadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -469,8 +479,12 @@ public class Main extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanelResultadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel23)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(144, Short.MAX_VALUE))
+                    .addComponent(txtTiempoMedioColaTaquillaTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanelResultadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtTiempoMedioColaPalomitasTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel27))
+                .addContainerGap(105, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Análisis de resultados", jPanelResultados);
@@ -657,8 +671,8 @@ public class Main extends javax.swing.JFrame {
         txtNumPuestosPalomitasOcupados.setText(cine.numPuestosPalomitasOcupados().toString());
         txtNumMedioAtendidosTaquilla.setText(cine.numMedioAtendidosTaquilla().toString());
         txtNumMedioAtendidosPuestoPalomitas.setText(cine.numMedioAtendidosPuestoPalomitas().toString());
-        txtTiempoMedioColaTaquilla.setText(null);
-        txtTiempoMedioColaPalomitas.setText(null);
+        txtTiempoMedioColaTaquilla.setText(cine.tiempoMedioColasTaquillas().toString());
+        txtTiempoMedioColaPalomitas.setText(cine.tiempoMedioColasPalomitas().toString());
 
         txtAtendidosTaquilla.setText(cine.totalPersonasAtendidasTicket().toString());
         txtAtendidasPalomitas.setText(cine.totalPersonasAtendidasPalomitas().toString());
@@ -666,6 +680,8 @@ public class Main extends javax.swing.JFrame {
         txtTamMedioColasPalomitas.setText(cine.totalTamMedioColasPalomitas().toString());
         txtOcupacionTaquillas.setText(cine.gradoOcupacionTicket().toString());
         txtOcupacionPalomitas.setText(cine.gradoOcupacionPalomitas().toString());
+        txtTiempoMedioColaTaquillaTotal.setText(null);
+        txtTiempoMedioColaPalomitasTotal.setText(null);
         
     }
 
@@ -736,6 +752,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -753,7 +770,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTableListaSucesos;
-    private javax.swing.JTextField jTextField7;
     private javax.swing.JLabel lblReloj;
     private javax.swing.JSpinner spnFrecuenciaClientes;
     private javax.swing.JSpinner spnNumPuestoPalomitas;
@@ -775,7 +791,9 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextField txtTamMedioColasTaquilla;
     private javax.swing.JTextField txtTamMedioColasTaquillas;
     private javax.swing.JTextField txtTiempoMedioColaPalomitas;
+    private javax.swing.JTextField txtTiempoMedioColaPalomitasTotal;
     private javax.swing.JTextField txtTiempoMedioColaTaquilla;
+    private javax.swing.JTextField txtTiempoMedioColaTaquillaTotal;
     private javax.swing.JTextArea txtaLog;
     // End of variables declaration//GEN-END:variables
 
