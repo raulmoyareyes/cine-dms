@@ -14,6 +14,12 @@ public class Client {
     /// Número de bolsas de palomitas que va a comprar
     private int palomitas;
 
+    /// Tiempo de llegada a la cola
+    private int tiempoLlegadaCola;
+
+    /// Tiempo de salida a la cola
+    private int tiempoSalidaCola;
+
     /**
      * Constructor con todos los parámetros.
      *
@@ -45,4 +51,15 @@ public class Client {
         return palomitas;
     }
 
+    public int getTiempoCola() {
+        return tiempoSalidaCola - tiempoLlegadaCola;
+    }
+
+    public void setTiempoLlegadaCola(int tiempoLlegadaCola) {
+        this.tiempoLlegadaCola = tiempoLlegadaCola;
+    }
+
+    public void setTiempoSalidaCola(int tiempoSalidaCola) {
+        this.tiempoSalidaCola = tiempoSalidaCola;
+    }
 }

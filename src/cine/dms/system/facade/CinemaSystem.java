@@ -253,12 +253,13 @@ public class CinemaSystem {
             taquilla.setClienteSirviendose(cliente);
             this.entradaTicket(taquilla);
         }
-        //Calcular datos estadísticos
 
         //Determinar si compra palomitas o sale del sistema
         if (clienteServido.getPalomitas() != 0) {
             //Compra palomitas
             asignacionPop(clienteServido);
+        } else{
+            taquilla.addTiempoClientesCola(clienteServido.getTiempoCola());
         }
     }
 
@@ -297,7 +298,7 @@ public class CinemaSystem {
             this.entradaPop(palomitas);
         }
         //Calcular datos estadísticos
-
+        palomitas.addTiempoClientesCola(clienteServido.getTiempoCola());
     }
 
     private void finSimulacion() {
