@@ -73,9 +73,11 @@ public class Main extends javax.swing.JFrame {
         jLabel16 = new javax.swing.JLabel();
         txtNumMedioAtendidosPuestoPalomitas = new javax.swing.JTextField();
         jLabel24 = new javax.swing.JLabel();
-        txtTiempoMedioEnCola = new javax.swing.JTextField();
+        txtTiempoMedioColaTaquilla = new javax.swing.JTextField();
         txtTamMedioColasPuestosPalomitas = new javax.swing.JTextField();
         jLabel25 = new javax.swing.JLabel();
+        txtTiempoMedioColaPalomitas = new javax.swing.JTextField();
+        jLabel26 = new javax.swing.JLabel();
         jPanelResultados = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
@@ -290,14 +292,18 @@ public class Main extends javax.swing.JFrame {
 
         txtNumMedioAtendidosPuestoPalomitas.setText("0");
 
-        jLabel24.setText("Tiempo medio en cola para n clientes");
+        jLabel24.setText("Tiempo medio en cola para n clientes en taquillas");
 
-        txtTiempoMedioEnCola.setText("0");
+        txtTiempoMedioColaTaquilla.setText("0");
 
         txtTamMedioColasPuestosPalomitas.setText("0");
         txtTamMedioColasPuestosPalomitas.setToolTipText("");
 
         jLabel25.setText("Tamaño medio de las colas de los puestos de palomitas");
+
+        txtTiempoMedioColaPalomitas.setText("0");
+
+        jLabel26.setText("Tiempo medio en cola para n clientes en palomitas");
 
         javax.swing.GroupLayout jPanelEstadoLayout = new javax.swing.GroupLayout(jPanelEstado);
         jPanelEstado.setLayout(jPanelEstadoLayout);
@@ -305,14 +311,15 @@ public class Main extends javax.swing.JFrame {
             jPanelEstadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelEstadoLayout.createSequentialGroup()
                 .addContainerGap(38, Short.MAX_VALUE)
-                .addGroup(jPanelEstadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel24)
-                    .addComponent(jLabel16)
-                    .addComponent(jLabel15)
-                    .addComponent(jLabel14)
-                    .addComponent(jLabel13)
-                    .addComponent(jLabel12)
-                    .addComponent(jLabel25))
+                .addGroup(jPanelEstadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel24, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel16, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel25, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel26, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelEstadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(txtTamMedioColasPuestosPalomitas)
@@ -321,7 +328,8 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(txtNumPuestosPalomitasOcupados, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtNumMedioAtendidosTaquilla, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtNumMedioAtendidosPuestoPalomitas, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtTiempoMedioEnCola, javax.swing.GroupLayout.Alignment.LEADING))
+                    .addComponent(txtTiempoMedioColaTaquilla, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtTiempoMedioColaPalomitas, javax.swing.GroupLayout.Alignment.LEADING))
                 .addContainerGap(140, Short.MAX_VALUE))
         );
         jPanelEstadoLayout.setVerticalGroup(
@@ -354,8 +362,12 @@ public class Main extends javax.swing.JFrame {
                 .addGap(12, 12, 12)
                 .addGroup(jPanelEstadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel24)
-                    .addComponent(txtTiempoMedioEnCola, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(144, Short.MAX_VALUE))
+                    .addComponent(txtTiempoMedioColaTaquilla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanelEstadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtTiempoMedioColaPalomitas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel26))
+                .addContainerGap(105, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Estado de la simulación", jPanelEstado);
@@ -645,12 +657,13 @@ public class Main extends javax.swing.JFrame {
         txtNumPuestosPalomitasOcupados.setText(cine.numPuestosPalomitasOcupados().toString());
         txtNumMedioAtendidosTaquilla.setText(cine.numMedioAtendidosTaquilla().toString());
         txtNumMedioAtendidosPuestoPalomitas.setText(cine.numMedioAtendidosPuestoPalomitas().toString());
-        txtTiempoMedioEnCola.setText(cine.tiempoMedioCola().toString());
+        txtTiempoMedioColaTaquilla.setText(null);
+        txtTiempoMedioColaPalomitas.setText(null);
 
-        txtAtendidosTaquilla.setText(cine.numMedioAtendidosTaquilla().toString());
-        txtAtendidasPalomitas.setText(cine.numMedioAtendidosPuestoPalomitas().toString());
-        txtTamMedioColasTaquillas.setText(null);
-        txtTamMedioColasPalomitas.setText(null);
+        txtAtendidosTaquilla.setText(cine.totalPersonasAtendidasTicket().toString());
+        txtAtendidasPalomitas.setText(cine.totalPersonasAtendidasPalomitas().toString());
+        txtTamMedioColasTaquillas.setText(cine.totalTamMedioColasTaquillas().toString());
+        txtTamMedioColasPalomitas.setText(cine.totalTamMedioColasPalomitas().toString());
         txtOcupacionTaquillas.setText(cine.gradoOcupacionTicket().toString());
         txtOcupacionPalomitas.setText(cine.gradoOcupacionPalomitas().toString());
         
@@ -722,6 +735,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -760,7 +774,8 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextField txtTamMedioColasPuestosPalomitas;
     private javax.swing.JTextField txtTamMedioColasTaquilla;
     private javax.swing.JTextField txtTamMedioColasTaquillas;
-    private javax.swing.JTextField txtTiempoMedioEnCola;
+    private javax.swing.JTextField txtTiempoMedioColaPalomitas;
+    private javax.swing.JTextField txtTiempoMedioColaTaquilla;
     private javax.swing.JTextArea txtaLog;
     // End of variables declaration//GEN-END:variables
 
