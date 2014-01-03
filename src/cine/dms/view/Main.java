@@ -193,13 +193,13 @@ public class Main extends javax.swing.JFrame {
         jLabel10.setText("Probabilidad de compra múltiple de entradas");
         jLabel10.setPreferredSize(null);
 
-        spnProbabilidadCompraEntradas.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(0.05f), Float.valueOf(0.05f), Float.valueOf(1.0f), Float.valueOf(0.05f)));
+        spnProbabilidadCompraEntradas.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(0.5f), Float.valueOf(0.0f), Float.valueOf(1.0f), Float.valueOf(0.05f)));
 
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel11.setText("Probabilidad de compra de palomitas");
         jLabel11.setPreferredSize(null);
 
-        spnProbabilidadCompraPalomitas.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(0.05f), Float.valueOf(0.05f), Float.valueOf(1.0f), Float.valueOf(0.05f)));
+        spnProbabilidadCompraPalomitas.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(0.5f), Float.valueOf(0.0f), Float.valueOf(1.0f), Float.valueOf(0.05f)));
 
         spnNumPuestoPalomitas.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(3), Integer.valueOf(1), null, Integer.valueOf(1)));
 
@@ -579,8 +579,8 @@ public class Main extends javax.swing.JFrame {
             this.conexion();
             
             
-            cine.refrescarListaEventos();
             this.refrescarLog();
+            cine.refrescarListaEventos();
         } else {
             // Deshabilitar simulación
             btnIniciarSimulacion.setText("Iniciar simulación");
@@ -632,6 +632,7 @@ public class Main extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.log.clear();
         this.refrescarLog();
+        cine.refrescarListaEventos();
     }//GEN-LAST:event_btnLimpiarLogActionPerformed
 
     private void obtenerDatos() {

@@ -53,7 +53,7 @@ public class TicketOffice {
      *
      * @param tiempoServicio Tiempo de servicio
      */
-    public TicketOffice(int tiempoServicioReferenc) {
+    public TicketOffice(int tiempoServicio) {
         id = nexId;
         ++nexId;
         this.estado = 0;

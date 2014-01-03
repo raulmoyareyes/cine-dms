@@ -235,6 +235,7 @@ public class CinemaSystem {
 
         //Asignarle una cola
         this.asignacionTicket(cliente);
+        
     }
 
     /**
@@ -243,14 +244,17 @@ public class CinemaSystem {
      * @param cliente
      */
     private void asignacionTicket(Client cliente) {
-
+        
+        log.add("\tNúmero de tickets que va a comprar = " + cliente.getNumTicket() + "\n");
         TicketOffice taquilla = this.getTaquillaMenosOcupada();
 
         if (taquilla.isLibre()) { //Servidor libre
             taquilla.setClienteSirviendose(cliente);
             this.entradaTicket(taquilla);
+            log.add("\tEntra directamente a taquilla " + taquilla.getId() + "\n");
         } else { //Servidor ocupado
             taquilla.addClienteEnCola(cliente);
+            log.add("\tSe pone en cola en taquilla " + taquilla.getId() + " (tamaño cola: " + taquilla.getColaSize() + ")\n");
         }
     }
 
@@ -272,15 +276,20 @@ public class CinemaSystem {
 
         if (taquilla.getColaSize() != 0) { //La cola tiene clientes
             Client cliente = taquilla.getSiguienteCliente();
+            log.add("\tEntra siguiente cliente en cola de la taquilla (" + taquilla.getId() + ")\n");
             taquilla.setClienteSirviendose(cliente);
             this.entradaTicket(taquilla);
         }
+        //Actualizar lista de sucesos
+        this.sucesos.get(taquilla.getId()).set(SALIDATICKET, INFINITO);
 
         //Determinar si compra palomitas o sale del sistema
         if (clienteServido.getPalomitas() != 0) {
             //Compra palomitas
+            log.add("\tVa a comprar palomitas (" + clienteServido.getPalomitas() + ")\n");
             asignacionPop(clienteServido);
         } else {
+            log.add("\tNo va a comprar palomitas\n");
             taquilla.addTiempoClientesCola(clienteServido.getTiempoCola());
         }
     }
@@ -319,6 +328,8 @@ public class CinemaSystem {
             palomitas.setClienteSirviendose(cliente);
             this.entradaPop(palomitas);
         }
+        //Actualizar lista de sucesos
+        this.sucesos.get(palomitas.getId()).set(SALIDAPALOMITAS, INFINITO);
         //Calcular datos estadísticos
         palomitas.addTiempoClientesCola(clienteServido.getTiempoCola());
     }
@@ -532,20 +543,23 @@ public class CinemaSystem {
      * @warnig Deberia usar el parametro de probabilidad de la interfaz
      */
     private int numTickets() {
-        return (int) (((MAX_ENTRADAS * this.randomLehmer.getRandomUnidad()) % MAX_ENTRADAS) + 1);
+        if (this.randomLehmer.getRandomUnidad() >= this.probabilidadTicketMultiple) {
+            return 1;
+        } else {
+            return (int) (((this.randomCuadratico.getRandom()) % MAX_ENTRADAS) + 1);
+        }
     }
 
     /**
      * Función aleatoria para calcular cuántas palomitas compra (lineal)
      *
      * @return Número de palomitas que compra [0, MAX_PALOMITAS]
-     * @warnig Deberia usar el parametro de probabilidad de la interfaz
      */
     private int comprarPalomitas() {
-        if (this.randomLehmer.getRandomUnidad() >= 0.5) {
+        if (this.randomLehmer.getRandomUnidad() >= this.probabilidadPalomitas) {
             return 0;
         } else {
-            return (int) (((MAX_PALOMITAS * this.randomLehmer.getRandom()) % MAX_PALOMITAS) + 1);
+            return (int) (((this.randomCuadratico.getRandom()) % MAX_PALOMITAS) + 1);
         }
     }
 
@@ -578,7 +592,6 @@ public class CinemaSystem {
      * cliente (lineal)
      *
      * @param taquilla
-     * @warnig Deberia usar el parametro de probabilidad de la interfaz
      */
     private void calculoSalidaSiguienteCliente(TicketOffice taquilla) {
         Integer tiempoServicioActual;
@@ -593,7 +606,7 @@ public class CinemaSystem {
         this.sucesos.get(taquilla.getId()).set(SALIDATICKET, this.reloj.getSeconds() + tiempoServicioActual);
 
         //Sacar el log
-        log.add("\tTiempo de servicio en la taquilla " + taquilla.getId() + ": " + tiempoServicioActual + ". Salida prevista: " + this.getTime(this.reloj.getSeconds() + tiempoServicioActual) + "\n");
+        log.add("\tTiempo de servicio en la taquilla " + taquilla.getId() + ": " + tiempoServicioActual + ". Salida prevista: " + this.getTime(this.reloj.getSeconds() + tiempoServicioActual) + " (en caso de entrar ahora)\n");
     }
 
     /**
@@ -605,7 +618,20 @@ public class CinemaSystem {
      * @warnig no testeada
      */
     private void calculoSalidaSiguienteCliente(PopcornStand palomitas) {
-        this.sucesos.get(palomitas.getId()).set(SALIDAPALOMITAS, this.reloj.getSeconds() + palomitas.getTiempoServicio());
+        //this.sucesos.get(palomitas.getId()).set(SALIDAPALOMITAS, this.reloj.getSeconds() + palomitas.getTiempoServicio());
+        Integer tiempoServicioActual;
+        if (this.randomLehmer.getAnteriorUnidad() < 0.5) {
+            tiempoServicioActual = (int) (palomitas.getTiempoServicio() + this.randomCuadratico.getRandom());
+        } else {
+            tiempoServicioActual = (int) (palomitas.getTiempoServicio() - this.randomCuadratico.getRandom());
+            if (tiempoServicioActual < 1) {
+                tiempoServicioActual = 1;
+            }
+        }
+        this.sucesos.get(palomitas.getId()).set(SALIDAPALOMITAS, this.reloj.getSeconds() + tiempoServicioActual);
+
+        //Sacar el log
+        log.add("\tTiempo de servicio en el puesto de palomitas " + palomitas.getId() + ": " + tiempoServicioActual + ". Salida prevista: " + this.getTime(this.reloj.getSeconds() + tiempoServicioActual) + " (en caso de entrar ahora)\n");
     }
 
     public List<List<Integer>> getListaSucesos() {
