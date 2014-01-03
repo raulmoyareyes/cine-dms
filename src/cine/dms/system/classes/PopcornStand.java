@@ -91,7 +91,7 @@ public class PopcornStand {
      *
      * @return Número de clientes servidos
      */
-    public int getClientesServidos() {
+    public Integer getClientesServidos() {
         return clientesServidos;
     }
 
@@ -109,6 +109,14 @@ public class PopcornStand {
      */
     public int getTiempoServicio() {
         return tiempoServicio;
+    }
+    
+    /**
+     * Obtiene el tiempo acumulado de los clientes servidos en cola
+     * @return tiempo de clientes en cola
+     */
+    public Integer getTiempoClientesCola() {
+        return tiempoClientesCola;
     }
 
     /**

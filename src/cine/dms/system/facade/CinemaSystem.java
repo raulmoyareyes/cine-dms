@@ -436,13 +436,27 @@ public class CinemaSystem {
     }
 
     /**
-     * Devuelve el tiempo medio que los clientes están en una cola.
-     *
-     * @return Tiempo medio de clientes en cola
-     * @warning no implementado
+     * @return Tiempo medio en cola para n clientes en las taquillas
      */
-    public Integer tiempoMedioCola() {
-        return 0;
+    public Float tiempoMedioColasTaquillas() {
+        Float tiempoMedio = 0.0f;
+        for(TicketOffice taquilla:this.taquillas){
+            tiempoMedio = taquilla.getTiempoClientesCola().floatValue() / taquilla.getClientesServidos().floatValue();
+        }
+        tiempoMedio = tiempoMedio / this.taquillas.size();
+        return tiempoMedio;
+    }
+
+    /**
+     * @return Tiempo medio en cola para n clientes en los puestos de palomitas
+     */
+    public Float tiempoMedioColasPalomitas() {
+        Float tiempoMedio = 0.0f;
+        for(PopcornStand palomitas:this.puestosPalomitas){
+            tiempoMedio = palomitas.getTiempoClientesCola().floatValue() / palomitas.getClientesServidos().floatValue();
+        }
+        tiempoMedio = tiempoMedio / this.puestosPalomitas.size();
+        return tiempoMedio;
     }
 
     /**

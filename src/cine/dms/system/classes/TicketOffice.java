@@ -91,7 +91,7 @@ public class TicketOffice {
      *
      * @return Número de clientes servidos
      */
-    public int getClientesServidos() {
+    public Integer getClientesServidos() {
         return clientesServidos;
     }
 
@@ -187,7 +187,7 @@ public class TicketOffice {
      * Obtiene el tiempo acumulado de los clientes servidos en cola
      * @return tiempo de clientes en cola
      */
-    public int getTiempoClientesCola() {
+    public Integer getTiempoClientesCola() {
         return tiempoClientesCola;
     }
 
