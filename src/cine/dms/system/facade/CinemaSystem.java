@@ -440,8 +440,8 @@ public class CinemaSystem {
      */
     public Float tiempoMedioColasTaquillas() {
         Float tiempoMedio = 0.0f;
-        for(TicketOffice taquilla:this.taquillas){
-            tiempoMedio += taquilla.getTiempoClientesCola().floatValue() / taquilla.getClientesServidos().floatValue();
+        for (TicketOffice taquilla : this.taquillas) {
+            tiempoMedio += taquilla.getTiempoClientesCola() / taquilla.getClientesServidos();
         }
         tiempoMedio = tiempoMedio / this.taquillas.size();
         return tiempoMedio;
@@ -452,11 +452,10 @@ public class CinemaSystem {
      */
     public Float tiempoMedioColasPalomitas() {
         Float tiempoMedio = 0.0f;
-        for(PopcornStand palomitas:this.puestosPalomitas){
-            tiempoMedio += palomitas.getTiempoClientesCola().floatValue() / palomitas.getClientesServidos().floatValue();
+        for (PopcornStand palomitas : this.puestosPalomitas) {
+            tiempoMedio += palomitas.getTiempoClientesCola() / palomitas.getClientesServidos();
         }
         tiempoMedio = tiempoMedio / this.puestosPalomitas.size();
-        System.out.println(tiempoMedio);
         return tiempoMedio;
     }
 
@@ -465,8 +464,8 @@ public class CinemaSystem {
      */
     public Integer totalPersonasAtendidasTicket() {
         Integer suma = 0;
-        for(TicketOffice taquilla:this.taquillas){
-            suma+=taquilla.getClientesServidos();
+        for (TicketOffice taquilla : this.taquillas) {
+            suma += taquilla.getClientesServidos();
         }
         return suma;
     }
@@ -476,8 +475,8 @@ public class CinemaSystem {
      */
     public Integer totalPersonasAtendidasPalomitas() {
         Integer suma = 0;
-        for(PopcornStand palomitas:this.puestosPalomitas){
-            suma+=palomitas.getClientesServidos();
+        for (PopcornStand palomitas : this.puestosPalomitas) {
+            suma += palomitas.getClientesServidos();
         }
         return suma;
     }
@@ -495,8 +494,8 @@ public class CinemaSystem {
      */
     public Float gradoOcupacionTicket() {
         Integer totalOcupadas = 0;
-        for(TicketOffice taquilla:this.taquillas){
-            if(!taquilla.isLibre()){
+        for (TicketOffice taquilla : this.taquillas) {
+            if (!taquilla.isLibre()) {
                 ++totalOcupadas;
             }
         }
@@ -509,8 +508,8 @@ public class CinemaSystem {
      */
     public Float gradoOcupacionPalomitas() {
         Integer totalOcupadas = 0;
-        for(PopcornStand taquilla:this.puestosPalomitas){
-            if(!taquilla.isLibre()){
+        for (PopcornStand taquilla : this.puestosPalomitas) {
+            if (!taquilla.isLibre()) {
                 ++totalOcupadas;
             }
         }
