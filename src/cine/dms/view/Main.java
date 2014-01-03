@@ -230,7 +230,7 @@ public class Main extends javax.swing.JFrame {
                     .addGroup(jPanelVariablesEntradaLayout.createSequentialGroup()
                         .addGap(12, 12, 12)
                         .addComponent(jLabel5)))
-                .addContainerGap(265, Short.MAX_VALUE))
+                .addContainerGap(301, Short.MAX_VALUE))
         );
         jPanelVariablesEntradaLayout.setVerticalGroup(
             jPanelVariablesEntradaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

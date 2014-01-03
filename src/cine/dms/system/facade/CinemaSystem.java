@@ -48,8 +48,8 @@ public class CinemaSystem {
     /// Puestos de palomitas
     private List<PopcornStand> puestosPalomitas;
     private Float frecuenciaClientes;
-    private Integer tiempoServicioTaquilla;
-    private Integer tiempoServicioPalomitas;
+//    private Integer tiempoServicioTaquilla;
+//    private Integer tiempoServicioPalomitas;
     private Float probabilidadTicketMultiple;
     private Float probabilidadPalomitas;
     /// Lista de sucesos (0 - llegada, 1 - salida, 2 - fin)
@@ -155,8 +155,8 @@ public class CinemaSystem {
         this.frecuenciaClientes = frecuenciaClientes;
         this.probabilidadPalomitas = probabilidadPalomitas;
         this.probabilidadTicketMultiple = probabilidadTicketMultiple;
-        this.tiempoServicioPalomitas = tiempoServicioPalomitas;
-        this.tiempoServicioTaquilla = tiempoServicioTaquilla;
+//        this.tiempoServicioPalomitas = tiempoServicioPalomitas;
+//        this.tiempoServicioTaquilla = tiempoServicioTaquilla;
 
         //Sucesos medidos en segundos
         this.sucesos = new ArrayList();
@@ -235,7 +235,7 @@ public class CinemaSystem {
 
         //Asignarle una cola
         this.asignacionTicket(cliente);
-        
+
     }
 
     /**
@@ -244,7 +244,7 @@ public class CinemaSystem {
      * @param cliente
      */
     private void asignacionTicket(Client cliente) {
-        
+
         log.add("\tNúmero de tickets que va a comprar = " + cliente.getNumTicket() + "\n");
         TicketOffice taquilla = this.getTaquillaMenosOcupada();
 
@@ -279,9 +279,10 @@ public class CinemaSystem {
             log.add("\tEntra siguiente cliente en cola de la taquilla (" + taquilla.getId() + ")\n");
             taquilla.setClienteSirviendose(cliente);
             this.entradaTicket(taquilla);
+        } else {
+            //Actualizar lista de sucesos
+            this.sucesos.get(taquilla.getId()).set(SALIDATICKET, INFINITO);
         }
-        //Actualizar lista de sucesos
-        this.sucesos.get(taquilla.getId()).set(SALIDATICKET, INFINITO);
 
         //Determinar si compra palomitas o sale del sistema
         if (clienteServido.getPalomitas() != 0) {
@@ -327,9 +328,10 @@ public class CinemaSystem {
             Client cliente = palomitas.getSiguienteCliente();
             palomitas.setClienteSirviendose(cliente);
             this.entradaPop(palomitas);
+        } else {
+            //Actualizar lista de sucesos
+            this.sucesos.get(palomitas.getId()).set(SALIDAPALOMITAS, INFINITO);
         }
-        //Actualizar lista de sucesos
-        this.sucesos.get(palomitas.getId()).set(SALIDAPALOMITAS, INFINITO);
         //Calcular datos estadísticos
         palomitas.addTiempoClientesCola(clienteServido.getTiempoCola());
     }
