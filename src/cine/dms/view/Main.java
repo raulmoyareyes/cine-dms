@@ -84,12 +84,12 @@ public class Main extends javax.swing.JFrame {
         jLabel21 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
+        txtAtendidosTaquilla = new javax.swing.JTextField();
+        txtAtendidasPalomitas = new javax.swing.JTextField();
+        txtTamMedioColasTaquillas = new javax.swing.JTextField();
+        txtTamMedioColasPalomitas = new javax.swing.JTextField();
+        txtOcupacionTaquillas = new javax.swing.JTextField();
+        txtOcupacionPalomitas = new javax.swing.JTextField();
         jTextField7 = new javax.swing.JTextField();
         jPanelLog = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -364,9 +364,9 @@ public class Main extends javax.swing.JFrame {
 
         jLabel18.setText("Total de personas atendidas en puestos de palomitas");
 
-        jLabel19.setText("Número medio de clientes en taquillas");
+        jLabel19.setText("Tamaño medio de las colas de las Taquillas");
 
-        jLabel20.setText("Número medio de clientes en puestos de palomitas");
+        jLabel20.setText("Tamaño medio de las colas de los puestos de palomitas");
 
         jLabel21.setText("Grado de ocupación de las taquillas");
 
@@ -374,17 +374,17 @@ public class Main extends javax.swing.JFrame {
 
         jLabel23.setText("Tiempo medio en cola para n clientes");
 
-        jTextField1.setText("0");
+        txtAtendidosTaquilla.setText("0");
 
-        jTextField2.setText("0");
+        txtAtendidasPalomitas.setText("0");
 
-        jTextField3.setText("0");
+        txtTamMedioColasTaquillas.setText("0");
 
-        jTextField4.setText("0");
+        txtTamMedioColasPalomitas.setText("0");
 
-        jTextField5.setText("0");
+        txtOcupacionTaquillas.setText("0");
 
-        jTextField6.setText("0");
+        txtOcupacionPalomitas.setText("0");
 
         jTextField7.setText("0");
 
@@ -393,12 +393,12 @@ public class Main extends javax.swing.JFrame {
         jPanelResultadosLayout.setHorizontalGroup(
             jPanelResultadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelResultadosLayout.createSequentialGroup()
-                .addContainerGap(90, Short.MAX_VALUE)
+                .addContainerGap(83, Short.MAX_VALUE)
                 .addGroup(jPanelResultadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanelResultadosLayout.createSequentialGroup()
                         .addComponent(jLabel18)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtAtendidasPalomitas, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanelResultadosLayout.createSequentialGroup()
                         .addGroup(jPanelResultadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel19, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -406,11 +406,11 @@ public class Main extends javax.swing.JFrame {
                             .addComponent(jLabel22, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanelResultadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtTamMedioColasTaquillas, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtTamMedioColasPalomitas, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelResultadosLayout.createSequentialGroup()
                                 .addGap(1, 1, 1)
-                                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(txtOcupacionPalomitas, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanelResultadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelResultadosLayout.createSequentialGroup()
                             .addComponent(jLabel23)
@@ -420,12 +420,12 @@ public class Main extends javax.swing.JFrame {
                             .addGap(60, 60, 60)
                             .addComponent(jLabel17)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtAtendidosTaquilla, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanelResultadosLayout.createSequentialGroup()
                         .addComponent(jLabel21)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(140, Short.MAX_VALUE))
+                        .addComponent(txtOcupacionTaquillas, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(133, Short.MAX_VALUE))
         );
         jPanelResultadosLayout.setVerticalGroup(
             jPanelResultadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -433,27 +433,27 @@ public class Main extends javax.swing.JFrame {
                 .addGap(30, 30, 30)
                 .addGroup(jPanelResultadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel17)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtAtendidosTaquilla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(12, 12, 12)
                 .addGroup(jPanelResultadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel18)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtAtendidasPalomitas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanelResultadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel19)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTamMedioColasTaquillas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(12, 12, 12)
-                .addGroup(jPanelResultadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanelResultadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtTamMedioColasPalomitas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel20))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanelResultadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel21)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtOcupacionTaquillas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanelResultadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel22)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtOcupacionPalomitas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanelResultadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel23)
@@ -572,12 +572,11 @@ public class Main extends javax.swing.JFrame {
             jTabbedPane1.setSelectedIndex(1);
 
             log.add("[08:00:00]\t= INICIO DE LA SIMULACIÓN =\n");
-            
+
             cine = new CinemaSystem();
             //Conexión con el sistema
             this.conexion();
-            
-            
+
             this.refrescarLog();
             cine.refrescarListaEventos();
         } else {
@@ -596,7 +595,7 @@ public class Main extends javax.swing.JFrame {
 
             if (cine.fin()) {
                 btnIniciarSimulacionClick(evt);
-                log.add("["+cine.getReloj().getTime()+"]\t= FIN DE LA SIMULACIÓN =\n");
+                log.add("[" + cine.getReloj().getTime() + "]\t= FIN DE LA SIMULACIÓN =\n");
             }
 
             obtenerDatos();
@@ -647,7 +646,13 @@ public class Main extends javax.swing.JFrame {
         txtNumMedioAtendidosTaquilla.setText(cine.numMedioAtendidosTaquilla().toString());
         txtNumMedioAtendidosPuestoPalomitas.setText(cine.numMedioAtendidosPuestoPalomitas().toString());
         txtTiempoMedioEnCola.setText(cine.tiempoMedioCola().toString());
-        
+
+        txtAtendidosTaquilla.setText(cine.numMedioAtendidosTaquilla().toString());
+        txtAtendidasPalomitas.setText(cine.numMedioAtendidosPuestoPalomitas().toString());
+        txtTamMedioColasTaquillas.setText(null);
+        txtTamMedioColasPalomitas.setText(null);
+        txtOcupacionTaquillas.setText(cine.gradoOcupacionTicket().toString());
+        txtOcupacionPalomitas.setText(cine.gradoOcupacionPalomitas().toString());
         
     }
 
@@ -734,12 +739,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTableListaSucesos;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
     private javax.swing.JLabel lblReloj;
     private javax.swing.JSpinner spnFrecuenciaClientes;
@@ -749,12 +748,18 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JSpinner spnProbabilidadCompraPalomitas;
     private javax.swing.JSpinner spnTiempoServicioPalomitas;
     private javax.swing.JSpinner spnTiempoServicioTaquillas;
+    private javax.swing.JTextField txtAtendidasPalomitas;
+    private javax.swing.JTextField txtAtendidosTaquilla;
     private javax.swing.JTextField txtNumMedioAtendidosPuestoPalomitas;
     private javax.swing.JTextField txtNumMedioAtendidosTaquilla;
     private javax.swing.JTextField txtNumPuestosPalomitasOcupados;
     private javax.swing.JTextField txtNumTaquillasOcupadas;
+    private javax.swing.JTextField txtOcupacionPalomitas;
+    private javax.swing.JTextField txtOcupacionTaquillas;
+    private javax.swing.JTextField txtTamMedioColasPalomitas;
     private javax.swing.JTextField txtTamMedioColasPuestosPalomitas;
     private javax.swing.JTextField txtTamMedioColasTaquilla;
+    private javax.swing.JTextField txtTamMedioColasTaquillas;
     private javax.swing.JTextField txtTiempoMedioEnCola;
     private javax.swing.JTextArea txtaLog;
     // End of variables declaration//GEN-END:variables
