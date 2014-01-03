@@ -445,12 +445,26 @@ public class CinemaSystem {
         return 0;
     }
 
+    /**
+     * @return Total de personas atendidas en taquillas de tickets
+     */
     public Integer totalPersonasAtendidasTicket() {
-        return 0;
+        Integer suma = 0;
+        for(TicketOffice taquilla:this.taquillas){
+            suma+=taquilla.getClientesServidos();
+        }
+        return suma;
     }
 
+    /**
+     * @return Total de personas atendidas en puestos de palomitas
+     */
     public Integer totalPersonasAtendidasPalomitas() {
-        return 0;
+        Integer suma = 0;
+        for(PopcornStand palomitas:this.puestosPalomitas){
+            suma+=palomitas.getClientesServidos();
+        }
+        return suma;
     }
 
     public Float numeroMedioClienteTicket() {
@@ -461,12 +475,32 @@ public class CinemaSystem {
         return 0.0f;
     }
 
+    /**
+     * @return Grado de ocupación de las taquillas de tickets
+     */
     public Float gradoOcupacionTicket() {
-        return 0.0f;
+        Integer totalOcupadas = 0;
+        for(TicketOffice taquilla:this.taquillas){
+            if(!taquilla.isLibre()){
+                ++totalOcupadas;
+            }
+        }
+        Float gradoOcupacion = totalOcupadas.floatValue() / this.taquillas.size();
+        return gradoOcupacion;
     }
 
+    /**
+     * @return Grado de ocupación de los puestos de palomitas
+     */
     public Float gradoOcupacionPalomitas() {
-        return 0.0f;
+        Integer totalOcupadas = 0;
+        for(PopcornStand taquilla:this.puestosPalomitas){
+            if(!taquilla.isLibre()){
+                ++totalOcupadas;
+            }
+        }
+        Float gradoOcupacion = totalOcupadas.floatValue() / this.puestosPalomitas.size();
+        return gradoOcupacion;
     }
 
     public Integer tiempoMedioColaClientes() {
