@@ -253,6 +253,7 @@ public class CinemaSystem {
             this.entradaTicket(taquilla);
             log.add("\tEntra directamente a taquilla " + taquilla.getId() + "\n");
         } else { //Servidor ocupado
+            cliente.setTiempoLlegadaCola(this.reloj.getSeconds());
             taquilla.addClienteEnCola(cliente);
             log.add("\tSe pone en cola en taquilla " + taquilla.getId() + " (tamaño cola: " + taquilla.getColaSize() + ")\n");
         }
@@ -283,6 +284,8 @@ public class CinemaSystem {
             //Actualizar lista de sucesos
             this.sucesos.get(taquilla.getId()).set(SALIDATICKET, INFINITO);
         }
+        
+        taquilla.addTiempoClientesCola(clienteServido.getTiempoCola());
 
         //Determinar si compra palomitas o sale del sistema
         if (clienteServido.getPalomitas() != 0) {
@@ -291,7 +294,6 @@ public class CinemaSystem {
             asignacionPop(clienteServido);
         } else {
             log.add("\tNo va a comprar palomitas\n");
-            taquilla.addTiempoClientesCola(clienteServido.getTiempoCola());
         }
     }
 
@@ -303,6 +305,7 @@ public class CinemaSystem {
             palomitas.setClienteSirviendose(cliente);
             this.entradaPop(palomitas);
         } else { //Servidor ocupado
+            cliente.setTiempoLlegadaCola(this.reloj.getSeconds());
             palomitas.addClienteEnCola(cliente);
         }
     }
@@ -333,6 +336,7 @@ public class CinemaSystem {
             this.sucesos.get(palomitas.getId()).set(SALIDAPALOMITAS, INFINITO);
         }
         //Calcular datos estadísticos
+        System.out.println("MIRA LO QUE TIENE EL TIEMPO EN COLA: "+clienteServido.getTiempoCola());
         palomitas.addTiempoClientesCola(clienteServido.getTiempoCola());
     }
 
@@ -441,7 +445,9 @@ public class CinemaSystem {
     public Float tiempoMedioColasTaquillas() {
         Float tiempoMedio = 0.0f;
         for (TicketOffice taquilla : this.taquillas) {
-            tiempoMedio += taquilla.getTiempoClientesCola() / taquilla.getClientesServidos();
+            if (taquilla.getClientesServidos() > 0) {
+                tiempoMedio += taquilla.getTiempoClientesCola().floatValue() / taquilla.getClientesServidos().floatValue();
+            }
         }
         tiempoMedio = tiempoMedio / this.taquillas.size();
         return tiempoMedio;
@@ -453,7 +459,9 @@ public class CinemaSystem {
     public Float tiempoMedioColasPalomitas() {
         Float tiempoMedio = 0.0f;
         for (PopcornStand palomitas : this.puestosPalomitas) {
-            tiempoMedio += palomitas.getTiempoClientesCola() / palomitas.getClientesServidos();
+            if (palomitas.getClientesServidos() > 0) {
+                tiempoMedio += palomitas.getTiempoClientesCola().floatValue() / palomitas.getClientesServidos().floatValue();
+            }
         }
         tiempoMedio = tiempoMedio / this.puestosPalomitas.size();
         return tiempoMedio;
