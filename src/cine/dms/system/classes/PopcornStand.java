@@ -55,6 +55,8 @@ public class PopcornStand {
         this.tiempoServicio = 30;
         this.cola = new ArrayList();
         this.clienteSirviendose = null;
+        this.tamMedioCola = 0f;
+        this.tiempoDeSimulacion = 0;
         this.tiempoInicioSistema = tiempoInicioSistema;
     }
 
@@ -72,6 +74,8 @@ public class PopcornStand {
         this.tiempoServicio = tiempoServicio;
         this.cola = new ArrayList();
         this.clienteSirviendose = null;
+        this.tamMedioCola = 0f;
+        this.tiempoDeSimulacion = 0;
         this.tiempoInicioSistema = tiempoInicioSistema;
     }
 
