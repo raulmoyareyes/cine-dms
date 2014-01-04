@@ -143,13 +143,13 @@ public class CinemaSystem {
         TicketOffice.resetId();
         taquillas = new ArrayList();
         for (int i = 0; i < numTicketOffice; ++i) {
-            taquillas.add(new TicketOffice(tiempoServicioTaquilla));
+            taquillas.add(new TicketOffice(reloj.getSeconds(), tiempoServicioTaquilla));
         }
 
         PopcornStand.resetId();
         puestosPalomitas = new ArrayList();
         for (int i = 0; i < numPopcornStand; ++i) {
-            puestosPalomitas.add(new PopcornStand(tiempoServicioPalomitas));
+            puestosPalomitas.add(new PopcornStand(reloj.getSeconds(), tiempoServicioPalomitas));
         }
 
         this.frecuenciaClientes = frecuenciaClientes;
@@ -336,7 +336,6 @@ public class CinemaSystem {
             this.sucesos.get(palomitas.getId()).set(SALIDAPALOMITAS, INFINITO);
         }
         //Calcular datos estadísticos
-        System.out.println("MIRA LO QUE TIENE EL TIEMPO EN COLA: "+clienteServido.getTiempoCola());
         palomitas.addTiempoClientesCola(clienteServido.getTiempoCola());
     }
 
@@ -490,11 +489,21 @@ public class CinemaSystem {
     }
 
     public Float totalTamMedioColasTaquillas() {
-        return 0.0f;
+        Float media = 0f;
+        Integer tiempoActual = this.reloj.getSeconds();
+        for(TicketOffice taquilla:this.taquillas){
+            media+=taquilla.getTamMedioCola(tiempoActual);
+        }
+        return media;
     }
 
     public Float totalTamMedioColasPalomitas() {
-        return 0.0f;
+        Float media = 0f;
+        Integer tiempoActual = this.reloj.getSeconds();
+        for(PopcornStand palomitas:this.puestosPalomitas){
+            media+=palomitas.getTamMedioCola(tiempoActual);
+        }
+        return media;
     }
 
     /**
