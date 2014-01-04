@@ -515,7 +515,7 @@ public class CinemaSystem {
         for(PopcornStand palomitas:this.puestosPalomitas){
             media+=palomitas.getTamMedioCola(tiempoActual);
         }
-        media = media / this.taquillas.size();
+        media = media / this.puestosPalomitas.size();
         //Redondeo
         BigDecimal bd = new BigDecimal(Float.toString(media));
         bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
