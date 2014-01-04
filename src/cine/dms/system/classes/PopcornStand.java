@@ -22,7 +22,10 @@ public class PopcornStand {
     ///Clientes servidos
     int clientesServidos;
 
-    ///Tiempo de servicio
+    ///Tiempo acumulado de espera de los clientes en cola
+    int tiempoClientesCola;
+
+    ///Tiempo que tarda en ofrecer el servicio
     int tiempoServicio;
 
     ///Cola de clientes
@@ -30,14 +33,21 @@ public class PopcornStand {
 
     ///Cliente sirviéndose
     Client clienteSirviendose;
-    
-    ///Tiempo de clientes en cola
-    private int tiempoClientesCola;
+
+    ///Tamaño medio de la cola hasta el tiempo en funcionamiento
+    Float tamMedioCola;
+
+    ///Tiempo en funcionamiento (desde que abrió hasta el momento actual)
+    int tiempoDeSimulacion;
+
+    ///Tiempo de inicio del sistema
+    int tiempoInicioSistema;
 
     /**
      * Constructor por defecto
+     * @param tiempoInicioSistema Tiempo de inicio del sistema
      */
-    public PopcornStand() {
+    public PopcornStand(int tiempoInicioSistema) {
         id = nexId;
         ++nexId;
         this.estado = 0;
@@ -45,14 +55,16 @@ public class PopcornStand {
         this.tiempoServicio = 30;
         this.cola = new ArrayList();
         this.clienteSirviendose = null;
+        this.tiempoInicioSistema = tiempoInicioSistema;
     }
 
     /**
      * Constructor
      *
+     * @param tiempoInicioSistema Tiempo de inicio del sistema
      * @param tiempoServicio Tiempo de servicio
      */
-    public PopcornStand(int tiempoServicio) {
+    public PopcornStand(int tiempoInicioSistema, int tiempoServicio) {
         id = nexId;
         ++nexId;
         this.estado = 0;
@@ -60,6 +72,7 @@ public class PopcornStand {
         this.tiempoServicio = tiempoServicio;
         this.cola = new ArrayList();
         this.clienteSirviendose = null;
+        this.tiempoInicioSistema = tiempoInicioSistema;
     }
 
     /**
@@ -100,6 +113,26 @@ public class PopcornStand {
      */
     public void addClientesServidos() {
         ++this.clientesServidos;
+    }
+
+    /**
+     * Calcula el tamaño medio de la cola hasta el momento actual
+     *
+     * @param horaActual
+     * @return Tamaño medio de la cola hasta el momento actual
+     */
+    public Float getTamMedioCola(int horaActual) {
+        //Espacio de tiempo que hay que sumar al valor del tamaño medio de la cola
+        Integer tiempoGap = this.tiempoDeSimulacion + horaActual - this.tiempoInicioSistema;
+
+        Integer sumatoria = (int) (this.tamMedioCola * this.tiempoDeSimulacion) + (tiempoGap * this.getColaSize());
+
+        //Actualizar valores de la taquilla
+        this.tiempoDeSimulacion += tiempoGap;
+        this.tamMedioCola = sumatoria.floatValue() / this.tiempoDeSimulacion;
+
+        //Devolver tamaño medio de cola
+        return this.tamMedioCola;
     }
 
     /**

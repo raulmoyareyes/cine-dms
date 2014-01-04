@@ -25,8 +25,7 @@ public class TicketOffice {
     ///Tiempo acumulado de espera de los clientes en cola
     int tiempoClientesCola;
 
-    
-    ///Tiempo de servicio
+    ///Tiempo que tarda en ofrecer el servicio
     int tiempoServicio;
 
     ///Cola de clientes
@@ -35,10 +34,21 @@ public class TicketOffice {
     ///Cliente sirviéndose
     Client clienteSirviendose;
 
+    ///Tamaño medio de la cola hasta el tiempo en funcionamiento
+    Float tamMedioCola;
+
+    ///Tiempo en funcionamiento (desde que abrió hasta el momento actual)
+    int tiempoDeSimulacion;
+
+    ///Tiempo de inicio del sistema
+    int tiempoInicioSistema;
+
     /**
      * Constructor por defecto
+     *
+     * @param tiempoInicioSistema Tiempo de inicio del sistema
      */
-    public TicketOffice() {
+    public TicketOffice(int tiempoInicioSistema) {
         id = nexId;
         ++nexId;
         this.estado = 0;
@@ -46,14 +56,18 @@ public class TicketOffice {
         this.tiempoServicio = 30;
         this.cola = new ArrayList();
         this.clienteSirviendose = null;
+        this.tamMedioCola = 0f;
+        this.tiempoDeSimulacion = 0;
+        this.tiempoInicioSistema = tiempoInicioSistema;
     }
 
     /**
      * Constructor
      *
+     * @param tiempoInicioSistema Tiempo de inicio del sistema
      * @param tiempoServicio Tiempo de servicio
      */
-    public TicketOffice(int tiempoServicio) {
+    public TicketOffice(int tiempoInicioSistema, int tiempoServicio) {
         id = nexId;
         ++nexId;
         this.estado = 0;
@@ -61,6 +75,9 @@ public class TicketOffice {
         this.tiempoServicio = tiempoServicio;
         this.cola = new ArrayList();
         this.clienteSirviendose = null;
+        this.tamMedioCola = 0f;
+        this.tiempoDeSimulacion = 0;
+        this.tiempoInicioSistema = tiempoInicioSistema;
     }
 
     /**
@@ -100,6 +117,26 @@ public class TicketOffice {
      */
     public void addClientesServidos() {
         ++this.clientesServidos;
+    }
+
+    /**
+     * Calcula el tamaño medio de la cola hasta el momento actual
+     *
+     * @param horaActual
+     * @return Tamaño medio de la cola hasta el momento actual
+     */
+    public Float getTamMedioCola(int horaActual) {
+        //Espacio de tiempo que hay que sumar al valor del tamaño medio de la cola
+        Integer tiempoGap = this.tiempoDeSimulacion + horaActual - this.tiempoInicioSistema;
+
+        Integer sumatoria = (int) (this.tamMedioCola * this.tiempoDeSimulacion) + (tiempoGap * this.getColaSize());
+
+        //Actualizar valores de la taquilla
+        this.tiempoDeSimulacion += tiempoGap;
+        this.tamMedioCola = sumatoria.floatValue() / this.tiempoDeSimulacion;
+
+        //Devolver tamaño medio de cola
+        return this.tamMedioCola;
     }
 
     /**
@@ -182,9 +219,10 @@ public class TicketOffice {
     public int getId() {
         return id;
     }
-    
+
     /**
      * Obtiene el tiempo acumulado de los clientes servidos en cola
+     *
      * @return tiempo de clientes en cola
      */
     public Integer getTiempoClientesCola() {
@@ -193,6 +231,7 @@ public class TicketOffice {
 
     /**
      * Añade el tiempo a la acumulación del resto de tiempos de clientes en cola
+     *
      * @param tiempoClientesCola tiempo para acumular
      */
     public void addTiempoClientesCola(int tiempoClientesCola) {
