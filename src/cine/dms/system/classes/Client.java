@@ -29,6 +29,8 @@ public class Client {
     public Client(int numTicket, int palomitas) {
         this.numTicket = numTicket;
         this.palomitas = palomitas;
+        this.tiempoLlegadaCola = 0;
+        this.tiempoSalidaCola = 0;
     }
 
     /**
