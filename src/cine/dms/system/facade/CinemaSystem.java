@@ -278,13 +278,15 @@ public class CinemaSystem {
         if (taquilla.getColaSize() != 0) { //La cola tiene clientes
             Client cliente = taquilla.getSiguienteCliente();
             log.add("\tEntra siguiente cliente en cola de la taquilla (" + taquilla.getId() + ")\n");
+            cliente.setTiempoSalidaCola(reloj.getSeconds());
+            taquilla.addTiempoClientesCola(cliente.getTiempoCola());
             taquilla.setClienteSirviendose(cliente);
             this.entradaTicket(taquilla);
         } else {
             //Actualizar lista de sucesos
             this.sucesos.get(taquilla.getId()).set(SALIDATICKET, INFINITO);
         }
-        
+
         taquilla.addTiempoClientesCola(clienteServido.getTiempoCola());
 
         //Determinar si compra palomitas o sale del sistema
@@ -329,6 +331,8 @@ public class CinemaSystem {
 
         if (palomitas.getColaSize() != 0) { //La cola tiene clientes
             Client cliente = palomitas.getSiguienteCliente();
+            cliente.setTiempoSalidaCola(reloj.getSeconds());
+            palomitas.addTiempoClientesCola(cliente.getTiempoCola());
             palomitas.setClienteSirviendose(cliente);
             this.entradaPop(palomitas);
         } else {
@@ -449,7 +453,9 @@ public class CinemaSystem {
             }
         }
         tiempoMedio = tiempoMedio / this.taquillas.size();
-        return tiempoMedio;
+        BigDecimal bd = new BigDecimal(Float.toString(tiempoMedio));
+        bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
     }
 
     /**
@@ -463,7 +469,9 @@ public class CinemaSystem {
             }
         }
         tiempoMedio = tiempoMedio / this.puestosPalomitas.size();
-        return tiempoMedio;
+        BigDecimal bd = new BigDecimal(Float.toString(tiempoMedio));
+        bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
     }
 
     /**
@@ -517,7 +525,9 @@ public class CinemaSystem {
             }
         }
         Float gradoOcupacion = totalOcupadas.floatValue() / this.taquillas.size();
-        return gradoOcupacion;
+        BigDecimal bd = new BigDecimal(Float.toString(gradoOcupacion));
+        bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
     }
 
     /**
@@ -531,7 +541,9 @@ public class CinemaSystem {
             }
         }
         Float gradoOcupacion = totalOcupadas.floatValue() / this.puestosPalomitas.size();
-        return gradoOcupacion;
+        BigDecimal bd = new BigDecimal(Float.toString(gradoOcupacion));
+        bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
     }
 
     public Integer tiempoMedioColaClientes() {
