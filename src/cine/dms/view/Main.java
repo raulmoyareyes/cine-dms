@@ -680,8 +680,8 @@ public class Main extends javax.swing.JFrame {
         txtTamMedioColasPalomitas.setText(cine.totalTamMedioColasPalomitas().toString());
         txtOcupacionTaquillas.setText(cine.gradoOcupacionTicket().toString());
         txtOcupacionPalomitas.setText(cine.gradoOcupacionPalomitas().toString());
-        txtTiempoMedioColaTaquillaTotal.setText(null);
-        txtTiempoMedioColaPalomitasTotal.setText(null);
+        txtTiempoMedioColaTaquillaTotal.setText(cine.tiempoMedioColasTaquillas().toString());
+        txtTiempoMedioColaPalomitasTotal.setText(cine.tiempoMedioColasPalomitas().toString());
         
     }
 
