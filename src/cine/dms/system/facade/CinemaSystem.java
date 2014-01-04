@@ -502,7 +502,11 @@ public class CinemaSystem {
         for(TicketOffice taquilla:this.taquillas){
             media+=taquilla.getTamMedioCola(tiempoActual);
         }
-        return media;
+        media = media / this.taquillas.size();
+        //Redondeo
+        BigDecimal bd = new BigDecimal(Float.toString(media));
+        bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
     }
 
     public Float totalTamMedioColasPalomitas() {
@@ -511,7 +515,11 @@ public class CinemaSystem {
         for(PopcornStand palomitas:this.puestosPalomitas){
             media+=palomitas.getTamMedioCola(tiempoActual);
         }
-        return media;
+        media = media / this.taquillas.size();
+        //Redondeo
+        BigDecimal bd = new BigDecimal(Float.toString(media));
+        bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
     }
 
     /**
