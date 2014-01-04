@@ -510,7 +510,7 @@ public class CinemaSystem {
     }
 
     public Float totalTamMedioColasPalomitas() {
-        Float media = 0f;
+        Float media = 0.0f;
         Integer tiempoActual = this.reloj.getSeconds();
         for(PopcornStand palomitas:this.puestosPalomitas){
             media+=palomitas.getTamMedioCola(tiempoActual);
@@ -613,7 +613,7 @@ public class CinemaSystem {
         for (int i = 0; i < sucesos.size(); ++i) {
             for (int j = 0; j < sucesos.get(i).size(); ++j) {
                 if (sucesos.get(i).get(j) < sucesos.get(resultado.posicion).get(resultado.tipoSuceso)
-                        && sucesos.get(i).get(j) > reloj.getSeconds()) {
+                        && sucesos.get(i).get(j) >= reloj.getSeconds()) {
                     resultado.posicion = i;
                     resultado.tipoSuceso = j;
                 }

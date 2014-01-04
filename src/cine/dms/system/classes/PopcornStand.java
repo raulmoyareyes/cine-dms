@@ -133,7 +133,9 @@ public class PopcornStand {
 
         //Actualizar valores de la taquilla
         this.tiempoDeSimulacion += tiempoGap;
-        this.tamMedioCola = sumatoria.floatValue() / this.tiempoDeSimulacion;
+        if (this.tiempoDeSimulacion != 0) {
+            this.tamMedioCola = sumatoria.floatValue() / this.tiempoDeSimulacion;
+        }
 
         //Devolver tamaño medio de cola
         return this.tamMedioCola;
