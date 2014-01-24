@@ -5,7 +5,8 @@ import cine.dms.system.classes.Client;
 import cine.dms.system.classes.TicketOffice;
 import cine.dms.system.classes.Clock;
 import cine.dms.system.aux.Pair;
-import cine.dms.system.aux.RandomCuadratico;
+import cine.dms.system.aux.RandomExponential;
+//import cine.dms.system.aux.RandomCuadratico;
 import cine.dms.system.aux.RandomLehmer;
 import cine.dms.system.exceptions.ExcepcionGeneradorIncorrecto;
 import java.math.BigDecimal;
@@ -34,9 +35,9 @@ public class CinemaSystem {
     ///Constante INFINITO
     public static final int INFINITO = Integer.MAX_VALUE;
     ///Cantidad máxima de entradas que puede comprar un cliente
-    public static final int MAX_ENTRADAS = 5;
+    //public static final int MAX_ENTRADAS = 5;
     ///Cantidad máxima de palomitas que puede comprar un cliente
-    public static final int MAX_PALOMITAS = 5;
+    //public static final int MAX_PALOMITAS = 5;
     ///Tiempo máximo entre llegada de clientes
     public static final int MAX_TIEMPO_LLEGADA = 14 * 60 * 60;
     /// Reloj
@@ -48,15 +49,15 @@ public class CinemaSystem {
     /// Puestos de palomitas
     private List<PopcornStand> puestosPalomitas;
     private Float frecuenciaClientes;
-//    private Integer tiempoServicioTaquilla;
-//    private Integer tiempoServicioPalomitas;
+    private Integer tiempoServicioTaquilla;
+    private Integer tiempoServicioPalomitas;
     private Float probabilidadTicketMultiple;
     private Float probabilidadPalomitas;
     /// Lista de sucesos (0 - llegada, 1 - salida, 2 - fin)
     private List<List<Integer>> sucesos;
     ///Generador de número aleatorios [0,1] (parámetros provisionales)
     RandomLehmer randomLehmer = new RandomLehmer(16807, 0, 2147483647);
-    RandomCuadratico randomCuadratico = new RandomCuadratico(0.6, 0.84641, 20); //Este 20 está a pelo
+    //RandomCuadratico randomCuadratico = new RandomCuadratico(0.6, 0.84641, 20); //Este 20 está a pelo
     /// Log
     private List<String> log;
     /// Tabla Lista de Eventos
@@ -155,8 +156,8 @@ public class CinemaSystem {
         this.frecuenciaClientes = frecuenciaClientes;
         this.probabilidadPalomitas = probabilidadPalomitas;
         this.probabilidadTicketMultiple = probabilidadTicketMultiple;
-//        this.tiempoServicioPalomitas = tiempoServicioPalomitas;
-//        this.tiempoServicioTaquilla = tiempoServicioTaquilla;
+        this.tiempoServicioPalomitas = tiempoServicioPalomitas;
+        this.tiempoServicioTaquilla = tiempoServicioTaquilla;
 
         //Sucesos medidos en segundos
         this.sucesos = new ArrayList();
@@ -287,7 +288,7 @@ public class CinemaSystem {
             this.sucesos.get(taquilla.getId()).set(SALIDATICKET, INFINITO);
         }
 
-        taquilla.addTiempoClientesCola(clienteServido.getTiempoCola());
+//        taquilla.addTiempoClientesCola(clienteServido.getTiempoCola());
 
         //Determinar si compra palomitas o sale del sistema
         if (clienteServido.getPalomitas() != 0) {
@@ -340,7 +341,7 @@ public class CinemaSystem {
             this.sucesos.get(palomitas.getId()).set(SALIDAPALOMITAS, INFINITO);
         }
         //Calcular datos estadísticos
-        palomitas.addTiempoClientesCola(clienteServido.getTiempoCola());
+//        palomitas.addTiempoClientesCola(clienteServido.getTiempoCola());
     }
 
     private void finSimulacion() {
@@ -565,18 +566,12 @@ public class CinemaSystem {
      * @return Taquilla con menos cola
      */
     private TicketOffice getTaquillaMenosOcupada() {
-        TicketOffice taquillaReturn = null;
+        TicketOffice taquillaReturn = this.taquillas.get(0);
         for (TicketOffice t : this.taquillas) {
-            if (taquillaReturn != null) {
-                if (t.getColaSize() < taquillaReturn.getColaSize()) {
+            if (t.isLibre())
+                return t;
+            else if (t.getColaSize() < taquillaReturn.getColaSize()) 
                     taquillaReturn = t;
-                }
-            } else {
-                taquillaReturn = t;
-            }
-            if (taquillaReturn.isLibre()) {
-                return taquillaReturn;
-            }
         }
         return taquillaReturn;
     }
@@ -587,18 +582,12 @@ public class CinemaSystem {
      * @return Puesto de palomitas con menos cola
      */
     private PopcornStand getPalomitasMenosOcupada() {
-        PopcornStand palomitasReturn = null;
+        PopcornStand palomitasReturn = this.puestosPalomitas.get(0);
         for (PopcornStand p : this.puestosPalomitas) {
-            if (palomitasReturn != null) {
-                if (p.getColaSize() < palomitasReturn.getColaSize()) {
+            if (p.isLibre())
+                return p;
+            else if (p.getColaSize() < palomitasReturn.getColaSize()) 
                     palomitasReturn = p;
-                }
-            } else {
-                palomitasReturn = p;
-            }
-            if (palomitasReturn.isLibre()) {
-                return palomitasReturn;
-            }
         }
         return palomitasReturn;
     }
@@ -633,7 +622,18 @@ public class CinemaSystem {
         if (this.randomLehmer.getRandomUnidad() >= this.probabilidadTicketMultiple) {
             return 1;
         } else {
-            return (int) (((this.randomCuadratico.getRandom()) % MAX_ENTRADAS) + 1);
+            double rand = this.randomLehmer.getRandomUnidad();
+            if(rand<0.6 && rand>0){
+                return 2;
+            } else if(rand<0.85 && rand>=0.6){
+                return 3;
+            } else if(rand<0.95 && rand>=0.85){
+                return 4;
+            } else if(rand<1 && rand>=0.95){
+                return 5;
+            } else{
+                return 1;
+            }
         }
     }
 
@@ -646,7 +646,18 @@ public class CinemaSystem {
         if (this.randomLehmer.getRandomUnidad() >= this.probabilidadPalomitas) {
             return 0;
         } else {
-            return (int) (((this.randomCuadratico.getRandom()) % MAX_PALOMITAS) + 1);
+            double rand = this.randomLehmer.getRandomUnidad();
+            if(rand<0.6 && rand>0){
+                return 1;
+            } else if(rand<0.85 && rand>=0.6){
+                return 2;
+            } else if(rand<0.95 && rand>=0.85){
+                return 3;
+            } else if(rand<1 && rand>=0.95){
+                return 4;
+            } else{
+                return 0;
+            }
         }
     }
 
@@ -657,21 +668,23 @@ public class CinemaSystem {
      * @warnig Deberia usar el parametro de probabilidad de la interfaz
      */
     private void calculoLlegadaSiguienteCliente() {
-        Double aleatorio = this.randomCuadratico.getRandom();
-        Integer tiempoLlegada = this.frecuenciaClientes.intValue();
-        if (randomLehmer.getRandomUnidad() < 0.5) {
-            tiempoLlegada += aleatorio.intValue();
-        } else {
-            tiempoLlegada -= aleatorio.intValue();
-        }
+        RandomExponential r = new RandomExponential(this.frecuenciaClientes);
+        Double tiempoLlegada = r.getExponential();
+        
+//        Integer tiempoLlegada = this.frecuenciaClientes.intValue();
+//        if (randomLehmer.getRandomUnidad() < 0.5) {
+//            tiempoLlegada += aleatorio.intValue();
+//        } else {
+//            tiempoLlegada -= aleatorio.intValue();
+//        }
 
         //Si es negativo que se quede a cero
-        if (tiempoLlegada < 0) {
-            tiempoLlegada = 0;
-        }
+//        if (tiempoLlegada < 0) {
+//            tiempoLlegada = 0;
+//        }
 
-        this.sucesos.get(0).set(LLEGADATICKET, this.reloj.getSeconds() + tiempoLlegada);
-        this.log.add("\tSiguiente llegada en " + tiempoLlegada.toString() + " segundos (" + this.getTime(this.reloj.getSeconds() + tiempoLlegada) + ")\n");
+        this.sucesos.get(0).set(LLEGADATICKET, this.reloj.getSeconds() + tiempoLlegada.intValue());
+        this.log.add("\tSiguiente llegada en " + tiempoLlegada.toString() + " segundos (" + this.getTime(this.reloj.getSeconds() + tiempoLlegada.intValue()) + ")\n");
     }
 
     /**
@@ -681,19 +694,21 @@ public class CinemaSystem {
      * @param taquilla
      */
     private void calculoSalidaSiguienteCliente(TicketOffice taquilla) {
-        Integer tiempoServicioActual;
-        if (this.randomLehmer.getAnteriorUnidad() < 0.5) {
-            tiempoServicioActual = (int) (taquilla.getTiempoServicio() + this.randomCuadratico.getRandom());
-        } else {
-            tiempoServicioActual = (int) (taquilla.getTiempoServicio() - this.randomCuadratico.getRandom());
-            if (tiempoServicioActual < 1) {
-                tiempoServicioActual = 1;
-            }
-        }
-        this.sucesos.get(taquilla.getId()).set(SALIDATICKET, this.reloj.getSeconds() + tiempoServicioActual);
+        RandomExponential r = new RandomExponential(this.tiempoServicioTaquilla);
+        Double tiempoServicioActual = r.getExponential();
+//        Integer tiempoServicioActual;
+//        if (this.randomLehmer.getAnteriorUnidad() < 0.5) {
+//            tiempoServicioActual = (int) (taquilla.getTiempoServicio() + this.randomCuadratico.getRandom());
+//        } else {
+//            tiempoServicioActual = (int) (taquilla.getTiempoServicio() - this.randomCuadratico.getRandom());
+//            if (tiempoServicioActual < 1) {
+//                tiempoServicioActual = 1;
+//            }
+//        }
+        this.sucesos.get(taquilla.getId()).set(SALIDATICKET, this.reloj.getSeconds() + tiempoServicioActual.intValue());
 
         //Sacar el log
-        log.add("\tTiempo de servicio en la taquilla " + taquilla.getId() + ": " + tiempoServicioActual + ". Salida prevista: " + this.getTime(this.reloj.getSeconds() + tiempoServicioActual) + " (en caso de entrar ahora)\n");
+        log.add("\tTiempo de servicio en la taquilla " + taquilla.getId() + ": " + tiempoServicioActual + ". Salida prevista: " + this.getTime(this.reloj.getSeconds() + tiempoServicioActual.intValue()) + " (en caso de entrar ahora)\n");
     }
 
     /**
@@ -705,20 +720,22 @@ public class CinemaSystem {
      * @warnig no testeada
      */
     private void calculoSalidaSiguienteCliente(PopcornStand palomitas) {
+        RandomExponential r = new RandomExponential(this.tiempoServicioPalomitas);
+        Double tiempoServicioActual = r.getExponential();
         //this.sucesos.get(palomitas.getId()).set(SALIDAPALOMITAS, this.reloj.getSeconds() + palomitas.getTiempoServicio());
-        Integer tiempoServicioActual;
-        if (this.randomLehmer.getAnteriorUnidad() < 0.5) {
-            tiempoServicioActual = (int) (palomitas.getTiempoServicio() + this.randomCuadratico.getRandom());
-        } else {
-            tiempoServicioActual = (int) (palomitas.getTiempoServicio() - this.randomCuadratico.getRandom());
-            if (tiempoServicioActual < 1) {
-                tiempoServicioActual = 1;
-            }
-        }
-        this.sucesos.get(palomitas.getId()).set(SALIDAPALOMITAS, this.reloj.getSeconds() + tiempoServicioActual);
+//        Integer tiempoServicioActual;
+//        if (this.randomLehmer.getAnteriorUnidad() < 0.5) {
+//            tiempoServicioActual = (int) (palomitas.getTiempoServicio() + this.randomCuadratico.getRandom());
+//        } else {
+//            tiempoServicioActual = (int) (palomitas.getTiempoServicio() - this.randomCuadratico.getRandom());
+//            if (tiempoServicioActual < 1) {
+//                tiempoServicioActual = 1;
+//            }
+//        }
+        this.sucesos.get(palomitas.getId()).set(SALIDAPALOMITAS, this.reloj.getSeconds() + tiempoServicioActual.intValue());
 
         //Sacar el log
-        log.add("\tTiempo de servicio en el puesto de palomitas " + palomitas.getId() + ": " + tiempoServicioActual + ". Salida prevista: " + this.getTime(this.reloj.getSeconds() + tiempoServicioActual) + " (en caso de entrar ahora)\n");
+        log.add("\tTiempo de servicio en el puesto de palomitas " + palomitas.getId() + ": " + tiempoServicioActual + ". Salida prevista: " + this.getTime(this.reloj.getSeconds() + tiempoServicioActual.intValue()) + " (en caso de entrar ahora)\n");
     }
 
     public List<List<Integer>> getListaSucesos() {

@@ -1,6 +1,7 @@
 
 package cine.dms.view;
 
+import cine.dms.system.aux.RandomExponential;
 import cine.dms.system.facade.CinemaSystem;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -22,6 +23,13 @@ public class Main extends javax.swing.JFrame {
     public Main() {
         log = new ArrayList();
         modeloTablaSucesos = new DefaultTableModel();
+        /** Test de RandomExponential **/
+//        RandomExponential r = new RandomExponential(60);
+//        double a=0;
+//        for(int i=0; i<1000; ++i){
+//            a += r.getExponential();
+//        }
+//        System.out.println(a/1000);
         initComponents();
     }
 
@@ -594,6 +602,7 @@ public class Main extends javax.swing.JFrame {
 
             jTabbedPane1.setSelectedIndex(1);
 
+            log.clear();
             log.add("[08:00:00]\t= INICIO DE LA SIMULACIÓN =\n");
 
             cine = new CinemaSystem();

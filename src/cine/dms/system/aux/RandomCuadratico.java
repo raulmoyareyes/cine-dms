@@ -1,8 +1,5 @@
 package cine.dms.system.aux;
 
-import cine.dms.system.exceptions.ExcepcionGeneradorIncorrecto;
-import java.util.Random;
-
 /**
  * Generador Cuadrático
  *
@@ -13,11 +10,11 @@ import java.util.Random;
  */
 public class RandomCuadratico {
 
-    private double a;
-    private double b;
-    private double m;
-    private double reductor;
-    private RandomLehmer randomLehmer;
+    private final double a;
+    private final double b;
+    private final double m;
+    private final double reductor;
+    private final RandomLehmer randomLehmer;
 
     /**
      * Constructor

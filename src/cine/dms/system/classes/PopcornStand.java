@@ -127,7 +127,7 @@ public class PopcornStand {
      */
     public Float getTamMedioCola(int horaActual) {
         //Espacio de tiempo que hay que sumar al valor del tamaño medio de la cola
-        Integer tiempoGap = this.tiempoDeSimulacion + horaActual - this.tiempoInicioSistema;
+        Integer tiempoGap = horaActual - this.tiempoDeSimulacion - this.tiempoInicioSistema;
 
         Integer sumatoria = (int) (this.tamMedioCola * this.tiempoDeSimulacion) + (tiempoGap * this.getColaSize());
 
@@ -231,6 +231,6 @@ public class PopcornStand {
     }
 
     public void addTiempoClientesCola(int tiempoCola) {
-        this.tiempoClientesCola = tiempoCola;
+        this.tiempoClientesCola += tiempoCola;
     }
 }
